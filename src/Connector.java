@@ -7,6 +7,8 @@ import java.net.Socket;
 
 public class Connector implements Runnable{
 
+    private BufferedReader inputStream;
+    private DataOutputStream outputStream;
 
     public Connector() {
         //Open Socket
@@ -27,21 +29,33 @@ public class Connector implements Runnable{
     public void run() {
         try{
             //Listen here
-            while(true){
-                String sentence;
-                String modifiedSentence;
+            Socket clientSocket = new Socket("localhost", 6789);
+            outputStream = new DataOutputStream(clientSocket.getOutputStream());
+            inputStream = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-                Socket clientSocket = new Socket("localhost", 6789);
-                DataOutputStream outputStream = new DataOutputStream(clientSocket.getOutputStream());
-                BufferedReader inputStream = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            while(true){
 
                 outputStream.writeBytes("heall");
-                modifiedSentence = inputStream.readLine();
-                System.out.println("FROM SERVER: " + modifiedSentence);
+                String response = inputStream.readLine();
                 clientSocket.close();
             }
         } catch(IOException e){
             System.out.println(e.getMessage());
+        }
+
+    }
+
+    public void login(String playerName){
+        try{
+            outputStream.writeBytes("login " + playerName);
+            String response = inputStream.readLine();
+            // check if response is OK
+            if (response.equals("OK")){
+
+            }
+            // maybe a response checker class
+        } catch (IOException e){
+
         }
 
     }
