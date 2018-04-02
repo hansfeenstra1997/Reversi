@@ -1,0 +1,61 @@
+.root{
+    -fx-background-color: #666666;
+    -fx-border-color: black;
+}
+
+.animalPane {
+    -fx-background-color: #333333;
+    -fx-padding: 15;
+    -fx-spacing: 10;
+    -fx-border-color: #888888;
+    -fx-border-width: 4;
+}
+
+.animalPane:hover {
+    -fx-background-color: #555555;
+    -fx-padding: 15;
+    -fx-spacing: 10;
+    -fx-border-color: #888888;
+}
+
+.ClassHeader {
+    -fx-font: 20 'Bookshelf Symbol 7';
+}
+
+.LabelHeader {
+    -fx-font: 20 'Bookshelf Symbol 7';
+}
+
+.LabelPanes {
+    -fx-font: 14 'Bookshelf Symbol 7';
+}
+
+.LabelClass {
+    -fx-font: 18 'Bookshelf Symbol 7';
+    -fx-text-alignment: center;
+}
+
+
+.ButtonPanelAnimal {
+    -fx-background-color: #888888;
+    -fx-font: 14 'Bookshelf Symbol 7';
+}
+
+.Panes {
+        -fx-border-style: solid solid none solid;
+        -fx-border-width: 1;
+        -fx-border-color: white;
+  }
+.PanesLast {
+        -fx-border-style: none none none solid;
+        -fx-border-width: 1;
+        -fx-border-color: white;}
+.ButtonPanelAnimal:hover {
+    -fx-background-color: #666666;
+    -fx-border-radius: 10;
+}
+
+.LabelHealth {
+    -fx-font: 26 calibri;
+    -fx-text-base-color: #333333;
+}
