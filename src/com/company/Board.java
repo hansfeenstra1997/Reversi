@@ -28,9 +28,9 @@ public class Board {
     }
 
     public void setPosition(int selfOrOpponent, int pos) {
-        int row = (pos/size);       // 0/3=0 1/3=0.33 2/3=0.66 etc.. 8/3=2.66 (2)
         int position = (pos%size);  // 0%3=0 2%3=2
-        board[row][position].setState(selfOrOpponent);
+        int row = (pos/size);       // 0/3=0 1/3=0.33 2/3=0.66 etc.. 8/3=2.66 (2)
+        board[position][row].setState(selfOrOpponent);
     }
 
     public void printBoard() {

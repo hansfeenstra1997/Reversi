@@ -59,6 +59,7 @@ public class Reader implements Runnable {
     }
 
     private Map.Entry<String, ArrayList<String>> parseResponse(String response) {
+        System.out.println("--"+response);
         // If "OK" -> return "OK"
         if(response.equals("OK")) {
             return new AbstractMap.SimpleEntry<>("OK", new ArrayList<>());

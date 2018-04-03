@@ -31,6 +31,8 @@ public class Main extends Application {
     BorderPane gamePane = new BorderPane();
     VBox gameMain = new VBox();
     GridPane gameControlPane = new GridPane();
+
+    static String playerName;
     
     public static void main(String[] args) {
         launch(args);
@@ -74,6 +76,7 @@ public class Main extends Application {
     }
 
     private void login(String username) {
+        playerName = username;
         Connection.getInstance().sendCommand("login " + username);
     }
 
@@ -98,8 +101,6 @@ public class Main extends Application {
     public void updateScene(Board board){
 
         gameControlPane.getChildren().clear();
-
-        System.out.println("board size: " + board.getSize());
 
         for(int y = 0; y < board.getSize(); y++){
             for(int x = 0; x < board.getSize(); x++){
