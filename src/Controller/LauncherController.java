@@ -77,7 +77,7 @@ public class LauncherController {
                         "AI Mode:                    " + aiMode);
             }
             System.out.println(
-                    "Specific player selected:    " + specificPlayer +
+                    "Specific player selected:    " + View.LauncherView.specificPlayer() +
                             "\n\n=== OPTIONS == " +
                             "\nAI Reaction Time:            " + View.LauncherView.getReactionTime() + " Seconds" +
                             "\nNightmode:                   " + View.LauncherView.nightModeChecked() +

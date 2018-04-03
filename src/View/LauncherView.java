@@ -366,11 +366,10 @@ public class LauncherView extends Application {
     public static String getNameField() {
         return nameInput.getText();
     }
-
+    public static boolean specificPlayer() {return specificPlayer.isSelected();}
     public static boolean nightModeChecked() {
         return nightMode.isSelected();
     }
-
     public static boolean soundChecked() {
         return soundOption.isSelected();
     }
