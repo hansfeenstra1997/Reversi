@@ -1,5 +1,5 @@
 package Controller;
-import Model.LauncherModel; 
+import Model.LauncherModel;
 
 public class LauncherController {
 
@@ -30,7 +30,18 @@ public class LauncherController {
     public static void bkeButton() {
         if (gameModeSelected == false) {
             Model.LauncherModel.bkeEnable();
+            gameModeSelected = true;
         }
+    }
+
+    public static void resetButtonPressed() {
+        Model.LauncherModel.resetSettings();
+        gameModeSelected = false;
+        optionsExpanded = false;
+    }
+
+    public static void startGamePressed() {
+
     }
 
     public static void vsPlayerButton() {

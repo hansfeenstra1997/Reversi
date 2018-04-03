@@ -60,9 +60,12 @@ public class LauncherView extends Application {
     static TextField reactionInput = new TextField();
     static CheckBox specificPlayer = new CheckBox();
     CheckBox nightMode = new CheckBox("Nightmode");
+    CheckBox soundOption = new CheckBox("Enable sound");
+    CheckBox placeholderOption = new CheckBox("Placeholder");
     public static Button reversiButton = new Button("Play Reversi");
     public static Button ticTacToeButton = new Button("Play BKE");
     Button start = new Button("Start a game");
+    Button reset = new Button("Reset options");
     static Button vsAiButton = new Button("Versus AI");
     static Button vsPlayer = new Button("Versus Player");
     Button switchEnglish = new Button("English");
@@ -76,12 +79,15 @@ public class LauncherView extends Application {
     Image settingsPicturePressed = new Image("img/settings-pressed.png");
     Image gamePicture = new Image("img/gameIcon.png");
     Image gamePicturePressed = new Image("img/gameIcon-pressed.png");
+
     static ObservableList<String> options =
             FXCollections.observableArrayList(
                     "Normal",
                     "Hard"
             );
     static final ComboBox comboBox = new ComboBox(options);
+
+    ////////////// - END INITIALISATION - //////////////
 
     public void createHeaderPane() {
         headerPane.setStyle("-fx-background-color:#274982");
@@ -230,15 +236,34 @@ public class LauncherView extends Application {
 
         nameInput.setLayoutX(nameLabelX + 140);
         nameInput.setLayoutY(15);
+
+        nameInput.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (nameInput.getText().length() >= 5) {
+                start.setDisable(false);
+            }
+        });
+
         namePane.getChildren().addAll(nameInput, nameLabel);
     }
 
     public void createStartPane() {
         startPane.setLayoutY(startPaneYPos);
         startPane.setPrefSize(launcherWidth, 50);
-        start.layoutXProperty().bind(startPane.widthProperty().subtract(start.widthProperty()).divide(2));
+
+        start.layoutXProperty().bind(startPane.widthProperty().subtract(start.widthProperty()).divide(1.5));
         start.setLayoutY(10);
-        startPane.getChildren().add(start);
+        start.setOnAction((event) -> {
+            Controller.LauncherController.startGamePressed();
+        });
+        start.setDisable(true);
+
+        reset.layoutXProperty().bind(startPane.widthProperty().subtract(start.widthProperty()).divide(3));
+        reset.setLayoutY(10);
+        reset.setOnAction((event) -> {
+            Controller.LauncherController.resetButtonPressed();
+        });
+
+        startPane.getChildren().addAll(start, reset);
     }
 
     public void createMenuPane() {
@@ -264,41 +289,59 @@ public class LauncherView extends Application {
         switchDutch.setLayoutX(70);
 
         // NIGHTMODE CHECKBOX
-        nightMode.setLayoutY(150);
-        nightMode.setLayoutX(20);
+        nightMode.setLayoutY(170);
+        nightMode.setLayoutX(10);
         nightMode.setTextFill(Color.rgb(255, 255, 255));
 
-        menuPane.getChildren().addAll(reactionTimeLabel, reactionInput, languageLabel, switchEnglish, switchDutch, nightMode);
+        // SOUND
+        soundOption.setLayoutY(200);
+        soundOption.setLayoutX(10);
+        soundOption.setTextFill(Color.rgb(255, 255, 255));
+
+        // PLACEHOLDER
+        placeholderOption.setLayoutY(230);
+        placeholderOption.setLayoutX(10);
+        placeholderOption.setTextFill(Color.rgb(255, 255, 255));
+
+        menuPane.getChildren().addAll(reactionTimeLabel, reactionInput, languageLabel, switchEnglish, switchDutch, nightMode, soundOption, placeholderOption);
     }
 
-    public static void removeMenu() {
-        rootPane.getChildren().remove(menuPane);
-    }
+    public static void removeMenu() {rootPane.getChildren().remove(menuPane); }
+    public static void removeMode() {rootPane.getChildren().remove(modePane); }
+    public static void removeName() {rootPane.getChildren().remove(namePane); }
+    public static void removeStart() {rootPane.getChildren().remove(startPane); }
 
     public static void addMenu() {
         rootPane.getChildren().add(menuPane);
     }
-
     public static void addMode() {
         rootPane.getChildren().add(modePane);
     }
+    public static void addName() { rootPane.getChildren().add(namePane); }
 
-    // AI = 1
     // Player = 0
-    public static void addName(int mode) {
-        if (mode == 1) {
-            comboBox.setDisable(false);
-            vsPlayer.setDisable(true);
-        } else {
+    // AI = 1
+    public static void addModeTweak(int mode) {
+        if (mode == 0) {
             specificPlayer.setDisable(false);
             vsAiButton.setDisable(true);
         }
-        rootPane.getChildren().addAll(namePane, startPane);
-        addStartButton();
+        if (mode == 1) {
+            comboBox.setDisable(false);
+            vsPlayer.setDisable(true);
+        }
+        addName();
+    }
+
+    public static void clearModeTweak() {
+        specificPlayer.setDisable(true);
+        vsAiButton.setDisable(false);
+        comboBox.setDisable(true);
+        vsPlayer.setDisable(false);
     }
 
     public static void addStartButton() {
-
+        rootPane.getChildren().add(startPane);
     }
 
     public void start(Stage primaryStage) throws Exception {
@@ -308,11 +351,8 @@ public class LauncherView extends Application {
         createNamePane();
         createMenuPane();
         createStartPane();
-
         scene.getStylesheets().add("mainWindow.css");
-
         rootPane.getChildren().addAll(headerPane, gamePane);
-
 
         primaryStage.setTitle("Boardgame Launcher");
         primaryStage.setScene(scene);

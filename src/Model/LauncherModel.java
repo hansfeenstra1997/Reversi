@@ -5,7 +5,8 @@ import View.LauncherView;
 public class LauncherModel {
 
     public static void expandToName(int mode) {
-        LauncherView.addName(mode);
+        LauncherView.addModeTweak(mode);
+        LauncherView.addStartButton();
     }
 
     public static void expandToMode() {
@@ -38,5 +39,14 @@ public class LauncherModel {
     public static void aiButtonEnable() {
         System.out.println("AI mode enabled");
         expandToName(1);
+    }
+
+    public static void resetSettings() {
+        View.LauncherView.removeStart();
+        View.LauncherView.ticTacToeButton.setDisable(false);
+        View.LauncherView.reversiButton.setDisable(false);
+        View.LauncherView.removeMode();
+        View.LauncherView.removeName();
+        View.LauncherView.clearModeTweak();
     }
 }
