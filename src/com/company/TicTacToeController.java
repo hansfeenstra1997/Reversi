@@ -1,19 +1,39 @@
 package com.company;
 
-public class TicTacToeController implements Controller{
+import java.util.ArrayList;
+
+public class TicTacToeController implements Controller, Runnable{
 
     Connection conn;
-    Reader reader;
-    Writer writer;
+    ArrayList<String> readerQueue;
+    ArrayList<String> writerQueue;
 
     public TicTacToeController() {
         conn = Connection.getInstance();
-        reader = conn.getReader();
-        writer = conn.getWriter();
+        readerQueue = conn.getReader().queue;
+        //writerQueue = conn.getWriter().queue;
     }
 
     @Override
-    public String readQueue() {
-        return reader.queue.get(reader.queue.size() - 1);
+    public void readQueue() {
+        String command = readerQueue.get(readerQueue.size() - 1);
+        readerQueue.remove(command);
+        System.out.println(command);
+    }
+
+    @Override
+    public void run() {
+        while(true){
+            try{
+                if (!readerQueue.isEmpty()){
+                    readQueue();
+                }
+                Thread.sleep(500);
+            } catch(InterruptedException e){
+                e.printStackTrace();
+            }
+
+        }
+
     }
 }

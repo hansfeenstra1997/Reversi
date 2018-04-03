@@ -17,7 +17,7 @@ public class Connection {
 
     public static Connection getInstance() {
         if(connection==null) {
-            return new Connection();
+            connection = new Connection();
         }
         return connection;
     }

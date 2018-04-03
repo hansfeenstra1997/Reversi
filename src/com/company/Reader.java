@@ -37,6 +37,7 @@ public class Reader implements Runnable {
             try {
                 if ((line = inputStream.readLine()) != null) {
                     System.out.println(line);
+                    queue.add(line);
                     if(line.startsWith("SVR GAME MOVE")) {
                         matcher = positionPattern.matcher(line);
                         if(matcher.find()) {

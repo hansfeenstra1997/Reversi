@@ -29,7 +29,7 @@ public class Main extends Application {
         GridPane controlPane = new GridPane();
 
         Button startBtn = new Button("Start Tic-Tac-Toe");
-        startBtn.setOnAction((event) -> startGame("TicTacToe"));
+        startBtn.setOnAction((event) -> startGame("Tic-tac-toe"));
         controlPane.add(startBtn, 0, 0);
 
         TextField usernameField = new TextField();
@@ -64,8 +64,10 @@ public class Main extends Application {
 
     private void startGame(String gameName) {
         Connection.getInstance().sendCommand("subscribe " + gameName);
-        Controller game = gameFactory.makeGame(gameName);
+        Runnable game = gameFactory.makeGame(gameName);
 
-        //game.readQueue();
+        Thread thread = new Thread(game);
+        thread.start();
+
     }
 }
