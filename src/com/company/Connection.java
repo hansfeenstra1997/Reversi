@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class Connection {
+
+
     private Reader reader;
     private Writer writer;
 
@@ -40,5 +42,13 @@ public class Connection {
 
     public void sendCommand(String command) {
         writer.addMessage(command);
+    }
+
+    public Reader getReader() {
+        return reader;
+    }
+
+    public Writer getWriter() {
+        return writer;
     }
 }

@@ -4,15 +4,18 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Reader implements Runnable {
     Socket socket;
     BufferedReader inputStream;
+    ArrayList<String> queue;
 
     public Reader(Socket socket) {
         this.socket = socket;
+        this.queue = new ArrayList<>();
         try {
             inputStream = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         }

@@ -62,7 +62,10 @@ public class Main extends Application {
         Connection.getInstance().sendCommand("login " + username);
     }
 
-    private void startGame(String game) {
-        gameFactory.makeGame(game);
+    private void startGame(String gameName) {
+        Connection.getInstance().sendCommand("subscribe " + gameName);
+        Controller game = gameFactory.makeGame(gameName);
+
+        //game.readQueue();
     }
 }

@@ -1,11 +1,11 @@
 package com.company;
 
 public class GameFactory {
-    public void makeGame(String game) {
+    public Controller makeGame(String game) {
         switch(game) {
-            case "TicTacToe":
-                new TicTacToe();
-                break;
+            case "Tic-tac-toe":
+                return new TicTacToeController();
         }
+        return null;
     }
 }
