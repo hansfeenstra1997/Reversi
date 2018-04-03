@@ -95,6 +95,7 @@ public class Main extends Application {
 
     public void makeScene(Board board){
         gamePane.setMinSize(200, 200);
+        //gameController.updateBoard();
         updateScene(board);
     }
 
