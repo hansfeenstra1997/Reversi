@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Main extends Application {
 
@@ -29,7 +30,7 @@ public class Main extends Application {
         GridPane controlPane = new GridPane();
 
         Button startBtn = new Button("Start Tic-Tac-Toe");
-        startBtn.setOnAction((event) -> startGame("Tic-tac-toe"));
+        startBtn.setOnAction((event) -> startGame("Tic-tac-toe", 0));
         controlPane.add(startBtn, 0, 0);
 
         TextField usernameField = new TextField();
@@ -62,7 +63,7 @@ public class Main extends Application {
         Connection.getInstance().sendCommand("login " + username);
     }
 
-    private void startGame(String gameName) {
+    private void startGame(String gameName, int gameMode) {
         Connection.getInstance().sendCommand("subscribe " + gameName);
         Runnable game = gameFactory.makeGame(gameName);
 
