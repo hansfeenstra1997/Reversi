@@ -15,7 +15,6 @@ public abstract class Controller implements Runnable{
 
     Connection conn;
     ArrayList<Map.Entry<String, ArrayList<String>>> readerQueue;
-    ArrayList<String> writerQueue;
 
     Board board;
 
@@ -28,7 +27,6 @@ public abstract class Controller implements Runnable{
     public Controller() {
         conn = Connection.getInstance();
         readerQueue = conn.getReader().queue;
-        //writerQueue = conn.getWriter().queue;
     }
 
     abstract void setMove(int pos);
@@ -50,9 +48,6 @@ public abstract class Controller implements Runnable{
             if (key == "MOVE") {
                 System.out.println(values.get(1));
                 int player = 1;
-//                System.out.println("Vlaues");
-//                System.out.println(values.get(0));
-//                System.out.println(Main.playerName);
                 if(!values.get(0).replace("\"", "").equals(Main.playerName)){
                     player = 2;
                 }
@@ -61,14 +56,8 @@ public abstract class Controller implements Runnable{
             }
         }
 
-
-        //stel: set is gedaan van tegenstander
-            //model updaten
-            //view updaten
-
     }
 
-    //of deze functie's moeten in Controller
     void updateBoard(){
         Platform.runLater(()->{
             main.getChildren().clear();
