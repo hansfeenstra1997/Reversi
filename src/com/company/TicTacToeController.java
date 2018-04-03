@@ -16,6 +16,7 @@ public class TicTacToeController extends Controller{
         grid = gameGrid;
 
         makeBoard(3);
+        ai = new AIPlayerMiniMax(board);
     }
 
     public void makeBoard(int size) {

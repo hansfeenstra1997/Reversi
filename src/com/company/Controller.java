@@ -6,8 +6,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -18,6 +16,8 @@ public abstract class Controller implements Runnable{
 
     Board board;
 
+    AIPlayerMiniMax ai;
+
     //need to cleanup
     Stage stage;
     BorderPane pane;
@@ -27,6 +27,7 @@ public abstract class Controller implements Runnable{
     public Controller() {
         conn = Connection.getInstance();
         readerQueue = conn.getReader().queue;
+
     }
 
     abstract void setMove(int pos);
@@ -53,6 +54,22 @@ public abstract class Controller implements Runnable{
                 }
                 board.setPosition(player, Integer.parseInt(values.get(1).replace("\"", "")));
                 updateBoard();
+            }
+
+            if (key == "YOURTURN"){
+                if (Main.playerMode == 1){
+
+                    board.printBoard();
+
+                    Integer[] xy = ai.printHashMap();
+                    int pos = xy[0] * 3 + xy[1];
+                    System.out.println(xy);
+                    //System.out.println(pos);
+
+                    conn.sendCommand("move " + pos);
+                    board.setPosition(1, pos);
+                    updateBoard();
+                }
             }
         }
 

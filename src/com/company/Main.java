@@ -1,23 +1,14 @@
 package com.company;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import javax.swing.text.html.ImageView;
-import java.awt.*;
-import java.io.*;
-import java.net.Socket;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Main extends Application {
 
@@ -33,6 +24,7 @@ public class Main extends Application {
     GridPane gameControlPane = new GridPane();
 
     static String playerName;
+    static int playerMode = 1;
     
     public static void main(String[] args) {
         launch(args);
