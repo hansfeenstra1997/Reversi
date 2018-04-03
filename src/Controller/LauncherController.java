@@ -1,14 +1,36 @@
 package Controller;
-import Model.LauncherModel;
+import Model.LauncherModel; 
 
 public class LauncherController {
 
+    static boolean optionsExpanded = false;
+    public static void optionsButton() {
+        if (optionsExpanded == false) {
+            Model.LauncherModel.optionsClicked();
+            optionsExpanded = true;
+            System.out.println("Options button clicked");
+        }
+    }
+
+    public static void gameButton() {
+            if (optionsExpanded == true) {
+                Model.LauncherModel.gameClicked();
+                optionsExpanded = false;
+        }
+    }
+
+    static boolean gameModeSelected = false; // Prevents the GUI from adding the same pane twice.
     public static void reversiButton() {
-        Model.LauncherModel.reversiEnable();
+        if (gameModeSelected == false) {
+            Model.LauncherModel.reversiEnable();
+            gameModeSelected = true;
+        }
     }
 
     public static void bkeButton() {
-        Model.LauncherModel.bkeEnable();
+        if (gameModeSelected == false) {
+            Model.LauncherModel.bkeEnable();
+        }
     }
 
     public static void vsPlayerButton() {
