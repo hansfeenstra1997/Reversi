@@ -24,17 +24,14 @@ public class Main extends Application {
     private GameFactory gameFactory = new GameFactory();
 
     Controller gameController;
+    //static Board board;
 
     //feur game is shitty
     Stage gameStage = new Stage();
     BorderPane gamePane = new BorderPane();
     VBox gameMain = new VBox();
     GridPane gameControlPane = new GridPane();
-
-    ButtonHandler buttonHandler = new ButtonHandler();
-
-
-
+    
     public static void main(String[] args) {
         launch(args);
     }
@@ -82,7 +79,7 @@ public class Main extends Application {
 
     private void startGame(String gameName, int gameMode) {
         Connection.getInstance().sendCommand("subscribe " + gameName);
-        Runnable game = gameFactory.makeGame(gameName);
+        Runnable game = gameFactory.makeGame(gameName, gameStage, gamePane, gameMain, gameControlPane);
 
         //TicTacToeController tic = (TicTacToeController) game;
         gameController = (TicTacToeController) game;
@@ -98,7 +95,7 @@ public class Main extends Application {
         updateScene(board);
     }
 
-    void updateScene(Board board){
+    public void updateScene(Board board){
 
         gameControlPane.getChildren().clear();
 
@@ -109,7 +106,11 @@ public class Main extends Application {
                 Button button = new Button();
                 int state = board.getBoard()[x][y].getState();
                 button.setText(Integer.toString(state));
-                button.setOnAction(buttonHandler);
+                button.setOnAction((event) -> {
+                    int position = gameControlPane.getChildren().indexOf(event.getSource());
+                    gameController.setMove(position);
+                    System.out.println(position);
+                });
 
                 button.setMinSize(50,50);
                 gameControlPane.add(button, x, y);
@@ -124,15 +125,6 @@ public class Main extends Application {
         gameStage.show();
     }
 
-    class ButtonHandler implements EventHandler<ActionEvent>{
-
-        @Override
-        public void handle(ActionEvent event) {
-            int position = gameControlPane.getChildren().indexOf(event.getSource());
-            gameController.setMove(position);
-            System.out.println(position);
-        }
-    }
 }
 
 
