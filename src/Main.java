@@ -1,4 +1,4 @@
-import View.GUI;
+import View.LauncherView;
 import javafx.application.Application;
         import javafx.stage.Stage;
 
@@ -6,7 +6,7 @@ import javafx.application.Application;
 public class Main extends Application {
 
     public static void main(String[] args) throws InterruptedException {
-        Application.launch(GUI.class, args);
+        Application.launch(LauncherView.class, args);
     }
 
     public void start(Stage primaryStage) throws Exception {

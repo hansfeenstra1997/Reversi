@@ -1,22 +1,33 @@
 package Model;
 
+import View.LauncherView;
+
 public class LauncherModel {
 
     public static void expandToName(int mode) {
-        View.GUI.addName(mode);
+        LauncherView.addName(mode);
     }
 
     public static void expandToMode() {
-        View.GUI.addMode();
+        View.LauncherView.addMode();
+    }
+
+    public static void optionsClicked() {
+        View.LauncherView.addMenu();
+    }
+
+    public static void gameClicked() {
+            View.LauncherView.removeMenu();
     }
 
     public static void reversiEnable() {
-        System.out.println("Reversi is enabled");
+        View.LauncherView.ticTacToeButton.setDisable(true);
         expandToMode();
     }
 
     public static void bkeEnable() {
-        System.out.println("TicTacToe is enabled");
+        View.LauncherView.reversiButton.setDisable(true);
+        expandToMode();
     }
 
     public static void playerButtonEnable() {
