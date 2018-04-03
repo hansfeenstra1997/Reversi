@@ -8,20 +8,11 @@ import javafx.stage.Stage;
 public class TicTacToeController extends Controller{
 
 
-    public TicTacToeController(Stage gameStage, BorderPane gamePane, VBox gameMain, GridPane gameGrid) {
-        super();
-        stage = gameStage;
-        pane = gamePane;
-        main = gameMain;
-        grid = gameGrid;
+    public TicTacToeController(Stage gameStage) {
+        super(gameStage);
 
         makeBoard(3);
         ai = new AIPlayerMiniMax(board);
-    }
-
-    public void makeBoard(int size) {
-        board = new Board(size);
-        board.printBoard();
     }
 
     @Override

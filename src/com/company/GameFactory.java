@@ -6,10 +6,12 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class GameFactory {
-    public Runnable makeGame(String game, Stage stage, BorderPane pane, VBox main, GridPane grid) {
+    public Runnable makeGame(String game, Stage stage) {
         switch(game) {
             case "Tic-tac-toe":
-                return new TicTacToeController(stage, pane, main, grid);
+                return new TicTacToeController(stage);
+            case "Reversi":
+                return new ReversiController(stage);
         }
         return null;
     }

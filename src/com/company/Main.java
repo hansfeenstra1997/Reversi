@@ -74,7 +74,7 @@ public class Main extends Application {
 
     private void startGame(String gameName, int gameMode) {
         Connection.getInstance().sendCommand("subscribe " + gameName);
-        Runnable game = gameFactory.makeGame(gameName, gameStage, gamePane, gameMain, gameControlPane);
+        Runnable game = gameFactory.makeGame(gameName, gameStage);
 
         //TicTacToeController tic = (TicTacToeController) game;
         gameController = (TicTacToeController) game;
@@ -89,6 +89,7 @@ public class Main extends Application {
         gamePane.setMinSize(200, 200);
         //gameController.updateBoard();
         updateScene(board);
+        gameController.setupFX();
     }
 
     public void updateScene(Board board){
