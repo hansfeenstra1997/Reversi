@@ -1,8 +1,11 @@
 package com.company;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -10,6 +13,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import javax.swing.text.html.ImageView;
+import java.awt.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -17,6 +22,18 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class Main extends Application {
 
     private GameFactory gameFactory = new GameFactory();
+
+    Controller gameController;
+
+    //feur game is shitty
+    Stage gameStage = new Stage();
+    BorderPane gamePane = new BorderPane();
+    VBox gameMain = new VBox();
+    GridPane gameControlPane = new GridPane();
+
+    ButtonHandler buttonHandler = new ButtonHandler();
+
+
 
     public static void main(String[] args) {
         launch(args);
@@ -67,8 +84,55 @@ public class Main extends Application {
         Connection.getInstance().sendCommand("subscribe " + gameName);
         Runnable game = gameFactory.makeGame(gameName);
 
+        //TicTacToeController tic = (TicTacToeController) game;
+        gameController = (TicTacToeController) game;
+        makeScene(gameController.board);
+
         Thread thread = new Thread(game);
         thread.start();
 
     }
+
+    public void makeScene(Board board){
+        gamePane.setMinSize(200, 200);
+        updateScene(board);
+    }
+
+    void updateScene(Board board){
+
+        gameControlPane.getChildren().clear();
+
+        System.out.println("board size: " + board.getSize());
+
+        for(int y = 0; y < board.getSize(); y++){
+            for(int x = 0; x < board.getSize(); x++){
+                Button button = new Button();
+                int state = board.getBoard()[x][y].getState();
+                button.setText(Integer.toString(state));
+                button.setOnAction(buttonHandler);
+
+                button.setMinSize(50,50);
+                gameControlPane.add(button, x, y);
+            }
+        }
+
+        gameMain.getChildren().add(gameControlPane);
+        gamePane.setCenter(gameMain);
+
+        Scene scene = new Scene(gamePane);
+        gameStage.setScene(scene);
+        gameStage.show();
+    }
+
+    class ButtonHandler implements EventHandler<ActionEvent>{
+
+        @Override
+        public void handle(ActionEvent event) {
+            int position = gameControlPane.getChildren().indexOf(event.getSource());
+            gameController.setMove(position);
+            System.out.println(position);
+        }
+    }
 }
+
+

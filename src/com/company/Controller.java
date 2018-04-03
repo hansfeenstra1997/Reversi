@@ -1,5 +1,7 @@
 package com.company;
 
+import javafx.application.Platform;
+
 import java.util.ArrayList;
 
 public abstract class Controller implements Runnable{
@@ -8,11 +10,15 @@ public abstract class Controller implements Runnable{
     ArrayList<String> readerQueue;
     ArrayList<String> writerQueue;
 
+    Board board;
+
     public Controller() {
         conn = Connection.getInstance();
         readerQueue = conn.getReader().queue;
         //writerQueue = conn.getWriter().queue;
     }
+
+    abstract void setMove(int pos);
 
     void readQueue() {
         String command = readerQueue.get(readerQueue.size() - 1);
@@ -22,6 +28,9 @@ public abstract class Controller implements Runnable{
     }
 
     void queueParser(String command){
+        //stel: set is gedaan van tegenstander
+            //model updaten
+            //view updaten
 
     }
 

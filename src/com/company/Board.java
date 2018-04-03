@@ -9,6 +9,14 @@ public class Board {
         board = setup(size);
     }
 
+    public int getSize() {
+        return size;
+    }
+
+    public Cell[][] getBoard(){
+        return board;
+    }
+
     public Cell[][] setup(int size) {
         Cell[][] board = new Cell[size][size];
         for(int i=0; i<board.length; i++) {
