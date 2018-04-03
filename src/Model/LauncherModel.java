@@ -4,6 +4,17 @@ import View.LauncherView;
 
 public class LauncherModel {
 
+    // GAME PANE
+    public static void reversiEnable() {
+        View.LauncherView.ticTacToeButton.setDisable(true);
+        expandToMode();
+    }
+
+    public static void bkeEnable() {
+        View.LauncherView.reversiButton.setDisable(true);
+        expandToMode();
+    }
+    //
     public static void expandToName(int mode) {
         LauncherView.addModeTweak(mode);
         LauncherView.addStartButton();
@@ -21,32 +32,21 @@ public class LauncherModel {
             View.LauncherView.removeMenu();
     }
 
-    public static void reversiEnable() {
-        View.LauncherView.ticTacToeButton.setDisable(true);
-        expandToMode();
-    }
 
-    public static void bkeEnable() {
-        View.LauncherView.reversiButton.setDisable(true);
-        expandToMode();
-    }
 
-    public static void playerButtonEnable() {
-        System.out.println("Player mode enabled");
-        expandToName(0);
-    }
-
+    // Mode Pane
     public static void aiButtonEnable() {
-        System.out.println("AI mode enabled");
         expandToName(1);
     }
 
+    public static void playerButtonEnable() {
+        expandToName(0);
+    }
+
     public static void resetSettings() {
-        View.LauncherView.removeStart();
+        View.LauncherView.removePanes();
         View.LauncherView.ticTacToeButton.setDisable(false);
         View.LauncherView.reversiButton.setDisable(false);
-        View.LauncherView.removeMode();
-        View.LauncherView.removeName();
         View.LauncherView.clearModeTweak();
     }
 }
