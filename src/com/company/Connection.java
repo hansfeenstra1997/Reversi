@@ -24,7 +24,7 @@ public class Connection {
 
     private void makeConnection() {
         try {
-            Socket clientSocket = new Socket("145.37.138.29", 7789);
+            Socket clientSocket = new Socket("localhost", 7789);
 
             reader = new Reader(clientSocket);
             writer = new Writer(clientSocket);

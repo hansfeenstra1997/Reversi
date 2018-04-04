@@ -94,7 +94,7 @@ public abstract class Controller implements Runnable{
                 if (Main.playerMode == 1){
 
 
-                    Integer[] xy = ai.printHashMap();
+                    int[] xy = ai.doMove();
                     int pos = xy[0] * 3 + xy[1];
                     //System.out.println(xy);
                     //System.out.println(pos);
