@@ -60,16 +60,15 @@ public abstract class Controller implements Runnable{
             if (key == "MOVE") {
                 System.out.println(values.get(1));
                 int player = 1;
-                if(!values.get(0).replace("\"", "").equals(Main.playerName)){
+                if(!values.get(0).equals(Main.playerName)){
                     player = 2;
                 }
-                board.setPosition(player, Integer.parseInt(values.get(1).replace("\"", "")));
+                board.setPosition(player, Integer.parseInt(values.get(1)));
                 updateBoard();
             }
 
             if (key == "YOURTURN"){
                 if (Main.playerMode == 1){
-
                     board.printBoard();
 
                     Integer[] xy = ai.printHashMap();
