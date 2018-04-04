@@ -44,7 +44,7 @@ public abstract class Controller implements Runnable{
     abstract void setMove(int pos);
 
     void readQueue() {
-        Map.Entry<String, ArrayList<String>> command = readerQueue.get(readerQueue.size() - 1);
+        Map.Entry<String, ArrayList<String>> command = readerQueue.get(0);
         readerQueue.remove(command);
         queueParser(command);
 
@@ -87,27 +87,27 @@ public abstract class Controller implements Runnable{
     }
 
     void updateBoard(){
-        
-        grid.getChildren().clear();
-
-        for(int y = 0; y < board.getSize(); y++){
-            for(int x = 0; x < board.getSize(); x++){
-                Button button = new Button();
-                int state = board.getBoard()[x][y].getState();
-                button.setText(Integer.toString(state));
-                button.setOnAction((event)->{
-                    int position = grid.getChildren().indexOf(event.getSource());
-                    this.setMove(position);
-                    System.out.println(position);
-                });
-
-                button.setMinSize(50,50);
-                grid.add(button, x, y);
-            }
-        }
 
         Platform.runLater(()->{
             main.getChildren().clear();
+
+            grid.getChildren().clear();
+
+            for(int y = 0; y < board.getSize(); y++){
+                for(int x = 0; x < board.getSize(); x++){
+                    Button button = new Button();
+                    int state = board.getBoard()[x][y].getState();
+                    button.setText(Integer.toString(state));
+                    button.setOnAction((event)->{
+                        int position = grid.getChildren().indexOf(event.getSource());
+                        this.setMove(position);
+                        System.out.println(position);
+                    });
+
+                    button.setMinSize(50,50);
+                    grid.add(button, x, y);
+                }
+            }
 
 
             main.getChildren().add(grid);
