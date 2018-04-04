@@ -32,7 +32,7 @@ public abstract class Controller implements Runnable{
 
     public void makeBoard(int size) {
         board = new Board(size);
-        board.printBoard();
+        //board.printBoard();
     }
 
     void setupFX(){
@@ -53,32 +53,35 @@ public abstract class Controller implements Runnable{
     void queueParser(Map.Entry<String, ArrayList<String>> command){
 
         if(command != null){
-            System.out.println(command);
+            //System.out.println(command);
             String key = command.getKey();
 
             ArrayList<String> values = command.getValue();
             if (key == "MOVE") {
-                System.out.println(values.get(1));
+                //System.out.println(values.get(1));
                 int player = 1;
                 if(!values.get(0).equals(Main.playerName)){
                     player = 2;
                 }
+
                 board.setPosition(player, Integer.parseInt(values.get(1)));
+                System.out.println("Updated board:");
+                board.printBoard();
                 updateBoard();
             }
 
             if (key == "YOURTURN"){
                 if (Main.playerMode == 1){
-                    board.printBoard();
+
 
                     Integer[] xy = ai.printHashMap();
                     int pos = xy[0] * 3 + xy[1];
-                    System.out.println(xy);
+                    //System.out.println(xy);
                     //System.out.println(pos);
 
                     conn.sendCommand("move " + pos);
-                    board.setPosition(1, pos);
-                    updateBoard();
+                    //board.setPosition(1, pos);
+                    //updateBoard();
                 }
             }
         }
@@ -92,19 +95,19 @@ public abstract class Controller implements Runnable{
 
             grid.getChildren().clear();
 
-            for(int y = 0; y < board.getSize(); y++){
-                for(int x = 0; x < board.getSize(); x++){
+            for(int x = 0; x < board.getSize(); x++){
+                for(int y = 0; y < board.getSize(); y++){
                     Button button = new Button();
                     int state = board.getBoard()[x][y].getState();
                     button.setText(Integer.toString(state));
                     button.setOnAction((event)->{
                         int position = grid.getChildren().indexOf(event.getSource());
                         this.setMove(position);
-                        System.out.println(position);
+                        //System.out.println(position);
                     });
 
                     button.setMinSize(50,50);
-                    grid.add(button, x, y);
+                    grid.add(button, y, x);
                 }
             }
 
