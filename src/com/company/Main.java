@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 
@@ -85,8 +86,13 @@ public class Main extends Application {
         BorderPane gameBorderPane = new BorderPane();
         VBox gameVBox = new VBox();
 
+
         gameBorderPane.setMinSize(200, 200);
         gameBorderPane.setCenter(gameVBox);
+
+        Text turn = new Text("test");
+        turn.setId("turnText");
+        gameBorderPane.setBottom(turn);
 
         Scene scene = new Scene(gameBorderPane);
         gameStage.setScene(scene);
