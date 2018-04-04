@@ -1,9 +1,12 @@
 package com.company;
 
 import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.Map;
@@ -22,6 +25,7 @@ public abstract class Controller implements Runnable{
     BorderPane pane;
     VBox main;
     GridPane grid;
+    Text turnText;
 
     public Controller(Stage gameStage) {
         conn = Connection.getInstance();
@@ -39,6 +43,7 @@ public abstract class Controller implements Runnable{
         pane = (BorderPane) stage.getScene().getRoot();
         main = (VBox) pane.getCenter();
         grid = new GridPane();
+        turnText = (Text) pane.getBottom();
     }
 
     abstract void setMove(int pos);
@@ -63,8 +68,17 @@ public abstract class Controller implements Runnable{
                 if(!values.get(0).equals(Main.playerName)){
                     player = 2;
                 }
-                board.setPosition(player, Integer.parseInt(values.get(1)));
+                int move = Integer.parseInt(values.get(1));
+                if(move>=0 && move<=8)
+                    board.setPosition(player, Integer.parseInt(values.get(1)));
                 updateBoard();
+                if(player==1) {
+                    disableBoard();
+                    Platform.runLater(() -> turnText.setText("Opponent's turn"));
+                }
+                else {
+                    Platform.runLater(() -> turnText.setText("Your turn"));
+                }
             }
 
             if (key == "YOURTURN"){
@@ -81,15 +95,41 @@ public abstract class Controller implements Runnable{
                     updateBoard();
                 }
             }
+
+            if(key.equals("WIN")) {
+                Platform.runLater(() -> {
+                    turnText.setText("You're the winner! Congratulations!");
+                    turnText.setFill(Color.GREEN);
+                });
+                disableBoard();
+            }
+
+            if(key.equals("LOSS")) {
+                Platform.runLater(() -> {
+                    turnText.setText("You lost the game :(");
+                    turnText.setFill(Color.RED);
+                });
+                disableBoard();
+            }
         }
 
     }
 
-    void updateBoard(){
+    private void disableBoard() {
+        Platform.runLater(() -> {
+            for(Node node: grid.getChildren()) {
+                node.setDisable(true);
+            }
+        });
+    }
 
+    private void setTurn() {
+
+    }
+
+    void updateBoard(){
         Platform.runLater(()->{
             main.getChildren().clear();
-
             grid.getChildren().clear();
 
             for(int y = 0; y < board.getSize(); y++){
@@ -103,12 +143,11 @@ public abstract class Controller implements Runnable{
                         System.out.println(position);
                     });
 
+
                     button.setMinSize(50,50);
                     grid.add(button, x, y);
                 }
             }
-
-
             main.getChildren().add(grid);
 
             stage.show();

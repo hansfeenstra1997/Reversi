@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 
@@ -113,7 +114,10 @@ public class Main extends Application {
         }
 
         gameMain.getChildren().add(gameControlPane);
+        Text turn = new Text("test");
+        turn.setId("turnText");
         gamePane.setCenter(gameMain);
+        gamePane.setBottom(turn);
 
         Scene scene = new Scene(gamePane);
         gameStage.setScene(scene);
