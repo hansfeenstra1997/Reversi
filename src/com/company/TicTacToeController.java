@@ -1,8 +1,5 @@
 package com.company;
 
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class TicTacToeController extends Controller{

@@ -49,7 +49,7 @@ import java.util.Map;
 //
 //                System.out.println(xy[0] + " " + xy[1]);
 
-            System.out.println(BestMove.score + " " + BestMove.x + " " + BestMove.y);
+            //System.out.println(BestMove.score + " " + BestMove.x + " " + BestMove.y);
             Integer[] xy = {BestMove.x, BestMove.y};
             BestMove.score = 0;
             BestMove.x = 0;
