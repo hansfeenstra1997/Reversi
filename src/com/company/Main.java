@@ -14,9 +14,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     private GameFactory gameFactory = new GameFactory();
-
     Controller gameController;
-    //static Board board;
 
     //feur game is shitty
     Stage gameStage = new Stage();
@@ -42,18 +40,22 @@ public class Main extends Application {
         startBtn.setOnAction((event) -> startGame("Tic-tac-toe", 0));
         controlPane.add(startBtn, 0, 0);
 
+        Button startReversiBtn = new Button("Start Reversi");
+        startReversiBtn.setOnAction((event) -> startGame("Reversi", 0));
+        controlPane.add(startReversiBtn, 0, 1);
+
         TextField usernameField = new TextField();
-        controlPane.add(usernameField, 0, 1);
+        controlPane.add(usernameField, 0, 2);
 
         Button loginBtn = new Button("Login");
         loginBtn.setOnAction((event) -> login(usernameField.getText()));
-        controlPane.add(loginBtn, 1, 1);
+        controlPane.add(loginBtn, 1, 2);
 
         TextField commandField = new TextField();
-        controlPane.add(commandField,0, 2);
+        controlPane.add(commandField,0, 3);
         Button commandButton = new Button("Send");
         commandButton.setOnAction((event) -> {sendCommand(commandField.getText()); commandField.setText("");});
-        controlPane.add(commandButton,1,2);
+        controlPane.add(commandButton,1,3);
 
         main.getChildren().add(controlPane);
 
@@ -75,15 +77,12 @@ public class Main extends Application {
 
     private void startGame(String gameName, int gameMode) {
         Connection.getInstance().sendCommand("subscribe " + gameName);
-        Runnable game = gameFactory.makeGame(gameName, gameStage);
+        gameController = gameFactory.makeGame(gameName, gameStage);
 
-        //TicTacToeController tic = (TicTacToeController) game;
-        gameController = (TicTacToeController) game;
         makeScene(gameController.board);
 
-        Thread thread = new Thread(game);
+        Thread thread = new Thread(gameController);
         thread.start();
-
     }
 
     public void makeScene(Board board){
@@ -97,8 +96,8 @@ public class Main extends Application {
 
         gameControlPane.getChildren().clear();
 
-        for(int y = 0; y < board.getSize(); y++){
-            for(int x = 0; x < board.getSize(); x++){
+        for(int x = 0; x < board.getSize(); x++){
+            for(int y = 0; y < board.getSize(); y++){
                 Button button = new Button();
                 int state = board.getBoard()[x][y].getState();
                 button.setText(Integer.toString(state));
@@ -109,7 +108,7 @@ public class Main extends Application {
                 });
 
                 button.setMinSize(50,50);
-                gameControlPane.add(button, x, y);
+                gameControlPane.add(button, y, x);
             }
         }
 

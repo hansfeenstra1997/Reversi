@@ -49,11 +49,11 @@ import java.util.Map;
 //
 //                System.out.println(xy[0] + " " + xy[1]);
 
-            System.out.println(BestMove.score + " " + BestMove.x + " " + BestMove.y);
+            //System.out.println(BestMove.score + " " + BestMove.x + " " + BestMove.y);
             Integer[] xy = {BestMove.x, BestMove.y};
-            BestMove.score = 0;
-            BestMove.x = 0;
-            BestMove.y = 0;
+            BestMove.score = -1;
+            BestMove.x = -1;
+            BestMove.y = -1;
             return xy;
         }
 
@@ -82,23 +82,23 @@ import java.util.Map;
                 for(int y = 0; y < 3; y++) {
                     if(cell[x][y].getState() == 0) {
                         cell[x][y].setState(player);
-                        int[] temp;
+                        int[] temp = {-1, -1, -1};
                         if (player == 1) {
                             temp = miniMaxTicTacToe(2, depth);
-                        } else {
+                        } else if(player == 2) {
                             temp = miniMaxTicTacToe(1, depth);
                         }
                         depth--;
                         cell[x][y].setState(0);
 
                         //System.out.println(temp[0]);
-                        if (depth == 0) {
-                            if (BestMove.score < temp[0]) {
-                                BestMove.score = temp[0];
-                                BestMove.x = x;
-                                BestMove.y = y;
-                            }
+                        //if (depth == 0) {
+                        if ((temp[0] > BestMove.score && player == globalPlayer) || (player == globalOpponent && temp[0] < BestMove.score )) {
+                            BestMove.score = temp[0];
+                            BestMove.x = x;
+                            BestMove.y = y;
                         }
+                        //}
                     }
                 }
             }
@@ -109,7 +109,7 @@ import java.util.Map;
         private boolean boardFull() {
             for(int x = 0; x < 3; x++) {
                 for(int y = 0; y < 3; y++) {
-                    if(cell[x][y].getState() == 0) {
+                    if(cell[y][x].getState() == 0) {
                         return false;
                     }
                 }
@@ -151,7 +151,7 @@ import java.util.Map;
     }
 
 class BestMove {
-    static int score = 0;
-    static int x = 0;
-    static int y = 0;
+    static int score = -1;
+    static int x = -1;
+    static int y = -1;
 }
