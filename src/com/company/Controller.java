@@ -26,6 +26,13 @@ public abstract class Controller implements Runnable{
     GridPane grid;
     Text turnText;
 
+    //Players need to be refactored
+    String xPlayer;
+    String oPlayer;
+    int xPlayerID;
+    int oPlayerID;
+
+
     public Controller(Stage gameStage) {
         conn = Connection.getInstance();
         readerQueue = conn.getReader().queue;
@@ -61,6 +68,17 @@ public abstract class Controller implements Runnable{
 
             ArrayList<String> values = command.getValue();
             if(key == "MATCH"){
+                xPlayer = values.get(0);
+                oPlayer = values.get(2);
+
+                if(Main.playerName.equals(xPlayer)){
+                    xPlayerID = 1;
+                    oPlayerID = 2;
+                } else {
+                    xPlayerID = 2;
+                    oPlayerID = 1;
+                }
+
                 //playertomove is beginner
                 //dus moet kruisje zijn
                 //dit is het statement als er een nieuwe match is
@@ -91,17 +109,13 @@ public abstract class Controller implements Runnable{
             }
 
             if (key == "YOURTURN"){
+                //AI mode;
+                //Set 0 zero for manual
                 if (Main.playerMode == 1){
-
-
                     int[] xy = ai.doMove();
                     int pos = xy[0] * 3 + xy[1];
-                    //System.out.println(xy);
-                    //System.out.println(pos);
 
                     conn.sendCommand("move " + pos);
-                    //board.setPosition(1, pos);
-                    //updateBoard();
                 }
             }
 
@@ -143,7 +157,17 @@ public abstract class Controller implements Runnable{
                 for(int y = 0; y < board.getSize(); y++){
                     Button button = new Button();
                     int state = board.getBoard()[x][y].getState();
-                    button.setText(Integer.toString(state));
+                    String text = "";
+                    //1 is jezelf
+                    //2 is tegenstander
+
+                    if(state == xPlayerID){
+                        text = "X";
+                    } else if(state == oPlayerID){
+                        text = "O";
+                    }
+
+                    button.setText(text);
                     button.setOnAction((event)->{
                         int position = grid.getChildren().indexOf(event.getSource());
                         this.setMove(position);

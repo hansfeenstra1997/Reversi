@@ -19,7 +19,7 @@ public class Main extends Application {
     Stage gameStage = new Stage();
 
     static String playerName;
-    static int playerMode = 1;
+    static int playerMode = 0;
     
     public static void main(String[] args) {
         launch(args);
