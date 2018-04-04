@@ -83,7 +83,7 @@ public class Reader implements Runnable {
                 else if(obj.isJsonObject()) {
                     JsonObject jsonObject = (JsonObject)obj;
                     for(Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
-                        values.add(entry.getValue().toString());
+                        values.add(entry.getValue().toString().replace("\"", ""));
                     }
                 }
 
