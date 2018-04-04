@@ -15,11 +15,7 @@ public class Main extends Application {
     private GameFactory gameFactory = new GameFactory();
     Controller gameController;
 
-    //feur game is shitty
     Stage gameStage = new Stage();
-    BorderPane gamePane = new BorderPane();
-    VBox gameMain = new VBox();
-    GridPane gameControlPane = new GridPane();
 
     static String playerName;
     static int playerMode = 1;
@@ -78,46 +74,28 @@ public class Main extends Application {
         Connection.getInstance().sendCommand("subscribe " + gameName);
         gameController = gameFactory.makeGame(gameName, gameStage);
 
-        makeScene(gameController.board);
+        makeScene();
 
         Thread thread = new Thread(gameController);
         thread.start();
     }
 
-    public void makeScene(Board board){
-        gamePane.setMinSize(200, 200);
-        //gameController.updateBoard();
-        updateScene(board);
-        gameController.setupFX();
-    }
+    public void makeScene(){
 
-    public void updateScene(Board board){
+        BorderPane gameBorderPane = new BorderPane();
+        VBox gameVBox = new VBox();
 
-        gameControlPane.getChildren().clear();
+        gameBorderPane.setMinSize(200, 200);
+        gameBorderPane.setCenter(gameVBox);
 
-        for(int x = 0; x < board.getSize(); x++){
-            for(int y = 0; y < board.getSize(); y++){
-                Button button = new Button();
-                int state = board.getBoard()[x][y].getState();
-                button.setText(Integer.toString(state));
-                button.setOnAction((event) -> {
-                    int position = gameControlPane.getChildren().indexOf(event.getSource());
-                    gameController.setMove(position);
-                    System.out.println(position);
-                });
-
-                button.setMinSize(50,50);
-                gameControlPane.add(button, y, x);
-            }
-        }
-
-        gameMain.getChildren().add(gameControlPane);
-        gamePane.setCenter(gameMain);
-
-        Scene scene = new Scene(gamePane);
+        Scene scene = new Scene(gameBorderPane);
         gameStage.setScene(scene);
         gameStage.show();
+
+        gameController.setupFX();
+
     }
+
 
 }
 

@@ -1,7 +1,6 @@
 package com.company;
 
 import javafx.application.Platform;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -53,12 +52,20 @@ public abstract class Controller implements Runnable{
     void queueParser(Map.Entry<String, ArrayList<String>> command){
 
         if(command != null){
-            //System.out.println(command);
             String key = command.getKey();
 
             ArrayList<String> values = command.getValue();
+            if(key == "MATCH"){
+                //playertomove is beginner
+                //dus moet kruisje zijn
+                //dit is het statement als er een nieuwe match is
+
+                //makeGridpane
+                updateBoard();
+            }
+
+
             if (key == "MOVE") {
-                //System.out.println(values.get(1));
                 int player = 1;
                 if(!values.get(0).equals(Main.playerName)){
                     player = 2;
@@ -85,6 +92,10 @@ public abstract class Controller implements Runnable{
                 }
             }
         }
+
+    }
+
+    void makeBoard(){
 
     }
 
