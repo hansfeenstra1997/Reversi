@@ -76,7 +76,7 @@ public abstract class Controller implements Runnable{
                     player = 2;
                 }
                 int move = Integer.parseInt(values.get(1));
-                if(move>=0 && move<=8)
+                if(move>=0 && move<=((board.getSize()*board.getSize())-1))
                     board.setPosition(player, move);
                 System.out.println("Updated board:");
                 board.printBoard();
@@ -124,21 +124,12 @@ public abstract class Controller implements Runnable{
 
     }
 
-    void makeBoard() {
-
-    }
-
     private void disableBoard() {
         Platform.runLater(() -> {
             for(Node node: grid.getChildren()) {
                 node.setDisable(true);
             }
         });
-    }
-
-
-    private void setTurn() {
-
     }
 
     void updateBoard(){
