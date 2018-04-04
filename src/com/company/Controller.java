@@ -1,9 +1,11 @@
 package com.company;
 
 import javafx.application.Platform;
-import javafx.scene.Parent;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.Map;
@@ -22,6 +24,7 @@ public abstract class Controller implements Runnable{
     BorderPane pane;
     VBox main;
     GridPane grid;
+    Text turnText;
 
     public Controller(Stage gameStage) {
         conn = Connection.getInstance();
@@ -39,6 +42,7 @@ public abstract class Controller implements Runnable{
         pane = (BorderPane) stage.getScene().getRoot();
         main = (VBox) pane.getCenter();
         grid = new GridPane();
+        turnText = (Text) pane.getBottom();
     }
 
     abstract void setMove(int pos);
@@ -53,21 +57,37 @@ public abstract class Controller implements Runnable{
     void queueParser(Map.Entry<String, ArrayList<String>> command){
 
         if(command != null){
-            //System.out.println(command);
             String key = command.getKey();
 
             ArrayList<String> values = command.getValue();
+            if(key == "MATCH"){
+                //playertomove is beginner
+                //dus moet kruisje zijn
+                //dit is het statement als er een nieuwe match is
+
+                //makeGridpane
+                updateBoard();
+            }
+
+
             if (key == "MOVE") {
-                //System.out.println(values.get(1));
                 int player = 1;
                 if(!values.get(0).equals(Main.playerName)){
                     player = 2;
                 }
-
-                board.setPosition(player, Integer.parseInt(values.get(1)));
+                int move = Integer.parseInt(values.get(1));
+                if(move>=0 && move<=((board.getSize()*board.getSize())-1))
+                    board.setPosition(player, move);
                 System.out.println("Updated board:");
                 board.printBoard();
                 updateBoard();
+                if(player==1) {
+                    disableBoard();
+                    Platform.runLater(() -> turnText.setText("Opponent's turn"));
+                }
+                else {
+                    Platform.runLater(() -> turnText.setText("Your turn"));
+                }
             }
 
             if (key == "YOURTURN"){
@@ -84,8 +104,32 @@ public abstract class Controller implements Runnable{
                     //updateBoard();
                 }
             }
+
+            if(key.equals("WIN")) {
+                Platform.runLater(() -> {
+                    turnText.setText("You're the winner! Congratulations!");
+                    turnText.setFill(Color.GREEN);
+                });
+                disableBoard();
+            }
+
+            if(key.equals("LOSS")) {
+                Platform.runLater(() -> {
+                    turnText.setText("You lost the game :(");
+                    turnText.setFill(Color.RED);
+                });
+                disableBoard();
+            }
         }
 
+    }
+
+    private void disableBoard() {
+        Platform.runLater(() -> {
+            for(Node node: grid.getChildren()) {
+                node.setDisable(true);
+            }
+        });
     }
 
     void updateBoard(){

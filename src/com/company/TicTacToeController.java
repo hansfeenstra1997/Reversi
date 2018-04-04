@@ -18,7 +18,6 @@ public class TicTacToeController extends Controller{
 
         conn.sendCommand("move " + pos);
         updateBoard();
-
     }
 
 }
