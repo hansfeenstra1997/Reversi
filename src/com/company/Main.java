@@ -3,9 +3,11 @@ package com.company;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -15,8 +17,6 @@ public class Main extends Application {
 
     private GameFactory gameFactory = new GameFactory();
     Controller gameController;
-
-    Stage gameStage = new Stage();
 
     static String playerName;
     static int playerMode = 0;
@@ -73,21 +73,34 @@ public class Main extends Application {
 
     private void startGame(String gameName, int gameMode) {
         Connection.getInstance().sendCommand("subscribe " + gameName);
+
+        Stage gameStage = new Stage();
         gameController = gameFactory.makeGame(gameName, gameStage);
 
-        makeScene();
+        makeScene(gameStage);
 
         Thread thread = new Thread(gameController);
         thread.start();
     }
 
-    public void makeScene(){
+    public void makeScene(Stage gameStage){
 
         BorderPane gameBorderPane = new BorderPane();
         VBox gameVBox = new VBox();
 
-
         gameBorderPane.setMinSize(200, 200);
+
+        HBox top = new HBox();
+
+        Label player = new Label("Player:");
+        Label playerName = new Label();
+
+        Label opponent = new Label("Opponent:");
+        Label opponentName = new Label();
+
+        top.getChildren().addAll(player, playerName, opponent, opponentName);
+
+        gameBorderPane.setTop(top);
         gameBorderPane.setCenter(gameVBox);
 
         Text turn = new Text("test");

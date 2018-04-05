@@ -3,6 +3,7 @@ package com.company;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -25,6 +26,9 @@ public abstract class Controller implements Runnable{
     VBox main;
     GridPane grid;
     Text turnText;
+
+    //??
+    HBox top;
 
     //Players need to be refactored
     String xPlayer;
@@ -50,6 +54,8 @@ public abstract class Controller implements Runnable{
         main = (VBox) pane.getCenter();
         grid = new GridPane();
         turnText = (Text) pane.getBottom();
+
+        top = (HBox) pane.getTop();
     }
 
     abstract void setMove(int pos);
@@ -71,13 +77,24 @@ public abstract class Controller implements Runnable{
                 xPlayer = values.get(0);
                 oPlayer = values.get(2);
 
+                String opponent;
+
                 if(Main.playerName.equals(xPlayer)){
+                    opponent = values.get(2);
                     xPlayerID = 1;
                     oPlayerID = 2;
                 } else {
+                    opponent = values.get(0);
                     xPlayerID = 2;
                     oPlayerID = 1;
                 }
+
+                Platform.runLater(() -> {
+                    Label playerName = (Label) top.getChildren().get(1);
+                    playerName.setText(Main.playerName);
+                    Label opponentName = (Label) top.getChildren().get(3);
+                    opponentName.setText(opponent);
+                });
 
                 //playertomove is beginner
                 //dus moet kruisje zijn
@@ -96,8 +113,6 @@ public abstract class Controller implements Runnable{
                 int move = Integer.parseInt(values.get(1));
                 if(move>=0 && move<=((board.getSize()*board.getSize())-1))
                     board.setPosition(player, move);
-                System.out.println("Updated board:");
-                board.printBoard();
                 updateBoard();
                 if(player==1) {
                     disableBoard();
@@ -147,6 +162,8 @@ public abstract class Controller implements Runnable{
     }
 
     void updateBoard(){
+
+        System.out.println(grid);
 
         Platform.runLater(()->{
             main.getChildren().clear();
