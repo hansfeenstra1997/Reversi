@@ -50,13 +50,11 @@ public abstract class Controller implements Runnable{
 
     public void makeBoard(int size) {
         board = new Board(size);
-        //board.printBoard();
     }
 
     void setupFX(){
         pane = (BorderPane) stage.getScene().getRoot();
         main = (VBox) pane.getCenter();
-        grid = new GridPane();
         turnText = (Text) pane.getBottom();
 
         top = (HBox) pane.getTop();
@@ -179,43 +177,37 @@ public abstract class Controller implements Runnable{
 
     void updateBoard(){
 
-        System.out.println(grid);
+        grid = new GridPane();
+
+        for(int x = 0; x < board.getSize(); x++){
+            for(int y = 0; y < board.getSize(); y++){
+                Button button = new Button();
+                int state = board.getBoard()[x][y].getState();
+
+                //call to ConcreteController
+                //Puts the right characters on the screen
+                //TTT: X or O
+                //Rev: Black or White
+
+                //needs to be image
+                String image = this.setCellImage(state);
+
+                button.setText(image);
+                button.setOnAction((event)->{
+                    int position = grid.getChildren().indexOf(event.getSource());
+                    this.setMove(position);
+                });
+
+                button.setMinSize(50,50);
+                grid.add(button, y, x);
+            }
+        }
 
         Platform.runLater(()->{
             main.getChildren().clear();
-
-            grid.getChildren().clear();
-
-            for(int x = 0; x < board.getSize(); x++){
-                for(int y = 0; y < board.getSize(); y++){
-                    Button button = new Button();
-                    int state = board.getBoard()[x][y].getState();
-
-                    //1 is jezelf
-                    //2 is tegenstander
-
-                    //call to ConcreteController
-                    //Puts the right characters on the screen
-                    //TTT: X or O
-                    //Rev: Black or White
-
-                    //needs to be image
-                    String image = this.setCellImage(state);
-
-                    button.setText(image);
-                    button.setOnAction((event)->{
-                        int position = grid.getChildren().indexOf(event.getSource());
-                        this.setMove(position);
-                    });
-
-                    button.setMinSize(50,50);
-                    grid.add(button, y, x);
-                }
-            }
-
-
             main.getChildren().add(grid);
 
+            stage.sizeToScene();
             stage.show();
         });
 

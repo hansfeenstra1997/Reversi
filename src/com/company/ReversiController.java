@@ -22,6 +22,11 @@ public class ReversiController extends Controller{
 
     @Override
     String setCellImage(int state) {
-        return null;
+        if(state == firstPlayerID){
+            return "B";
+        } else if(state == secondPlayerID){
+            return "W";
+        }
+        return "";
     }
 }
