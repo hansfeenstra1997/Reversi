@@ -91,7 +91,9 @@ public class Main extends Application {
 
         gameBorderPane.setMinSize(500, 500);
 
-        HBox top = new HBox();
+        VBox top = new VBox();
+        HBox playerInfo = new HBox();
+        HBox playColor = new HBox();
 
         Label player = new Label("Player:");
         Label playerName = new Label();
@@ -99,7 +101,17 @@ public class Main extends Application {
         Label opponent = new Label("Opponent:");
         Label opponentName = new Label();
 
-        top.getChildren().addAll(player, playerName, opponent, opponentName);
+        playerInfo.getChildren().addAll(player, playerName, opponent, opponentName);
+
+        Label black = new Label("Black:");
+        Label blackPlayer = new Label();
+
+        Label white = new Label("White:");
+        Label whitePlayer = new Label();
+
+        playColor.getChildren().addAll(black, blackPlayer, white, whitePlayer);
+
+        top.getChildren().addAll(playerInfo, playColor);
 
         gameBorderPane.setTop(top);
         gameBorderPane.setCenter(gameVBox);

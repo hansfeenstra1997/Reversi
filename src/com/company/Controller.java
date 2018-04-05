@@ -30,7 +30,7 @@ public abstract class Controller implements Runnable{
     Text turnText;
 
     //??
-    HBox top;
+    VBox top;
 
     //startingPlayer = player with first move
     //nextPlayer = player plays second
@@ -57,7 +57,7 @@ public abstract class Controller implements Runnable{
         main = (VBox) pane.getCenter();
         turnText = (Text) pane.getBottom();
 
-        top = (HBox) pane.getTop();
+        top = (VBox) pane.getTop();
     }
 
     abstract void initBoard();
@@ -88,17 +88,16 @@ public abstract class Controller implements Runnable{
 
             ArrayList<String> values = command.getValue();
             if(key == "MATCH"){
-                firstPlayer = values.get(0);
-                secondPlayer = values.get(2);
+                String opponent = values.get(2);
 
-                String opponent;
-
-                if(Main.playerName.equals(firstPlayer)){
-                    opponent = values.get(2);
+                if(Main.playerName.equals(values.get(0))){
+                    firstPlayer = Main.playerName;
+                    secondPlayer = values.get(2);
                     firstPlayerID = 1;
                     secondPlayerID = 2;
                 } else {
-                    opponent = values.get(0);
+                    firstPlayer = values.get(2);
+                    secondPlayer = Main.playerName;
                     firstPlayerID = 2;
                     secondPlayerID = 1;
                 }
@@ -107,10 +106,18 @@ public abstract class Controller implements Runnable{
 
                 //Show playernames on screen
                 Platform.runLater(() -> {
-                    Label playerName = (Label) top.getChildren().get(1);
+                    HBox playerInfo = (HBox) top.getChildren().get(0);
+                    HBox playColor = (HBox) top.getChildren().get(1);
+
+                    Label playerName = (Label) playerInfo.getChildren().get(1);
                     playerName.setText(player.playerName);
-                    Label opponentName = (Label) top.getChildren().get(3);
+                    Label opponentName = (Label) playerInfo.getChildren().get(3);
                     opponentName.setText(opponent);
+
+                    Label blackPlayer = (Label) playColor.getChildren().get(1);
+                    blackPlayer.setText(firstPlayer);
+                    Label whitePlayer = (Label) playColor.getChildren().get(3);
+                    whitePlayer.setText(secondPlayer);
                 });
 
                 //playertomove is beginner
