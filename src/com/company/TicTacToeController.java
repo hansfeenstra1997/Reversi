@@ -8,6 +8,8 @@ public class TicTacToeController extends Controller{
 
     @Override
     void initBoard() {}
+    @Override
+    void flipBoard(int x, int y, int selfOrOpponent) {}
 
     public TicTacToeController(Stage gameStage) {
         super(gameStage);

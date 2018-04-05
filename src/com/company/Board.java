@@ -2,7 +2,7 @@ package com.company;
 
 public class Board {
     private Cell[][] board;
-    private int size;
+    private static int size;
 
     public Board(int size) {
         this.size = size;
@@ -31,7 +31,7 @@ public class Board {
         return this.getBoard()[row][pos].getState();
     }
 
-    public int[] convertPos(int pos) {
+    public static int[] convertPos(int pos) {
         int[] result = new int[2];
         int row = pos%size;
         int position = pos/size;

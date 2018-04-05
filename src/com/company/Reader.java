@@ -86,7 +86,6 @@ public class Reader implements Runnable {
                         values.add(entry.getValue().toString().replace("\"", ""));
                     }
                 }
-
                 return new AbstractMap.SimpleEntry<>(key, values);
             }
         }

@@ -61,6 +61,7 @@ public abstract class Controller implements Runnable{
     }
 
     abstract void initBoard();
+    abstract void flipBoard(int x, int y, int selfOrOpponent);
     abstract void setMove(int pos);
 
     //needs to be image
@@ -128,8 +129,13 @@ public abstract class Controller implements Runnable{
                     player = 2;
                 }
                 int move = Integer.parseInt(values.get(1));
-                if(move>=0 && move<=((board.getSize()*board.getSize())-1))
+
+                int[] pos = Board.convertPos(move);
+                flipBoard(pos[0], pos[1], player);
+
+                if(move>=0 && move<=((board.getSize()*board.getSize())-1) && !values.get(2).equals("Illegal move"))
                     board.setPosition(player, move);
+
                 updateBoard();
                 if(player==1) {
                     disableBoard();
