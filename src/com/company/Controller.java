@@ -60,6 +60,7 @@ public abstract class Controller implements Runnable{
         top = (HBox) pane.getTop();
     }
 
+    abstract void initBoard();
     abstract void setMove(int pos);
 
     //needs to be image
@@ -101,6 +102,8 @@ public abstract class Controller implements Runnable{
                     firstPlayerID = 2;
                     secondPlayerID = 1;
                 }
+
+                initBoard();
 
                 //Show playernames on screen
                 Platform.runLater(() -> {

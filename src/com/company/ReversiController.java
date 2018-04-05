@@ -35,10 +35,10 @@ public class ReversiController extends Controller{
         int row = (boardsize -1)/2;
         int pos = (boardsize -1)/2;
 
-        board.setPosition(oPlayerID, getPos(row, pos));
-        board.setPosition(xPlayerID, getPos(row, pos+1));
-        board.setPosition(xPlayerID, getPos(row+1, pos));
-        board.setPosition(oPlayerID, getPos(row+1, pos+1));
+        board.setPosition(secondPlayerID, getPos(row, pos));
+        board.setPosition(firstPlayerID, getPos(row, pos+1));
+        board.setPosition(firstPlayerID, getPos(row+1, pos));
+        board.setPosition(secondPlayerID, getPos(row+1, pos+1));
 
         ArrayList<int[]> moves = getPossibleMoves();
         for(int[] move: moves) {
