@@ -88,7 +88,7 @@ public class Main extends Application {
         BorderPane gameBorderPane = new BorderPane();
         VBox gameVBox = new VBox();
 
-        gameBorderPane.setMinSize(200, 200);
+        gameBorderPane.setMinSize(500, 500);
 
         HBox top = new HBox();
 

@@ -4,11 +4,15 @@ import javafx.stage.Stage;
 
 public class TicTacToeController extends Controller{
 
+    private int boardsize = 3;
+
+    @Override
+    void initBoard() {}
 
     public TicTacToeController(Stage gameStage) {
         super(gameStage);
 
-        makeBoard(3);
+        makeBoard(boardsize);
         ai = new AIPlayerMiniMax(board);
     }
 

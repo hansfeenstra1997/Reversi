@@ -59,6 +59,7 @@ public abstract class Controller implements Runnable{
     }
 
     abstract void setMove(int pos);
+    abstract void initBoard();
 
     void readQueue() {
         Map.Entry<String, ArrayList<String>> command = readerQueue.get(0);
@@ -88,6 +89,8 @@ public abstract class Controller implements Runnable{
                     xPlayerID = 2;
                     oPlayerID = 1;
                 }
+
+                initBoard();
 
                 Platform.runLater(() -> {
                     Label playerName = (Label) top.getChildren().get(1);
@@ -150,7 +153,6 @@ public abstract class Controller implements Runnable{
                 disableBoard();
             }
         }
-
     }
 
     private void disableBoard() {
@@ -179,9 +181,11 @@ public abstract class Controller implements Runnable{
                     //2 is tegenstander
 
                     if(state == xPlayerID){
-                        text = "X";
+                        text = Integer.toString(state);
+                        //text = "X";
                     } else if(state == oPlayerID){
-                        text = "O";
+                        text = Integer.toString(state);
+                        //text = "O";
                     }
 
                     button.setText(text);

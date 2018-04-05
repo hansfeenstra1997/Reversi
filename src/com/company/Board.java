@@ -27,6 +27,20 @@ public class Board {
         return board;
     }
 
+    public int getCellState(int row, int pos) {
+        return this.getBoard()[row][pos].getState();
+    }
+
+    public int[] convertPos(int pos) {
+        int[] result = new int[2];
+        int row = pos%size;
+        int position = pos/size;
+        result[0] = row;
+        result[1] = position;
+
+        return result;
+    }
+
     public void setPosition(int selfOrOpponent, int pos) {
         int x = (pos/size);       // 0/3=0 1/3=0.33 2/3=0.66 etc.. 8/3=2.66 (2)
         int y = (pos%size);  // 0%3=0 2%3=2
