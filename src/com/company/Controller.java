@@ -18,6 +18,8 @@ public abstract class Controller implements Runnable{
 
     Board board;
 
+    //Player section
+    Player player;
     AIPlayerMiniMax ai;
 
     //need to cleanup
@@ -30,11 +32,13 @@ public abstract class Controller implements Runnable{
     //??
     HBox top;
 
+    //startingPlayer = player with first move
+    //nextPlayer = player plays second
     //Players need to be refactored
-    String xPlayer;
-    String oPlayer;
-    int xPlayerID;
-    int oPlayerID;
+    String firstPlayer;
+    String secondPlayer;
+    int firstPlayerID;
+    int secondPlayerID;
 
 
     public Controller(Stage gameStage) {
@@ -60,6 +64,17 @@ public abstract class Controller implements Runnable{
 
     abstract void setMove(int pos);
 
+    //needs to be image
+    abstract String setCellImage(int state);
+
+    void makePlayer(int playerMode){
+        if (playerMode == 0) {
+            player = new ManualPlayer(Main.playerName);
+        } else if(playerMode == 1){
+            //player = makeAI();
+        }
+    }
+
     void readQueue() {
         Map.Entry<String, ArrayList<String>> command = readerQueue.get(0);
         readerQueue.remove(command);
@@ -74,24 +89,25 @@ public abstract class Controller implements Runnable{
 
             ArrayList<String> values = command.getValue();
             if(key == "MATCH"){
-                xPlayer = values.get(0);
-                oPlayer = values.get(2);
+                firstPlayer = values.get(0);
+                secondPlayer = values.get(2);
 
                 String opponent;
 
-                if(Main.playerName.equals(xPlayer)){
+                if(Main.playerName.equals(firstPlayer)){
                     opponent = values.get(2);
-                    xPlayerID = 1;
-                    oPlayerID = 2;
+                    firstPlayerID = 1;
+                    secondPlayerID = 2;
                 } else {
                     opponent = values.get(0);
-                    xPlayerID = 2;
-                    oPlayerID = 1;
+                    firstPlayerID = 2;
+                    secondPlayerID = 1;
                 }
 
+                //Show playernames on screen
                 Platform.runLater(() -> {
                     Label playerName = (Label) top.getChildren().get(1);
-                    playerName.setText(Main.playerName);
+                    playerName.setText(player.playerName);
                     Label opponentName = (Label) top.getChildren().get(3);
                     opponentName.setText(opponent);
                 });
@@ -174,21 +190,22 @@ public abstract class Controller implements Runnable{
                 for(int y = 0; y < board.getSize(); y++){
                     Button button = new Button();
                     int state = board.getBoard()[x][y].getState();
-                    String text = "";
+
                     //1 is jezelf
                     //2 is tegenstander
 
-                    if(state == xPlayerID){
-                        text = "X";
-                    } else if(state == oPlayerID){
-                        text = "O";
-                    }
+                    //call to ConcreteController
+                    //Puts the right characters on the screen
+                    //TTT: X or O
+                    //Rev: Black or White
 
-                    button.setText(text);
+                    //needs to be image
+                    String image = this.setCellImage(state);
+
+                    button.setText(image);
                     button.setOnAction((event)->{
                         int position = grid.getChildren().indexOf(event.getSource());
                         this.setMove(position);
-                        //System.out.println(position);
                     });
 
                     button.setMinSize(50,50);

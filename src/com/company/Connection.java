@@ -5,7 +5,6 @@ import java.net.Socket;
 
 public class Connection {
 
-
     private Reader reader;
     private Writer writer;
 

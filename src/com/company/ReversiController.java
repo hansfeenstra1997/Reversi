@@ -19,4 +19,9 @@ public class ReversiController extends Controller{
         conn.sendCommand("move " + pos);
         updateBoard();
     }
+
+    @Override
+    String setCellImage(int state) {
+        return null;
+    }
 }

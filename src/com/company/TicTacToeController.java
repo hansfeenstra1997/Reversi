@@ -20,4 +20,19 @@ public class TicTacToeController extends Controller{
         updateBoard();
     }
 
+    //needs to return Image
+    @Override
+    String setCellImage(int state) {
+        if(state == firstPlayerID){
+            return "X";
+        } else if(state == secondPlayerID){
+            return "O";
+        }
+        return "";
+    }
+
+    void makeAI(Board board) {
+
+    }
+
 }
