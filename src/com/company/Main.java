@@ -76,6 +76,7 @@ public class Main extends Application {
 
         Stage gameStage = new Stage();
         gameController = gameFactory.makeGame(gameName, gameStage);
+        gameController.makePlayer(playerMode);
 
         makeScene(gameStage);
 

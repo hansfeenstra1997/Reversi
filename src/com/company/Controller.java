@@ -18,6 +18,8 @@ public abstract class Controller implements Runnable{
 
     Board board;
 
+    //Player section
+    Player player;
     AIPlayerMiniMax ai;
 
     //need to cleanup
@@ -30,11 +32,13 @@ public abstract class Controller implements Runnable{
     //??
     HBox top;
 
+    //startingPlayer = player with first move
+    //nextPlayer = player plays second
     //Players need to be refactored
-    String xPlayer;
-    String oPlayer;
-    int xPlayerID;
-    int oPlayerID;
+    String firstPlayer;
+    String secondPlayer;
+    int firstPlayerID;
+    int secondPlayerID;
 
 
     public Controller(Stage gameStage) {
@@ -46,20 +50,28 @@ public abstract class Controller implements Runnable{
 
     public void makeBoard(int size) {
         board = new Board(size);
-        //board.printBoard();
     }
 
     void setupFX(){
         pane = (BorderPane) stage.getScene().getRoot();
         main = (VBox) pane.getCenter();
-        grid = new GridPane();
         turnText = (Text) pane.getBottom();
 
         top = (HBox) pane.getTop();
     }
 
     abstract void setMove(int pos);
-    abstract void initBoard();
+
+    //needs to be image
+    abstract String setCellImage(int state);
+
+    void makePlayer(int playerMode){
+        if (playerMode == 0) {
+            player = new ManualPlayer(Main.playerName);
+        } else if(playerMode == 1){
+            //player = makeAI();
+        }
+    }
 
     void readQueue() {
         Map.Entry<String, ArrayList<String>> command = readerQueue.get(0);
@@ -75,26 +87,25 @@ public abstract class Controller implements Runnable{
 
             ArrayList<String> values = command.getValue();
             if(key == "MATCH"){
-                xPlayer = values.get(0);
-                oPlayer = values.get(2);
+                firstPlayer = values.get(0);
+                secondPlayer = values.get(2);
 
                 String opponent;
 
-                if(Main.playerName.equals(xPlayer)){
+                if(Main.playerName.equals(firstPlayer)){
                     opponent = values.get(2);
-                    xPlayerID = 1;
-                    oPlayerID = 2;
+                    firstPlayerID = 1;
+                    secondPlayerID = 2;
                 } else {
                     opponent = values.get(0);
-                    xPlayerID = 2;
-                    oPlayerID = 1;
+                    firstPlayerID = 2;
+                    secondPlayerID = 1;
                 }
 
-                initBoard();
-
+                //Show playernames on screen
                 Platform.runLater(() -> {
                     Label playerName = (Label) top.getChildren().get(1);
-                    playerName.setText(Main.playerName);
+                    playerName.setText(player.playerName);
                     Label opponentName = (Label) top.getChildren().get(3);
                     opponentName.setText(opponent);
                 });
@@ -165,44 +176,37 @@ public abstract class Controller implements Runnable{
 
     void updateBoard(){
 
-        System.out.println(grid);
+        grid = new GridPane();
+
+        for(int x = 0; x < board.getSize(); x++){
+            for(int y = 0; y < board.getSize(); y++){
+                Button button = new Button();
+                int state = board.getBoard()[x][y].getState();
+
+                //call to ConcreteController
+                //Puts the right characters on the screen
+                //TTT: X or O
+                //Rev: Black or White
+
+                //needs to be image
+                String image = this.setCellImage(state);
+
+                button.setText(image);
+                button.setOnAction((event)->{
+                    int position = grid.getChildren().indexOf(event.getSource());
+                    this.setMove(position);
+                });
+
+                button.setMinSize(50,50);
+                grid.add(button, y, x);
+            }
+        }
 
         Platform.runLater(()->{
             main.getChildren().clear();
-
-            grid.getChildren().clear();
-
-            for(int x = 0; x < board.getSize(); x++){
-                for(int y = 0; y < board.getSize(); y++){
-                    Button button = new Button();
-                    int state = board.getBoard()[x][y].getState();
-                    String text = "";
-                    //1 is jezelf
-                    //2 is tegenstander
-
-                    if(state == xPlayerID){
-                        text = Integer.toString(state);
-                        //text = "X";
-                    } else if(state == oPlayerID){
-                        text = Integer.toString(state);
-                        //text = "O";
-                    }
-
-                    button.setText(text);
-                    button.setOnAction((event)->{
-                        int position = grid.getChildren().indexOf(event.getSource());
-                        this.setMove(position);
-                        //System.out.println(position);
-                    });
-
-                    button.setMinSize(50,50);
-                    grid.add(button, y, x);
-                }
-            }
-
-
             main.getChildren().add(grid);
 
+            stage.sizeToScene();
             stage.show();
         });
 
