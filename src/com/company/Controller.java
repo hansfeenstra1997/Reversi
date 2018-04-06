@@ -79,7 +79,6 @@ public abstract class Controller implements Runnable{
         Map.Entry<String, ArrayList<String>> command = readerQueue.get(0);
         readerQueue.remove(command);
         queueParser(command);
-
     }
 
     void queueParser(Map.Entry<String, ArrayList<String>> command){
@@ -136,7 +135,7 @@ public abstract class Controller implements Runnable{
                     player = 2;
                 }
                 int move = Integer.parseInt(values.get(1));
-                
+
                 if(move>=0 && move<=((board.getSize()*board.getSize())-1) && !values.get(2).equals("Illegal move")) {
                     int[] pos = Board.convertPos(move);
                     flipBoard(pos[0], pos[1], player);

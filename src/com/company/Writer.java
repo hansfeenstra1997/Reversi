@@ -31,18 +31,12 @@ public class Writer implements Runnable {
         String line;
 
         while(true){
-//            line = scanner.nextLine();
-//            if (line != null) {
-//                System.out.println(line);
-//                writeMessage(line);
-//            }
-            if(!writeBuffer.isEmpty()) {
-                try {
-                    writeMessage(writeBuffer.take());
-                }
-                catch(InterruptedException e) {
-                    e.printStackTrace();
-                }
+            try {
+                String message = writeBuffer.take();
+                writeMessage(message);
+            }
+            catch(InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
