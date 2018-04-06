@@ -136,12 +136,12 @@ public abstract class Controller implements Runnable{
                     player = 2;
                 }
                 int move = Integer.parseInt(values.get(1));
-
-                int[] pos = Board.convertPos(move);
-                flipBoard(pos[0], pos[1], player);
-
-                if(move>=0 && move<=((board.getSize()*board.getSize())-1) && !values.get(2).equals("Illegal move"))
+                
+                if(move>=0 && move<=((board.getSize()*board.getSize())-1) && !values.get(2).equals("Illegal move")) {
+                    int[] pos = Board.convertPos(move);
+                    flipBoard(pos[0], pos[1], player);
                     board.setPosition(player, move);
+                }
 
                 updateBoard();
                 if(player==1) {

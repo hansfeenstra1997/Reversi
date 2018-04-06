@@ -59,8 +59,8 @@ public class ReversiController extends Controller{
         //System.out.println("Check move " + move[0] + ", " + move[1] + " - position " + pos);
         if(checkMove(move[0], move[1], 1)) {
             conn.sendCommand("move " + pos);
-            flipBoard(move[0], move[1], 1);
-            updateBoard();
+            //flipBoard(move[0], move[1], 1);
+            //updateBoard();
         }
     }
 
@@ -128,6 +128,7 @@ public class ReversiController extends Controller{
                     y--;
                 }
                 else {
+                    flipList = new ArrayList<>();
                     return false;
                 }
                 break;
@@ -136,6 +137,7 @@ public class ReversiController extends Controller{
                     y--;
                 }
                 else {
+                    flipList = new ArrayList<>();
                     return false;
                 }
                 break;
@@ -145,6 +147,7 @@ public class ReversiController extends Controller{
                     y--;
                 }
                 else {
+                    flipList = new ArrayList<>();
                     return false;
                 }
                 break;
@@ -152,6 +155,7 @@ public class ReversiController extends Controller{
                 if(x<boardsize-1) {
                     x++;
                 } else {
+                    flipList = new ArrayList<>();
                     return false;
                 }
                 break;
@@ -160,6 +164,7 @@ public class ReversiController extends Controller{
                     x++;
                     y++;
                 } else {
+                    flipList = new ArrayList<>();
                     return false;
                 }
                 break;
@@ -167,6 +172,7 @@ public class ReversiController extends Controller{
                 if(y<boardsize-1) {
                     y++;
                 } else {
+                    flipList = new ArrayList<>();
                     return false;
                 }
                 break;
@@ -175,6 +181,7 @@ public class ReversiController extends Controller{
                     x--;
                     y++;
                 } else {
+                    flipList = new ArrayList<>();
                     return false;
                 }
                 break;
@@ -182,6 +189,7 @@ public class ReversiController extends Controller{
                 if(x>0) {
                     x--;
                 } else {
+                    flipList = new ArrayList<>();
                     return false;
                 }
                 break;
@@ -189,11 +197,13 @@ public class ReversiController extends Controller{
 
         if(board.getCellState(y,x) == player && flag>0) {
             if(flip) {
-                for (int[] flipItem : flipList) {
-                    board.setPosition(player, getPos(flipItem[1], flipItem[0]));
-                    //ystem.out.println("Flip " + player + " - " + flipItem[0] + ", " + flipItem[1]);
+                if(!flipList.isEmpty()) {
+                    for (int[] flipItem : flipList) {
+                        board.setPosition(player, getPos(flipItem[1], flipItem[0]));
+                        //ystem.out.println("Flip " + player + " - " + flipItem[0] + ", " + flipItem[1]);
+                    }
+                    flipList = new ArrayList<>();
                 }
-                flipList = new ArrayList<>();
             }
             return true;
         }
