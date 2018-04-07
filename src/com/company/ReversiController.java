@@ -102,9 +102,11 @@ public class ReversiController extends Controller{
     }
 
     private boolean checkMove(int x, int y, int player) {
-        int[] result = checkValidMove(x, y, player);
-        if(result[0] != -1)
-            return true;
+        if(board.getCellState(y,x) == 0) {
+            int[] result = checkValidMove(x, y, player);
+            if (result[0] != -1)
+                return true;
+        }
         return false;
     }
 
