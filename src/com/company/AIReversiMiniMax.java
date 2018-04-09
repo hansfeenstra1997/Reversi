@@ -49,7 +49,7 @@ public class AIReversiMiniMax {
 
     public int[] doMove() {
         cell = board.getBoard();
-        BestMove best = miniMaxReversi(GLOBALPLAYER, this.cell, 10);
+        BestMove best = miniMaxReversi(GLOBALPLAYER, this.cell, 8);
 
 
         int[] xy = {best.x, best.y};
@@ -59,27 +59,7 @@ public class AIReversiMiniMax {
 
 
     public BestMove miniMaxReversi(int player, Board.Cell[][] cell, int depth) {
-        int opponent = GLOBALPLAYER;
-//        int[] tempArray = new int[3];
-//        tempArray[1] = 0;
-//        tempArray[2] = 0;
-
-        if(player == GLOBALPLAYER) {
-            opponent = GLOBALOPPONENT;
-        }
-
-        ArrayList<int[]> opponentMoves = getPossibleMoves(opponent, cell);
-        ArrayList<int[]> moves = getPossibleMoves(player, cell);
-        int winner = checkWinner(cell);
-
-        if (winner == GLOBALPLAYER && !moves.isEmpty() && !opponentMoves.isEmpty()) {
-            //tempArray[0] = Integer.MAX_VALUE;
-            return new BestMove(Integer.MAX_VALUE, 0, 0);
-        } else if(winner == GLOBALOPPONENT && !moves.isEmpty() && !opponentMoves.isEmpty()) {
-            //tempArray[0] = Integer.MIN_VALUE;
-            return new BestMove(Integer.MIN_VALUE, 0, 0);
-        }
-
+        //System.out.println(depth-- + "--");
         if(depth == 0) {
             int val = calculateBoard(cell);
             if(player == GLOBALPLAYER) {
@@ -91,6 +71,30 @@ public class AIReversiMiniMax {
                 return new BestMove(-val, 0, 0);
             }
         }
+
+
+        int opponent = GLOBALPLAYER;
+//        int[] tempArray = new int[3];
+//        tempArray[1] = 0;
+//        tempArray[2] = 0;
+        System.out.println(depth);
+        if(player == GLOBALPLAYER) {
+            opponent = GLOBALOPPONENT;
+        }
+
+        ArrayList<int[]> opponentMoves = getPossibleMoves(opponent, cell);
+        ArrayList<int[]> moves = getPossibleMoves(player, cell);
+        int winner = checkWinner(cell);
+
+        if (winner == GLOBALPLAYER && moves.isEmpty() && opponentMoves.isEmpty()) {
+            //tempArray[0] = Integer.MAX_VALUE;
+            return new BestMove(Integer.MAX_VALUE, 0, 0);
+        } else if(winner == GLOBALOPPONENT && moves.isEmpty() && opponentMoves.isEmpty()) {
+            //tempArray[0] = Integer.MIN_VALUE;
+            return new BestMove(Integer.MIN_VALUE, 0, 0);
+        }
+
+
 
         BestMove currentBestMove = new BestMove(0, 0, 0);
 
@@ -112,11 +116,18 @@ public class AIReversiMiniMax {
             //moet misschien beter
             //kopieren van board, zodat die weer meegestuurd kan worden aan volgende minimax
 
-            Board.Cell[][] tempCell = this.cell.clone();
+            //Board.Cell[][] tempCell = this.cell.clone();
+            Board.Cell[][] tempCell = copyArray(cell);
+
             setMove(move[0], move[1], player, tempCell);
             tempCell[move[0]][move[1]].setState(player);
 
-            int val = miniMaxReversi(opponent, cell, depth--).score;
+            if(depth == 0) {
+                return currentBestMove;
+            }
+
+            int val = miniMaxReversi(opponent, tempCell, --depth).score;
+
 
 
             if ((player == GLOBALPLAYER && val > currentBestMove.score) || (player == GLOBALOPPONENT && val < currentBestMove.score )) {
@@ -150,7 +161,19 @@ public class AIReversiMiniMax {
         return total;
     }
 
+    public Board.Cell[][] copyArray(Board.Cell[][] oldCell) {
 
+        Board board = new Board(8);
+        Board.Cell[][] newCell;
+        newCell = board.getBoard();
+
+        for(int x = 0; x < 8; x++) {
+            for(int y = 0; y < 8; y++) {
+                newCell[x][y].setState(oldCell[x][y].getState());
+            }
+        }
+        return newCell;
+    }
 
 
     public int checkWinner(Board.Cell[][] cell) {
@@ -213,7 +236,6 @@ public class AIReversiMiniMax {
             if(checkDirection(x, y, direction, 0, false, player, cell)) {
                 move[0] = x;
                 move[1] = y;
-                //System.out.println("Hit! : " + x + ", " + y + " in direction " + direction);
             }
         }
         return move;
