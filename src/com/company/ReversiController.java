@@ -29,7 +29,12 @@ public class ReversiController extends Controller{
         directions.add("left");
 
         makeBoard(boardsize);
-        //ai = new AIPlayerMiniMax(board);
+        //ai = new AIPlayerMiniMax(board);\
+
+        AIReversiMiniMax ai = new AIReversiMiniMax(board);
+
+        int[] move = ai.doMove();
+        System.out.println(move[0] + " " + move[1]);
     }
 
     @Override
