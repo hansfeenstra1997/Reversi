@@ -1,6 +1,8 @@
 package com.company;
 
+import javafx.animation.RotateTransition;
 import javafx.application.Platform;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -11,6 +13,11 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Timer;
@@ -18,6 +25,7 @@ import java.util.TimerTask;
 
 public abstract class Controller implements Runnable{
 
+    private static final int RESPONSETIME = 9;
     Connection conn;
     ArrayList<Map.Entry<String, ArrayList<String>>> readerQueue;
 
@@ -77,6 +85,21 @@ public abstract class Controller implements Runnable{
         top = (VBox) pane.getTop();
         right = (VBox) pane.getRight();
         timerText = (Label) right.getChildren().get(0);
+
+        main.setAlignment(Pos.CENTER);
+        Label waitText = new Label("Waiting for match...");
+        main.getChildren().add(waitText);
+
+        LoadIcon loadIconView = new LoadIcon();
+        try {
+            Image loadIcon = new Image(new FileInputStream("src/com/company/load.png"));
+            loadIconView.setImage(loadIcon);
+        }
+        catch(FileNotFoundException e) {
+            System.out.println("Load icon not found");
+        }
+
+        Platform.runLater(() -> main.getChildren().add(loadIconView));
     }
 
     abstract void initBoard();
@@ -245,10 +268,10 @@ public abstract class Controller implements Runnable{
     private void startTimer() {
         stopTimer();
         if(activeGame) {
-            Platform.runLater(() -> timerText.setText("10"));
+            Platform.runLater(() -> timerText.setText(Integer.toString(RESPONSETIME)));
             timer = new Timer();
             timer.scheduleAtFixedRate(new TimerTask() {
-                int interval = 10;
+                int interval = RESPONSETIME;
 
                 @Override
                 public void run() {
@@ -260,7 +283,7 @@ public abstract class Controller implements Runnable{
                         stopTimer();
                     }
                 }
-            }, 1000, 1000);
+            }, (RESPONSETIME*100), (RESPONSETIME*100));
         }
     }
 
