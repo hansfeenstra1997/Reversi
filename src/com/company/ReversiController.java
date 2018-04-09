@@ -53,7 +53,7 @@ public class ReversiController extends Controller{
     }
 
     private int getPos(int row, int pos) {
-        return (row* boardsize)+pos;
+        return (row*boardsize)+pos;
     }
 
     @Override
