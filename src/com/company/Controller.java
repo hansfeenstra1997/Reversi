@@ -63,6 +63,7 @@ public abstract class Controller implements Runnable{
     abstract void initBoard();
     abstract void flipBoard(int x, int y, int selfOrOpponent);
     abstract void setMove(int pos);
+    abstract ArrayList<int[]> getPossibleMoves();
 
     //needs to be image
     abstract String setCellImage(int state);
@@ -193,6 +194,9 @@ public abstract class Controller implements Runnable{
 
         grid = new GridPane();
 
+
+
+
         for(int x = 0; x < board.getSize(); x++){
             for(int y = 0; y < board.getSize(); y++){
                 Button button = new Button();
@@ -215,6 +219,17 @@ public abstract class Controller implements Runnable{
                 button.setMinSize(50,50);
                 grid.add(button, y, x);
             }
+        }
+
+        //possible moves
+        ArrayList<int[]> possibleMoves =  this.getPossibleMoves();
+
+        for(int[] move: possibleMoves) {
+            //get cell; cell xy omzetten naar positie
+            //de button daarvan ophalen en dan veradneren
+            Button possibleButton = (Button) grid.getChildren().get((move[1]* board.getSize())+move[0]);
+
+            possibleButton.setBackground(new Background(new BackgroundFill(Color.rgb(0,128,0), null, null)));
         }
 
         Platform.runLater(()->{

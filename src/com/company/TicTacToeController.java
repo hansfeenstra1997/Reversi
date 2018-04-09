@@ -2,6 +2,8 @@ package com.company;
 
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 public class TicTacToeController extends Controller{
 
     private int boardsize = 3;
@@ -24,6 +26,11 @@ public class TicTacToeController extends Controller{
 
         conn.sendCommand("move " + pos);
         updateBoard();
+    }
+
+    @Override
+    ArrayList<int[]> getPossibleMoves() {
+        return null;
     }
 
     //needs to return Image

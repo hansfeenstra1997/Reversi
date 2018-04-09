@@ -85,7 +85,7 @@ public class ReversiController extends Controller{
         return "";
     }
 
-    private ArrayList<int[]> getPossibleMoves() {
+    public ArrayList<int[]> getPossibleMoves() {
         ArrayList<int[]> moves = new ArrayList<>();
 
         for(int y=0; y<boardsize; y++) {
