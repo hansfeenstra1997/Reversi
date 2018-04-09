@@ -4,6 +4,9 @@ import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -40,12 +43,15 @@ public abstract class Controller implements Runnable{
     int firstPlayerID;
     int secondPlayerID;
 
+    VBox playerTA;
 
-    public Controller(Stage gameStage) {
+    //reafcatoring needed
+    public Controller(TextArea playerList, Stage gameStage) {
         conn = Connection.getInstance();
         readerQueue = conn.getReader().queue;
 
         stage = gameStage;
+        playerTA = playerList;
     }
 
     public void makeBoard(int size) {
@@ -64,9 +70,7 @@ public abstract class Controller implements Runnable{
     abstract void flipBoard(int x, int y, int selfOrOpponent);
     abstract void setMove(int pos);
     abstract ArrayList<int[]> getPossibleMoves();
-
-    //needs to be image
-    abstract String setCellImage(int state);
+    abstract Image setCellImage(int state);
 
     void makePlayer(int playerMode){
         if (playerMode == 0) {
@@ -78,6 +82,7 @@ public abstract class Controller implements Runnable{
 
     void readQueue() {
         Map.Entry<String, ArrayList<String>> command = readerQueue.get(0);
+        System.out.println(command);
         readerQueue.remove(command);
         queueParser(command);
     }
@@ -88,6 +93,18 @@ public abstract class Controller implements Runnable{
             String key = command.getKey();
 
             ArrayList<String> values = command.getValue();
+
+            if(key == "PLAYERS"){
+                Platform.runLater(()->{
+                    playerTA.getChildren().cla;
+
+                    for(String value:values){
+                        System.out.println(value);
+                        playerTA.appendText(value);
+                    }
+                });
+            }
+
             if(key == "MATCH"){
                 String opponent = values.get(2);
 
@@ -199,8 +216,11 @@ public abstract class Controller implements Runnable{
 
         for(int x = 0; x < board.getSize(); x++){
             for(int y = 0; y < board.getSize(); y++){
-                Button button = new Button();
+
+
                 int state = board.getBoard()[x][y].getState();
+                Image image = this.setCellImage(state);
+                Button button = new Button("", new ImageView(image));
 
                 //call to ConcreteController
                 //Puts the right characters on the screen
@@ -208,9 +228,10 @@ public abstract class Controller implements Runnable{
                 //Rev: Black or White
 
                 //needs to be image
-                String image = this.setCellImage(state);
 
-                button.setText(image);
+
+
+                //button.setText(image);
                 button.setOnAction((event)->{
                     int position = grid.getChildren().indexOf(event.getSource());
                     this.setMove(position);
