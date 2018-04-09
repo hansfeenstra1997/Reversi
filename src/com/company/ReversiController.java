@@ -1,7 +1,11 @@
 package com.company;
 
+import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import javax.xml.soap.Text;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -12,8 +16,8 @@ public class ReversiController extends Controller{
     private ArrayList<int[]> flipList = new ArrayList<>();
 
 
-    public ReversiController(Stage gameStage) {
-        super(gameStage);
+    public ReversiController(VBox ta, Stage gameStage) {
+        super(ta, gameStage);
 
         directions.add("leftUpDiagonal");
         directions.add("up");
@@ -76,13 +80,15 @@ public class ReversiController extends Controller{
     }
 
     @Override
-    String setCellImage(int state) {
+    Image setCellImage(int state) {
         if(state == firstPlayerID){
-            return "B";
+            return new Image("/black.png");
+            //return "B";
         } else if(state == secondPlayerID){
-            return "W";
+            return new Image("/white.png");
+            //return "W";
         }
-        return "";
+        return null;
     }
 
     public ArrayList<int[]> getPossibleMoves() {

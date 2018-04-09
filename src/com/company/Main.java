@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -20,6 +21,7 @@ public class Main extends Application {
 
     static String playerName;
     static int playerMode = 0;
+    VBox players;
     
     public static void main(String[] args) {
         launch(args);
@@ -72,16 +74,79 @@ public class Main extends Application {
     }
 
     private void startGame(String gameName, int gameMode) {
+
+        //kiezen tussen subscriben en match aangeboden krijgen
         Connection.getInstance().sendCommand("subscribe " + gameName);
 
+        //makeChoiceScreen();
+        //makeScene(gameStage);
+
         Stage gameStage = new Stage();
-        gameController = gameFactory.makeGame(gameName, gameStage);
+        gameController = gameFactory.makeGame(gameName, players, gameStage);
         gameController.makePlayer(playerMode);
 
         makeScene(gameStage);
 
         Thread thread = new Thread(gameController);
         thread.start();
+    }
+
+    private void makeChoiceScreen(){
+        Stage choiceStage = new Stage();
+
+        BorderPane gameBorderPane = new BorderPane();
+
+        gameBorderPane.setMinSize(400, 400);
+
+        VBox top = new VBox();
+        HBox topBox = new HBox();
+
+        Label topLabel = new Label("Choice menu:");
+        topBox.getChildren().add(top);
+
+        //left Playernames, right subscribe button
+        HBox content = new HBox();
+
+        HBox playerList = new HBox();
+        playerList.setMinWidth(200);
+        Label label = new Label("Playernames:");
+        Connection.getInstance().sendCommand("get playerlist");
+
+        players = new VBox();
+
+        //COnnection get playerlist
+        //alle values tonen in ding
+        //VBox outer = new VBox();
+        //outer.getChildren().add(players);
+        //outer.ddAll(label, players);
+        playerList.getChildren().addAll(label, players);
+
+
+
+        HBox subscribe = new HBox();
+        subscribe.setMinWidth(200);
+        Button subscribeButton = new Button("Subscribe");
+        //action
+        //makeScene(gameStage);
+
+        subscribe.getChildren().add(subscribeButton);
+
+        content.getChildren().addAll(playerList, subscribe);
+
+
+
+        gameBorderPane.setTop(top);
+        gameBorderPane.setCenter(content);
+
+        Text turn = new Text("test");
+        turn.setId("turnText");
+        gameBorderPane.setBottom(turn);
+
+        Scene scene = new Scene(gameBorderPane);
+        choiceStage.setScene(scene);
+        choiceStage.show();
+
+
     }
 
     public void makeScene(Stage gameStage){

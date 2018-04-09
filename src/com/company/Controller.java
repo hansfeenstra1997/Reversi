@@ -46,7 +46,7 @@ public abstract class Controller implements Runnable{
     VBox playerTA;
 
     //reafcatoring needed
-    public Controller(TextArea playerList, Stage gameStage) {
+    public Controller(VBox playerList, Stage gameStage) {
         conn = Connection.getInstance();
         readerQueue = conn.getReader().queue;
 
@@ -96,12 +96,12 @@ public abstract class Controller implements Runnable{
 
             if(key == "PLAYERS"){
                 Platform.runLater(()->{
-                    playerTA.getChildren().cla;
-
-                    for(String value:values){
-                        System.out.println(value);
-                        playerTA.appendText(value);
-                    }
+//                    playerTA.getChildren().cla;
+//
+//                    for(String value:values){
+//                        System.out.println(value);
+//                        playerTA.appendText(value);
+//                    }
                 });
             }
 
