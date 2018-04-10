@@ -47,8 +47,10 @@ public class TicTacToeController extends Controller{
     Image setCellImage(int state) {
         if(state == firstPlayerID){
             //return "X";
+            return new Image("/X.png", 40, 40, false, false);
         } else if(state == secondPlayerID){
             //return "O";
+            return new Image("/O.png",  40, 40, false, false);
         }
         //return "";
         return null;
