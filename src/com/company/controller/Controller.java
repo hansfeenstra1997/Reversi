@@ -173,6 +173,7 @@ public abstract class Controller implements Runnable{
             }
 
             if(key.equals("MATCH")){
+                board.clearBoard();
 
                 Platform.runLater(() -> {
                     stage.show();
@@ -258,6 +259,7 @@ public abstract class Controller implements Runnable{
             }
 
             if (key.equals("YOURTURN")){
+                updateBoard();
                 Platform.runLater(() -> statusText.setText("Your turn"));
                 //AI mode;
                 //Set 0 zero for manual

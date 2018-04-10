@@ -11,7 +11,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class ChoiceScreen extends View {
-    public ChoiceScreen(Stage gameStage, VBox players) {
+    public ChoiceScreen(Stage gameStage, VBox players, String gameName) {
         Stage choiceStage = new Stage();
 
         BorderPane gameBorderPane = new BorderPane();
@@ -39,7 +39,7 @@ public class ChoiceScreen extends View {
         Button subscribeButton = new Button("Subscribe");
         subscribeButton.setOnAction((event)->{
             //int position = grid.getChildren().indexOf(event.getSource());
-            Connection.getInstance().sendCommand("subscribe Reversi" );
+            Connection.getInstance().sendCommand("subscribe " + gameName);
             //challenge accept 0
         });
         //action

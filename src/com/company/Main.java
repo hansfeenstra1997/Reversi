@@ -51,14 +51,14 @@ public class Main extends Application {
         gameController = gameFactory.makeGame(gameName, players, gameStage);
         gameController.makePlayer(playerMode);
 
-        makeChoiceScreen(gameStage);
+        makeChoiceScreen(gameStage, gameName);
 
         Thread thread = new Thread(gameController);
         thread.start();
     }
 
-    private void makeChoiceScreen(Stage gameStage){
-        new ChoiceScreen(gameStage, players);
+    private void makeChoiceScreen(Stage gameStage, String gameName){
+        new ChoiceScreen(gameStage, players, gameName);
         makeScene(gameStage);
     }
 

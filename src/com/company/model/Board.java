@@ -1,5 +1,7 @@
 package com.company.model;
 
+import javafx.scene.control.Cell;
+
 public class Board {
     private Cell[][] board;
     private static int size;
@@ -53,6 +55,14 @@ public class Board {
                 System.out.print(board[x][y].getState() + " ");
             }
             System.out.println();
+        }
+    }
+
+    public void clearBoard() {
+        int pos = (size*size)-1;
+        while(pos>=0) {
+            setPosition(0, pos);
+            pos--;
         }
     }
 
