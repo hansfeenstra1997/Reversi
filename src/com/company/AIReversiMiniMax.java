@@ -1,5 +1,7 @@
 package com.company;
 
+import com.company.model.Board;
+
 import java.util.ArrayList;
 
 public class AIReversiMiniMax {

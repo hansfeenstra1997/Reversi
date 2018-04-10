@@ -1,6 +1,7 @@
-package com.company;
+package com.company.controller;
 
-import javafx.scene.control.TextArea;
+import com.company.AIPlayerMiniMax;
+import com.company.model.Board;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -32,8 +33,13 @@ public class TicTacToeController extends Controller{
     }
 
     @Override
+    String getGameName(){
+        return "Tic-tac-toe";
+    }
+
+    @Override
     ArrayList<int[]> getPossibleMoves() {
-        return null;
+        return new ArrayList<>();
     }
 
     //needs to return Image
@@ -41,10 +47,10 @@ public class TicTacToeController extends Controller{
     Image setCellImage(int state) {
         if(state == firstPlayerID){
             //return "X";
-            return new Image("");
+            return new Image("/X.png", 40, 40, false, false);
         } else if(state == secondPlayerID){
             //return "O";
-            return new Image("");
+            return new Image("/O.png",  40, 40, false, false);
         }
         //return "";
         return null;

@@ -1,27 +1,28 @@
-package com.company;
+package com.company.controller;
 
-import javafx.animation.RotateTransition;
+import com.company.*;
+import com.company.connection.Connection;
+import com.company.model.Board;
+import com.company.view.LoadIcon;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import java.util.*;
 
 public abstract class Controller implements Runnable{
 
@@ -57,7 +58,7 @@ public abstract class Controller implements Runnable{
     int firstPlayerID;
     int secondPlayerID;
 
-    VBox playerTA;
+    VBox players;
     Timer timer;
     boolean timerRunning = false;
     boolean activeGame = false;
@@ -65,17 +66,17 @@ public abstract class Controller implements Runnable{
     //reafcatoring needed
     public Controller(VBox playerList, Stage gameStage) {
         conn = Connection.getInstance();
-        readerQueue = conn.getReader().queue;
+        readerQueue = conn.getReader().getQueue();
 
         stage = gameStage;
-        playerTA = playerList;
+        players = playerList;
     }
 
     public void makeBoard(int size) {
         board = new Board(size);
     }
 
-    void setupFX(){
+    public void setupFX(){
         pane = (BorderPane) stage.getScene().getRoot();
         main = (VBox) pane.getCenter();
         bottom = (BorderPane) pane.getBottom();
@@ -89,6 +90,8 @@ public abstract class Controller implements Runnable{
         main.setAlignment(Pos.CENTER);
         Label waitText = new Label("Waiting for match...");
         main.getChildren().add(waitText);
+
+        stage.setTitle("Game");
 
         LoadIcon loadIconView = new LoadIcon();
         try {
@@ -107,10 +110,11 @@ public abstract class Controller implements Runnable{
     abstract void setMove(int pos);
     abstract ArrayList<int[]> getPossibleMoves();
     abstract Image setCellImage(int state);
+    abstract String getGameName();
 
-    void makePlayer(int playerMode){
+    public void makePlayer(int playerMode){
         if (playerMode == 0) {
-            player = new ManualPlayer(Main.playerName);
+            player = new ManualPlayer(Main.getPlayerName());
         } else if(playerMode == 1){
             //player = makeAI();
         }
@@ -130,31 +134,63 @@ public abstract class Controller implements Runnable{
 
             ArrayList<String> values = command.getValue();
 
-            if(key == "PLAYERS"){
+            if(key.equals("PLAYERS")){
                 Platform.runLater(()->{
-//                    playerTA.getChildren().cla;
+                    players.getChildren().clear();
 //
-//                    for(String value:values){
-//                        System.out.println(value);
-//                        playerTA.appendText(value);
-//                    }
+                    for(String value:values){
+                        if (!value.equals(Main.getPlayerName())){
+                            System.out.println(value);
+                            Button button = new Button("Challenge: " + value);
+                            button.setOnAction((event)->{
+                                //int position = grid.getChildren().indexOf(event.getSource());
+                                conn.sendCommand("challenge \"" + value + "\" \"" + this.getGameName() + "\"");
+                                        //challenge accept 0
+                            });
+                            players.getChildren().add(button);
+                        }
+                    }
                 });
             }
 
-            if(key == "MATCH"){
-                Platform.runLater(() -> statusText.setText("Opponent's turn"));
+            if(key.equals("CHALLENGE")){
+                Platform.runLater(()-> {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Challenge Offered");
+                    alert.setHeaderText(values.get(0) + " offered you to play the game: " + values.get(2));
+                    alert.setContentText("Would you like to play this game?");
+
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.get() == ButtonType.OK) {
+                        //send confurmation
+                        conn.sendCommand("challenge accept " + values.get(1));
+                        stage.show();
+                        System.out.println("OK");
+                    } else {
+                        System.out.println("Cancel");
+                    }
+                });
+            }
+
+            if(key.equals("MATCH")){
+                board.clearBoard();
+
+                Platform.runLater(() -> {
+                    stage.show();
+                    statusText.setText("Opponent's turn");
+                });
                 activeGame = true;
                 startTimer();
                 String opponent = values.get(2);
 
-                if(Main.playerName.equals(values.get(0))){
-                    firstPlayer = Main.playerName;
+                if(Main.getPlayerName().equals(values.get(0))){
+                    firstPlayer = Main.getPlayerName();
                     secondPlayer = values.get(2);
                     firstPlayerID = 1;
                     secondPlayerID = 2;
                 } else {
                     firstPlayer = values.get(2);
-                    secondPlayer = Main.playerName;
+                    secondPlayer = Main.getPlayerName();
                     firstPlayerID = 2;
                     secondPlayerID = 1;
                 }
@@ -167,8 +203,8 @@ public abstract class Controller implements Runnable{
                     HBox playColor = (HBox) top.getChildren().get(1);
 
                     Label playerName = (Label) playerInfo.getChildren().get(1);
-                    //needs to be refactored
-                    playerName.setText(Main.playerName + " - ");
+
+                    playerName.setText(player.getPlayerName() + " - ");
                     Label opponentName = (Label) playerInfo.getChildren().get(3);
                     opponentName.setText(opponent);
 
@@ -190,10 +226,10 @@ public abstract class Controller implements Runnable{
             }
 
 
-            if (key == "MOVE") {
+            if (key.equals("MOVE")) {
                 startTimer();
                 int player = 1;
-                if(!values.get(0).equals(Main.playerName)){
+                if(!values.get(0).equals(Main.getPlayerName())){
                     player = 2;
                 }
                 int move = Integer.parseInt(values.get(1));
@@ -223,11 +259,12 @@ public abstract class Controller implements Runnable{
                 }
             }
 
-            if (key == "YOURTURN"){
+            if (key.equals("YOURTURN")){
+                updateBoard();
                 Platform.runLater(() -> statusText.setText("Your turn"));
                 //AI mode;
                 //Set 0 zero for manual
-                if (Main.playerMode == 1){
+                if (Main.getPlayerMode() == 1){
                     int[] xy = ai.doMove();
                     //@TODO REFACTORTING!!!!!!!!!!!
                     int pos = xy[0] * 8 + xy[1];
@@ -301,16 +338,16 @@ public abstract class Controller implements Runnable{
 
         grid = new GridPane();
 
-
-
-
         for(int x = 0; x < board.getSize(); x++){
             for(int y = 0; y < board.getSize(); y++){
 
 
                 int state = board.getBoard()[x][y].getState();
                 Image image = this.setCellImage(state);
-                Button button = new Button("", new ImageView(image));
+                ImageView imageV = new ImageView(image);
+                imageV.setFitWidth(50);
+                imageV.setFitHeight(50);
+                Button button = new Button("", imageV);
 
                 //call to ConcreteController
                 //Puts the right characters on the screen

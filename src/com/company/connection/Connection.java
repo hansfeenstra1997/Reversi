@@ -1,4 +1,4 @@
-package com.company;
+package com.company.connection;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -24,7 +24,6 @@ public class Connection {
     private void makeConnection() {
         try {
             Socket clientSocket = new Socket("145.37.157.29", 7789);
-            //145.33.225.170
             //Socket clientSocket = new Socket("145.33.225.170", 7789);
 
             reader = new Reader(clientSocket);

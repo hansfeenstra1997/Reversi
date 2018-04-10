@@ -1,10 +1,7 @@
-package com.company;
+package com.company.connection;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Queue;
 import java.util.Scanner;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;

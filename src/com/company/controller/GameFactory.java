@@ -1,6 +1,8 @@
-package com.company;
+package com.company.controller;
 
-import javafx.scene.control.TextArea;
+import com.company.controller.Controller;
+import com.company.controller.ReversiController;
+import com.company.controller.TicTacToeController;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 

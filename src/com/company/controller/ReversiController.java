@@ -1,13 +1,11 @@
-package com.company;
+package com.company.controller;
 
-import javafx.scene.control.TextArea;
+import com.company.AIReversiMiniMax;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import javax.xml.soap.Text;
 import java.util.ArrayList;
-import java.util.Stack;
 
 public class ReversiController extends Controller{
 
@@ -40,6 +38,11 @@ public class ReversiController extends Controller{
         setStartPosition();
     }
 
+    @Override
+    String getGameName(){
+        return "Reversi";
+    }
+
     private void setStartPosition() {
         int row = (boardsize -1)/2;
         int pos = (boardsize -1)/2;
@@ -61,14 +64,14 @@ public class ReversiController extends Controller{
     @Override
     void setMove(int pos) {
         AIReversiMiniMax ai = new AIReversiMiniMax(board);
-        int[] move = ai.doMove();
+        //int[] move = ai.doMove();
+        int[] move = board.convertPos(pos);
         System.out.println("MOVES CALCULATED BY AI " + move[1] + " " + move[0]);
         //controlerne of move mogelijk is
-        //int[] move = board.convertPos(pos);
         int pos1 = getPos(move[0], move[1]);
-        //System.out.println("Check move " + move[0] + ", " + move[1] + " - position " + pos);
+
         if(checkMove(move[1], move[0], 1)) {
-            conn.sendCommand("move " + pos1);
+            conn.sendCommand("move " + pos);
             //flipBoard(move[0], move[1], 1);
             //updateBoard();
         }
@@ -91,10 +94,10 @@ public class ReversiController extends Controller{
     @Override
     Image setCellImage(int state) {
         if(state == firstPlayerID){
-            return new Image("/black.png");
+            return new Image("/black.png", 50, 50, false, false);
             //return "B";
         } else if(state == secondPlayerID){
-            return new Image("/white.png");
+            return new Image("/white.png", 50, 50, false, false);
             //return "W";
         }
         return null;
