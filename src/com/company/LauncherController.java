@@ -111,10 +111,10 @@ public class LauncherController {
 
 
     // GETTERS
-    public String getGame() {
+    public static String getGame() {
         return game;
     }
+    public static String getOpponent() {return opponent;}
     public static String getPlayerName() { return View.LauncherView.getNameField();}
-    public String getOpponent() {return opponent;}
-    public String getAiMode() {return aiMode;}
+    public static String getAiMode() {return aiMode;}
 }

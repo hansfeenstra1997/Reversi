@@ -10,6 +10,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import sun.misc.Launcher;
 
 
 public class Main extends Application {
@@ -25,41 +26,41 @@ public class Main extends Application {
         Application.launch(View.LauncherView.class, args);
     }
 
-    @Override
+//    @Override
     public void start(Stage primaryStage) throws Exception {
-        BorderPane mainPane = new BorderPane();
-        mainPane.setMinSize(200, 200);
-        VBox main = new VBox();
-        GridPane controlPane = new GridPane();
-
-        Button startBtn = new Button("Start Tic-Tac-Toe");
-        startBtn.setOnAction((event) -> startGame("Tic-tac-toe", 0));
-        controlPane.add(startBtn, 0, 0);
-
-        Button startReversiBtn = new Button("Start Reversi");
-        startReversiBtn.setOnAction((event) -> startGame("Reversi", 0));
-        controlPane.add(startReversiBtn, 0, 1);
-
-        TextField usernameField = new TextField();
-        controlPane.add(usernameField, 0, 2);
-
-        Button loginBtn = new Button("Login");
-        loginBtn.setOnAction((event) -> login(usernameField.getText()));
-        controlPane.add(loginBtn, 1, 2);
-
-        TextField commandField = new TextField();
-        controlPane.add(commandField,0, 3);
-        Button commandButton = new Button("Send");
-        commandButton.setOnAction((event) -> {sendCommand(commandField.getText()); commandField.setText("");});
-        controlPane.add(commandButton,1,3);
-
-        main.getChildren().add(controlPane);
-
-        mainPane.setCenter(main);
-
-        Scene scene = new Scene(mainPane);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+//        BorderPane mainPane = new BorderPane();
+//        mainPane.setMinSize(200, 200);
+//        VBox main = new VBox();
+//        GridPane controlPane = new GridPane();
+//
+//        Button startBtn = new Button("Start Tic-Tac-Toe");
+//        startBtn.setOnAction((event) -> startGame("Tic-tac-toe", 0));
+//        controlPane.add(startBtn, 0, 0);
+//
+//        Button startReversiBtn = new Button("Start Reversi");
+//        startReversiBtn.setOnAction((event) -> startGame("Reversi", 0));
+//        controlPane.add(startReversiBtn, 0, 1);
+//
+//        TextField usernameField = new TextField();
+//        controlPane.add(usernameField, 0, 2);
+//
+//        Button loginBtn = new Button("Login");
+//        loginBtn.setOnAction((event) -> login(usernameField.getText()));
+//        controlPane.add(loginBtn, 1, 2);
+//
+//        TextField commandField = new TextField();
+//        controlPane.add(commandField,0, 3);
+//        Button commandButton = new Button("Send");
+//        commandButton.setOnAction((event) -> {sendCommand(commandField.getText()); commandField.setText("");});
+//        controlPane.add(commandButton,1,3);
+//
+//        main.getChildren().add(controlPane);
+//
+//        mainPane.setCenter(main);
+//
+//        Scene scene = new Scene(mainPane);
+//        primaryStage.setScene(scene);
+//        primaryStage.show();
     }
 
     private void sendCommand(String command) {
@@ -113,6 +114,11 @@ public class Main extends Application {
         HBox playerList = new HBox();
         playerList.setMinWidth(200);
         Label label = new Label("Playernames: " + LauncherController.getPlayerName());
+        Label gameLabel = new Label("\n\nGame: " + LauncherController.getGame());
+        if (LauncherController.getOpponent() == "ai") {
+            Label modeLabel = new Label("\n\nMode: " + LauncherController.getAiMode());
+            playerList.getChildren().add(modeLabel);
+        }
         Connection.getInstance().sendCommand("get playerlist");
 
 
@@ -123,7 +129,7 @@ public class Main extends Application {
         //VBox outer = new VBox();
         //outer.getChildren().add(players);
         //outer.ddAll(label, players);
-        playerList.getChildren().addAll(label, players);
+        playerList.getChildren().addAll(label, players, gameLabel);
 
 
 
