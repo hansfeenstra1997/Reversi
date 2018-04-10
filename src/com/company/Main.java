@@ -43,7 +43,7 @@ public class Main extends Application {
 
     private void startGame(String gameName, int gameMode) {
         //kiezen tussen subscriben en match aangeboden krijgen
-        sendCommand("subscribe " + gameName);
+        //sendCommand("subscribe " + gameName);
 
         Stage gameStage = new Stage();
         players = new VBox();

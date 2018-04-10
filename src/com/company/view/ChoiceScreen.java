@@ -37,6 +37,11 @@ public class ChoiceScreen extends View {
         HBox subscribe = new HBox();
         subscribe.setMinWidth(200);
         Button subscribeButton = new Button("Subscribe");
+        subscribeButton.setOnAction((event)->{
+            //int position = grid.getChildren().indexOf(event.getSource());
+            Connection.getInstance().sendCommand("subscribe Reversi" );
+            //challenge accept 0
+        });
         //action
         //makeScene(gameStage);
 
