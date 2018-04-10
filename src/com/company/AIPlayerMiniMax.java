@@ -1,11 +1,13 @@
 package com.company;
 
 
-    public class AIPlayerMiniMax {
+import com.company.model.Board;
+
+public class AIPlayerMiniMax {
         Board board;
         Board.Cell[][] cell;
 
-        AIPlayerMiniMax(Board board) {
+        public AIPlayerMiniMax(Board board) {
             this.board = board;
             cell = board.getBoard();
         }

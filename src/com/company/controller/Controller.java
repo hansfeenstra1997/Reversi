@@ -1,7 +1,7 @@
 package com.company.controller;
 
 import com.company.*;
-import com.company.Connection.Connection;
+import com.company.connection.Connection;
 import com.company.model.Board;
 import com.company.view.LoadIcon;
 import javafx.application.Platform;

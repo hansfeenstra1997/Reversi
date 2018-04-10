@@ -1,4 +1,4 @@
-package com.company;
+package com.company.view;
 
 import javafx.animation.RotateTransition;
 import javafx.scene.image.ImageView;

@@ -1,6 +1,6 @@
 package com.company;
 
-import com.company.Connection.Connection;
+import com.company.connection.Connection;
 import com.company.controller.Controller;
 import com.company.controller.GameFactory;
 import com.company.view.BoardView;
