@@ -137,7 +137,6 @@ public abstract class Controller implements Runnable{
             if(key.equals("PLAYERS")){
                 Platform.runLater(()->{
                     players.getChildren().clear();
-//                    playerTA.getChildren().cla;
 //
                     for(String value:values){
                         if (!value.equals(Main.getPlayerName())){
@@ -174,6 +173,7 @@ public abstract class Controller implements Runnable{
             }
 
             if(key.equals("MATCH")){
+
                 Platform.runLater(() -> {
                     stage.show();
                     statusText.setText("Opponent's turn");
