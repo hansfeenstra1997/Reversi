@@ -1,11 +1,14 @@
 package Controller;
 
+import com.company.Main;
+
 public class LauncherController {
 
     //SETTINGS:
     private static String game = ""; // BKE or Reversi?
     private static String opponent = ""; // AI or Player?
     private static String aiMode = ""; // What AI difficulty?
+    private static int gameID = 999; // 0 = Reversi, 1 = BKE
 
     private static boolean modeIsSet = false; // Prevents the GUI from adding the same pane twice.
     private static boolean specificPlayer = false; // Has a specific player been selected?
@@ -33,6 +36,7 @@ public class LauncherController {
             Model.LauncherModel.reversiEnable();
             gameModeSelected = true;
             game = "Reversi";
+            gameID = 0;
         }
     }
 
@@ -41,6 +45,7 @@ public class LauncherController {
             Model.LauncherModel.bkeEnable();
             gameModeSelected = true;
             game = "Tic-Tac-Toe";
+            gameID = 1;
         }
     }
 
@@ -66,6 +71,7 @@ public class LauncherController {
         else if (View.LauncherView.getNameField().contains(" ")) {
             View.LauncherView.setError(("Spaces are not allowed in a username!"));
         } else {
+            Main.startGame(game, gameID);
             View.LauncherView.setError("Starting a game...");
             View.LauncherView.disableAll();
             System.out.println("== GAME SETTINGS == " +
