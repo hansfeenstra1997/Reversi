@@ -2,19 +2,15 @@ package com.company;
 
 import javafx.application.Platform;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
+
+import java.util.*;
 
 public abstract class Controller implements Runnable{
 
@@ -49,7 +45,7 @@ public abstract class Controller implements Runnable{
     int firstPlayerID;
     int secondPlayerID;
 
-    VBox playerTA;
+    VBox players;
     Timer timer;
     boolean timerRunning = false;
     boolean activeGame = false;
@@ -60,7 +56,7 @@ public abstract class Controller implements Runnable{
         readerQueue = conn.getReader().queue;
 
         stage = gameStage;
-        playerTA = playerList;
+        players = playerList;
     }
 
     public void makeBoard(int size) {
@@ -84,6 +80,7 @@ public abstract class Controller implements Runnable{
     abstract void setMove(int pos);
     abstract ArrayList<int[]> getPossibleMoves();
     abstract Image setCellImage(int state);
+    abstract String getGameName();
 
     void makePlayer(int playerMode){
         if (playerMode == 0) {
@@ -109,12 +106,40 @@ public abstract class Controller implements Runnable{
 
             if(key == "PLAYERS"){
                 Platform.runLater(()->{
+                    players.getChildren().clear();
 //                    playerTA.getChildren().cla;
 //
-//                    for(String value:values){
-//                        System.out.println(value);
-//                        playerTA.appendText(value);
-//                    }
+                    for(String value:values){
+                        if (!value.equals(Main.playerName)){
+                            System.out.println(value);
+                            Button button = new Button("Challenge: " + value);
+                            button.setOnAction((event)->{
+                                //int position = grid.getChildren().indexOf(event.getSource());
+                                conn.sendCommand("challenge \"" + value + "\" \"" + this.getGameName() + "\"");
+                                        //challenge accept 0
+                            });
+                            players.getChildren().add(button);
+                        }
+                    }
+                });
+            }
+
+            if(key == "CHALLENGE"){
+                Platform.runLater(()-> {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Challenge Offered");
+                    alert.setHeaderText(values.get(0) + " offered you to play the game: " + values.get(2));
+                    alert.setContentText("Would you like to play this game?");
+
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.get() == ButtonType.OK) {
+                        //send confurmation
+                        conn.sendCommand("challenge accept " + values.get(1));
+                        stage.show();
+                        System.out.println("OK");
+                    } else {
+                        System.out.println("Cancel");
+                    }
                 });
             }
 

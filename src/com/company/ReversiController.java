@@ -37,6 +37,11 @@ public class ReversiController extends Controller{
         setStartPosition();
     }
 
+    @Override
+    String getGameName(){
+        return "Reversi";
+    }
+
     private void setStartPosition() {
         int row = (boardsize -1)/2;
         int pos = (boardsize -1)/2;

@@ -76,20 +76,25 @@ public class Main extends Application {
         //kiezen tussen subscriben en match aangeboden krijgen
         Connection.getInstance().sendCommand("subscribe " + gameName);
 
-        //makeChoiceScreen();
+
         //makeScene(gameStage);
 
         Stage gameStage = new Stage();
+        players = new VBox();
+
+
         gameController = gameFactory.makeGame(gameName, players, gameStage);
         gameController.makePlayer(playerMode);
 
-        makeScene(gameStage);
+        makeChoiceScreen(gameStage);
+
+        //makeScene(gameStage);
 
         Thread thread = new Thread(gameController);
         thread.start();
     }
 
-    private void makeChoiceScreen(){
+    private void makeChoiceScreen(Stage gameStage){
         Stage choiceStage = new Stage();
 
         BorderPane gameBorderPane = new BorderPane();
@@ -110,7 +115,8 @@ public class Main extends Application {
         Label label = new Label("Playernames:");
         Connection.getInstance().sendCommand("get playerlist");
 
-        players = new VBox();
+
+
 
         //COnnection get playerlist
         //alle values tonen in ding
@@ -143,6 +149,9 @@ public class Main extends Application {
         Scene scene = new Scene(gameBorderPane);
         choiceStage.setScene(scene);
         choiceStage.show();
+
+        makeScene(gameStage);
+
 
 
     }
@@ -201,7 +210,7 @@ public class Main extends Application {
 
         Scene scene = new Scene(gameBorderPane);
         gameStage.setScene(scene);
-        gameStage.show();
+        //gameStage.show();
 
         gameController.setupFX();
     }
