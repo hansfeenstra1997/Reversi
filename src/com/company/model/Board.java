@@ -19,7 +19,7 @@ public class Board {
         return board;
     }
 
-    public Cell[][] setup(int size) {
+    private Cell[][] setup(int size) {
         Cell[][] board = new Cell[size][size];
         for(int x=0; x<board.length; x++) {
             for(int y=0; y<board[1].length; y++) {

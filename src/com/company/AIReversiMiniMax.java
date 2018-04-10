@@ -4,29 +4,33 @@ import com.company.model.Board;
 
 import java.util.ArrayList;
 
+/**
+ * This class will calculate the best move to do whilst playing Reversi
+ * @author Robert
+ */
 public class AIReversiMiniMax {
 
     //variabelen
-    final int GLOBALPLAYER = 1;
-    final int GLOBALOPPONENT = 2;
+    private final int GLOBALPLAYER = 1;
+    private final int GLOBALOPPONENT = 2;
 
     private int boardsize = 8;
 
-    Board board;
-    Board.Cell[][] cell;
+    private Board board;
+    private Board.Cell[][] cell;
 
     private static final ArrayList<String> directions = new ArrayList<>();
     private ArrayList<int[]> flipList = new ArrayList<>();
 
-    private final int[][] SQUARE_WEIGHTS = {
-            {2000,    5,   20,   10,   10,  20,     5,  2000},
-            {  5,     0,   15,   15,   15,  15,     0,   5},
-            {  50,   15,   15,   13,   13,  15,    15,   50},
-            {  20,   15,   13,   10,   10,  13,    15,   20},
-            {  20,   15,   13,   10,   10,  13,    15,   20},
-            {  50,   15,   15,   13,   13,   15,   15,   50},
-            {   5,     0,   15,   15,   15,   15,    0,   5},
-            { 2000,   5,   20,   10,   10,   20,    5,  2000}};
+    private final int[][] SQUARE_WEIGHTS  =
+            {{120, -20, 20,  5,  5, 20,-20,120},
+            {-20, -40, -5, -5, -5, -5,-40,-20},
+            {20,  -5,  15,  3,  3, 15, -5, 20},
+            {5,   -5,   3,  3,  3,  3, -5,  5},
+            {5,   -5,   3,  3,  3,  3, -5,  5},
+            {20,  -5,  15,  3,  3, 15, -5, 20},
+            {-20,-40,  -5, -5, -5, -5,-40,-20},
+            {120,-20,  20,  5,  5, 20,-20,120}};
 
     public AIReversiMiniMax(Board board) {
         this.board = board;
@@ -47,32 +51,24 @@ public class AIReversiMiniMax {
         cell = board.getBoard();
         BestMove best = miniMaxReversi(GLOBALPLAYER, this.cell, 1);
 
-
-        int[] xy = {best.x, best.y};
-
-        return xy;
+        return new int[]{best.x, best.y};
     }
 
-
-    public BestMove miniMaxReversi(int player, Board.Cell[][] cell, int depth) {
-        if(depth <= 0) {
+    /**
+     *
+     * @param player int 1 or 2
+     * @param cell current board
+     * @param depth how often the function is called recursive
+     * @return the best move
+     */
+    private BestMove miniMaxReversi(int player, Board.Cell[][] cell, int depth) {
+        if (depth <= 0) {
             int val = calculateBoard(cell, player);
-            if(player == GLOBALPLAYER) {
-                System.out.println("player = " + player + ", " + val);
-                return new BestMove(val, 0, 0);
-            }
-            else {
-                System.out.println("player = " + player + ", " + -val);
-                return new BestMove(-val, 0, 0);
-            }
+
+            return new BestMove(val, 0, 0);
         }
 
-
-        int opponent = GLOBALPLAYER;
-
-        if(player == GLOBALPLAYER) {
-            opponent = GLOBALOPPONENT;
-        }
+        int opponent = 2 - player + 1;
 
         ArrayList<int[]> opponentMoves = getPossibleMoves(opponent, cell);
         ArrayList<int[]> moves = getPossibleMoves(player, cell);
@@ -81,37 +77,18 @@ public class AIReversiMiniMax {
         if (winner == GLOBALPLAYER && moves.isEmpty() && opponentMoves.isEmpty()) {
             System.out.println("winner is me");
             return new BestMove(Integer.MAX_VALUE - 1, 0, 0);
-        } else if(winner == GLOBALOPPONENT && moves.isEmpty() && opponentMoves.isEmpty()) {
+        } else if (winner == GLOBALOPPONENT && moves.isEmpty() && opponentMoves.isEmpty()) {
             System.out.println("Winner is opp " + ", depth: " + depth);
             return new BestMove(Integer.MIN_VALUE + 1, 0, 0);
         }
 
-        //ervoor zorgen dat hij altijd hoeken pakt
-//        if(depth == 8) {
-//            for(int[] move: moves) {
-//                if((move[0] == 0 && move[1] == 0) || (move[0] == 7 && move[1] == 0) || (move[0] == 0 && move[1] == 7) || (move[0] == 7 && move[1] == 7)){
-//                    return new BestMove(100, move[0], move[1]);
-//                }
-//            }
-//        }
-
-
-
-        BestMove currentBestMove = new BestMove(0, 0, 0);
-
-        if(player == GLOBALPLAYER) {
-            currentBestMove.score = Integer.MIN_VALUE;
-        }
-        else {
-            currentBestMove.score = Integer.MAX_VALUE;
-        }
+        BestMove currentBestMove = null;
 
         if(depth == 8) {
             for(int[] move: moves) {
                 System.out.println(move[0] + " moves " + move[1]);
             }
         }
-
 
         for(int[] move: moves) {
             Board.Cell[][] tempCell = copyArray(cell);
@@ -121,11 +98,9 @@ public class AIReversiMiniMax {
 
             int val = miniMaxReversi(opponent, tempCell, --depth).score;
 
-            if ((player == GLOBALPLAYER && val > currentBestMove.score) || (player == GLOBALOPPONENT && val < currentBestMove.score )) {
+            if (currentBestMove == null || (player == GLOBALPLAYER && val > currentBestMove.score) || (player == GLOBALOPPONENT && val < currentBestMove.score )) {
                 //System.out.println("new best");
-                currentBestMove.score = val;
-                currentBestMove.x = move[0];
-                currentBestMove.y = move[1];
+                currentBestMove = new BestMove(val, move[0], move[1]);
             }
 
         }
@@ -134,16 +109,17 @@ public class AIReversiMiniMax {
 
     }
 
-
-    public int calculateBoard(Board.Cell[][] cell, int player) {
+    private int calculateBoard(Board.Cell[][] cell, int player) {
         int total = 0;
+
+        int opp = 2 - player + 1;
 
         for(int x = 0; x < 8; x++) {
             for(int y = 0; y < 8; y++){
-                if(cell[x][y].getState() == GLOBALPLAYER) {
+                if(cell[x][y].getState() == player) {
                     total += this.SQUARE_WEIGHTS[x][y];
                 }
-                else if(cell[x][y].getState() == GLOBALOPPONENT) {
+                else if(cell[x][y].getState() == opp) {
                     total -= this.SQUARE_WEIGHTS[x][y];
                 }
             }
@@ -152,7 +128,7 @@ public class AIReversiMiniMax {
         return total;
     }
 
-    public Board.Cell[][] copyArray(Board.Cell[][] oldCell) {
+    private Board.Cell[][] copyArray(Board.Cell[][] oldCell) {
 
         Board board = new Board(8);
         Board.Cell[][] newCell;
@@ -167,7 +143,7 @@ public class AIReversiMiniMax {
     }
 
 
-    public int checkWinner(Board.Cell[][] cell) {
+    private int checkWinner(Board.Cell[][] cell) {
         int playerCounter = 0;
         int opponentCounter = 0;
 
@@ -190,12 +166,12 @@ public class AIReversiMiniMax {
         return 0;
     }
 
-    void setMove(int x, int y, int player, Board.Cell[][] cell) {
+    private void setMove(int x, int y, int player, Board.Cell[][] cell) {
         flipBoard(x, y, player, cell);
 
     }
 
-    protected void flipBoard(int x, int y, int player, Board.Cell[][] cell) {
+    private void flipBoard(int x, int y, int player, Board.Cell[][] cell) {
         for(String direction: directions) {
             flip(x, y, direction, player, cell);
         }

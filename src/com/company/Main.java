@@ -16,7 +16,7 @@ public class Main extends Application {
 
     private Controller gameController;
     private static String playerName;
-    private static int playerMode = 0;
+    private static int playerMode = 1;
     private VBox players;
     
     public static void main(String[] args) {
@@ -63,7 +63,7 @@ public class Main extends Application {
         makeScene(gameStage);
     }
 
-    public void makeScene(Stage gameStage){
+    private void makeScene(Stage gameStage){
         new BoardView(gameStage);
         gameController.setupFX();
     }

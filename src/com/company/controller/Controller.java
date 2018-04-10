@@ -28,40 +28,40 @@ public abstract class Controller implements Runnable{
 
     private static final int RESPONSETIME = 9;
     Connection conn;
-    ArrayList<Map.Entry<String, ArrayList<String>>> readerQueue;
+    private ArrayList<Map.Entry<String, ArrayList<String>>> readerQueue;
 
     Board board;
 
     //Player section
-    Player player;
+    private Player player;
     AIReversiMiniMax ai;
 
     //need to cleanup
-    Stage stage;
-    BorderPane pane;
-    VBox main;
-    GridPane grid;
-    Text statusText;
+    private Stage stage;
+    private BorderPane pane;
+    private VBox main;
+    private GridPane grid;
+    private Text statusText;
 
     //??
-    VBox top;
-    VBox right;
-    BorderPane bottom;
-    Label timerText;
-    Label lastMove;
+    private VBox top;
+    private VBox right;
+    private BorderPane bottom;
+    private Label timerText;
+    private Label lastMove;
 
     //startingPlayer = player with first move
     //nextPlayer = player plays second
     //Players need to be refactored
-    String firstPlayer;
-    String secondPlayer;
+    private String firstPlayer;
+    private String secondPlayer;
     int firstPlayerID;
     int secondPlayerID;
 
-    VBox players;
-    Timer timer;
-    boolean timerRunning = false;
-    boolean activeGame = false;
+    private VBox players;
+    private Timer timer;
+    private boolean timerRunning = false;
+    private boolean activeGame = false;
 
     //reafcatoring needed
     public Controller(VBox playerList, Stage gameStage) {
@@ -120,14 +120,14 @@ public abstract class Controller implements Runnable{
         }
     }
 
-    void readQueue() {
+    private void readQueue() {
         Map.Entry<String, ArrayList<String>> command = readerQueue.get(0);
         System.out.println(command);
         readerQueue.remove(command);
         queueParser(command);
     }
 
-    void queueParser(Map.Entry<String, ArrayList<String>> command){
+    private void queueParser(Map.Entry<String, ArrayList<String>> command){
 
         if(command != null){
             String key = command.getKey();

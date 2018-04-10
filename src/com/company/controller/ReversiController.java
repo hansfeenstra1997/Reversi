@@ -64,14 +64,14 @@ public class ReversiController extends Controller{
     @Override
     void setMove(int pos) {
         AIReversiMiniMax ai = new AIReversiMiniMax(board);
-        //int[] move = ai.doMove();
-        int[] move = board.convertPos(pos);
-        System.out.println("MOVES CALCULATED BY AI " + move[1] + " " + move[0]);
+        int[] move = ai.doMove();
+        //int[] move = board.convertPos(pos);
+        //System.out.println("MOVES CALCULATED BY AI " + move[1] + " " + move[0]);
         //controlerne of move mogelijk is
         int pos1 = getPos(move[0], move[1]);
 
         if(checkMove(move[1], move[0], 1)) {
-            conn.sendCommand("move " + pos);
+            conn.sendCommand("move " + pos1);
             //flipBoard(move[0], move[1], 1);
             //updateBoard();
         }

@@ -1,12 +1,16 @@
 package com.company;
 
-
 import com.company.model.Board;
 
+/**
+ * This class will calculate the best move to do whilst playing Tic-Tac-Toe
+ * @author Robert
+ */
 public class AIPlayerMiniMax {
-        Board board;
-        Board.Cell[][] cell;
+        private Board board;
+        private Board.Cell[][] cell;
 
+        
         public AIPlayerMiniMax(Board board) {
             this.board = board;
             cell = board.getBoard();
@@ -14,31 +18,25 @@ public class AIPlayerMiniMax {
 
         //variabelen
 
-        private final int GLOBALPLAYER = 1;
-        private final int GLOBALOPPONENT = 2;
+        private final int GLOBAL_PLAYER = 1;
+        private final int GLOBAL_OPPONENT = 2;
 
         // 0 is leeg, 1 is computer, 2 is speler
 
 
         public int[] doMove() {
+            BestMove best = miniMaxTicTacToe(GLOBAL_PLAYER);
 
-            BestMove best = miniMaxTicTacToe(GLOBALPLAYER);
-
-
-            int[] xy = {best.x, best.y};
-
-            return xy;
+            return new int[]{best.x, best.y};
         }
 
 
-
-
-        public BestMove miniMaxTicTacToe(int player) {
+        private BestMove miniMaxTicTacToe(int player) {
             int winner = checkWinner();
-            if(winner == GLOBALPLAYER) {
+            if(winner == GLOBAL_PLAYER) {
                 return new BestMove(3, 0, 0);
             }
-            else if (winner == GLOBALOPPONENT) {
+            else if (winner == GLOBAL_OPPONENT) {
                 return new BestMove(0, 0, 0);
             }
             else if (boardFull()){
@@ -46,15 +44,15 @@ public class AIPlayerMiniMax {
             }
 
             BestMove currentBestMove = new BestMove(0, 0, 0);
-            int opponent = 0;
+            int opponent;
 
-            if(player == GLOBALPLAYER) {
+            if(player == GLOBAL_PLAYER) {
                 currentBestMove.score = 0;
-                opponent = GLOBALOPPONENT;
+                opponent = GLOBAL_OPPONENT;
             }
             else {
                 currentBestMove.score = 3;
-                opponent = GLOBALPLAYER;
+                opponent = GLOBAL_PLAYER;
             }
 
 
@@ -65,7 +63,7 @@ public class AIPlayerMiniMax {
                         int val = miniMaxTicTacToe(opponent).score;
                         cell[x][y].setState(0);
 
-                        if ((player == GLOBALPLAYER && val > currentBestMove.score) || (player == GLOBALOPPONENT && val < currentBestMove.score )) {
+                        if ((player == GLOBAL_PLAYER && val > currentBestMove.score) || (player == GLOBAL_OPPONENT && val < currentBestMove.score )) {
                             currentBestMove.score = val;
                             currentBestMove.x = x;
                             currentBestMove.y = y;
@@ -88,15 +86,15 @@ public class AIPlayerMiniMax {
             return true;
         }
 
-        public int checkWinner() {
+        private int checkWinner() {
             int[][][] winPatterns = {{ {0,0},{0,1},{0,2} }, { {0,0},{1,1},{2,2} }, { {0,0},{1,0},{2,0} }, { {2,0},{2,1},{2,2} }, { {0,2},{1,2},{2,2} }, { {1,0},{1,1},{1,2} }, { {2,0},{1,1},{0,2} }, { {0,1},{1,1},{2,1} }};
 
             for(int i = 0; i < 8; i++) {
-                if(cell[winPatterns[i][0][0]][winPatterns[i][0][1]].getState() == GLOBALPLAYER && cell[winPatterns[i][1][0]][winPatterns[i][1][1]].getState() == GLOBALPLAYER && cell[winPatterns[i][2][0]][winPatterns[i][2][1]].getState() == GLOBALPLAYER) {
-                    return GLOBALPLAYER;
+                if(cell[winPatterns[i][0][0]][winPatterns[i][0][1]].getState() == GLOBAL_PLAYER && cell[winPatterns[i][1][0]][winPatterns[i][1][1]].getState() == GLOBAL_PLAYER && cell[winPatterns[i][2][0]][winPatterns[i][2][1]].getState() == GLOBAL_PLAYER) {
+                    return GLOBAL_PLAYER;
                 }
-                if(cell[winPatterns[i][0][0]][winPatterns[i][0][1]].getState() == GLOBALOPPONENT && cell[winPatterns[i][1][0]][winPatterns[i][1][1]].getState() == GLOBALOPPONENT && cell[winPatterns[i][2][0]][winPatterns[i][2][1]].getState() == GLOBALOPPONENT) {
-                    return GLOBALOPPONENT;
+                if(cell[winPatterns[i][0][0]][winPatterns[i][0][1]].getState() == GLOBAL_OPPONENT && cell[winPatterns[i][1][0]][winPatterns[i][1][1]].getState() == GLOBAL_OPPONENT && cell[winPatterns[i][2][0]][winPatterns[i][2][1]].getState() == GLOBAL_OPPONENT) {
+                    return GLOBAL_OPPONENT;
                 }
             }
             return 0;
@@ -118,15 +116,15 @@ public class AIPlayerMiniMax {
             // implementatie om hele bord te checken of er een winnaar is.
         }
 
+    class BestMove {
+        int score, x, y;
+
+        BestMove(int score, int x, int y) {
+            this.score = score;
+            this.x = x;
+            this.y = y;
+        }
 
     }
 
-class BestMove {
-    int score, x, y;
-
-    BestMove(int score, int x, int y) {
-        this.score = score;
-        this.x = x;
-        this.y = y;
-    }
 }
