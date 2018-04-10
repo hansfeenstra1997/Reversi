@@ -90,6 +90,8 @@ public abstract class Controller implements Runnable{
         Label waitText = new Label("Waiting for match...");
         main.getChildren().add(waitText);
 
+        stage.setTitle("Game");
+
         LoadIcon loadIconView = new LoadIcon();
         try {
             Image loadIcon = new Image(new FileInputStream("src/com/company/load.png"));
@@ -327,9 +329,6 @@ public abstract class Controller implements Runnable{
     void updateBoard(){
 
         grid = new GridPane();
-
-
-
 
         for(int x = 0; x < board.getSize(); x++){
             for(int y = 0; y < board.getSize(); y++){
