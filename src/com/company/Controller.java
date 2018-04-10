@@ -33,7 +33,7 @@ public abstract class Controller implements Runnable{
 
     //Player section
     Player player;
-    AIPlayerMiniMax ai;
+    AIReversiMiniMax ai;
 
     //need to cleanup
     Stage stage;
@@ -167,7 +167,8 @@ public abstract class Controller implements Runnable{
                     HBox playColor = (HBox) top.getChildren().get(1);
 
                     Label playerName = (Label) playerInfo.getChildren().get(1);
-                    playerName.setText(player.playerName + " - ");
+                    //needs to be refactored
+                    playerName.setText(Main.playerName + " - ");
                     Label opponentName = (Label) playerInfo.getChildren().get(3);
                     opponentName.setText(opponent);
 
@@ -228,7 +229,8 @@ public abstract class Controller implements Runnable{
                 //Set 0 zero for manual
                 if (Main.playerMode == 1){
                     int[] xy = ai.doMove();
-                    int pos = xy[0] * 3 + xy[1];
+                    //@TODO REFACTORTING!!!!!!!!!!!
+                    int pos = xy[0] * 8 + xy[1];
 
                     conn.sendCommand("move " + pos);
                 }

@@ -17,20 +17,18 @@ public class AIReversiMiniMax {
     private ArrayList<int[]> flipList = new ArrayList<>();
 
     private final int[][] SQUARE_WEIGHTS = {
-            {200,   -60,  20,  10,  10,  20,  -60,  200},
-            { -60, -100,  -5,  -5,  -5,  -5, -100,  -60},
-            {  20,   -5,  15,   5,   5,  15,   -5,   20},
-            {  10,   -5,   5,   5,   5,   5,   -5,   10},
-            {  10,   -5,   5,   5,   5,   5,   -5,   10},
-            {  20,   -5,  15,   5,   5,  15,   -5,   20},
-            { -60, -100,  -5,  -5,  -5,  -5, -100,  -60},
-            { 200,  -60,  20,  10,  10,  20,  -60,  200}};
+            {2000,    5,   20,   10,   10,  20,     5,  2000},
+            {  5,     0,   15,   15,   15,  15,     0,   5},
+            {  50,   15,   15,   13,   13,  15,    15,   50},
+            {  20,   15,   13,   10,   10,  13,    15,   20},
+            {  20,   15,   13,   10,   10,  13,    15,   20},
+            {  50,   15,   15,   13,   13,   15,   15,   50},
+            {   5,     0,   15,   15,   15,   15,    0,   5},
+            { 2000,   5,   20,   10,   10,   20,    5,  2000}};
 
     public AIReversiMiniMax(Board board) {
         this.board = board;
         this.cell = board.getBoard();
-
-        //moet misschien snders
 
         directions.add("leftUpDiagonal");
         directions.add("up");
@@ -41,15 +39,11 @@ public class AIReversiMiniMax {
         directions.add("leftDownDiagonal");
         directions.add("left");
 
-        //get possible moves
-        //for loop door possible moves, en tegenstander doorgeven aan minimax
-        //puntentelling bijhouden
-
     }
 
     public int[] doMove() {
         cell = board.getBoard();
-        BestMove best = miniMaxReversi(GLOBALPLAYER, this.cell, 8);
+        BestMove best = miniMaxReversi(GLOBALPLAYER, this.cell, 1);
 
 
         int[] xy = {best.x, best.y};
@@ -59,25 +53,21 @@ public class AIReversiMiniMax {
 
 
     public BestMove miniMaxReversi(int player, Board.Cell[][] cell, int depth) {
-        //System.out.println(depth-- + "--");
-        if(depth == 0) {
-            int val = calculateBoard(cell);
+        if(depth <= 0) {
+            int val = calculateBoard(cell, player);
             if(player == GLOBALPLAYER) {
-                //tempArray[0] = val;
+                System.out.println("player = " + player + ", " + val);
                 return new BestMove(val, 0, 0);
             }
             else {
-                //tempArray[0] = -val;
+                System.out.println("player = " + player + ", " + -val);
                 return new BestMove(-val, 0, 0);
             }
         }
 
 
         int opponent = GLOBALPLAYER;
-//        int[] tempArray = new int[3];
-//        tempArray[1] = 0;
-//        tempArray[2] = 0;
-        System.out.println(depth);
+
         if(player == GLOBALPLAYER) {
             opponent = GLOBALOPPONENT;
         }
@@ -87,12 +77,21 @@ public class AIReversiMiniMax {
         int winner = checkWinner(cell);
 
         if (winner == GLOBALPLAYER && moves.isEmpty() && opponentMoves.isEmpty()) {
-            //tempArray[0] = Integer.MAX_VALUE;
-            return new BestMove(Integer.MAX_VALUE, 0, 0);
+            System.out.println("winner is me");
+            return new BestMove(Integer.MAX_VALUE - 1, 0, 0);
         } else if(winner == GLOBALOPPONENT && moves.isEmpty() && opponentMoves.isEmpty()) {
-            //tempArray[0] = Integer.MIN_VALUE;
-            return new BestMove(Integer.MIN_VALUE, 0, 0);
+            System.out.println("Winner is opp " + ", depth: " + depth);
+            return new BestMove(Integer.MIN_VALUE + 1, 0, 0);
         }
+
+        //ervoor zorgen dat hij altijd hoeken pakt
+//        if(depth == 8) {
+//            for(int[] move: moves) {
+//                if((move[0] == 0 && move[1] == 0) || (move[0] == 7 && move[1] == 0) || (move[0] == 0 && move[1] == 7) || (move[0] == 7 && move[1] == 7)){
+//                    return new BestMove(100, move[0], move[1]);
+//                }
+//            }
+//        }
 
 
 
@@ -105,33 +104,23 @@ public class AIReversiMiniMax {
             currentBestMove.score = Integer.MAX_VALUE;
         }
 
+        if(depth == 8) {
+            for(int[] move: moves) {
+                System.out.println(move[0] + " moves " + move[1]);
+            }
+        }
+
 
         for(int[] move: moves) {
-            //setmove functie aanroepen
-            //tempCell[move[0]][move[1]].setState(player);
-
-            //copy array
-            //setmove
-            //copy array meesturen
-            //moet misschien beter
-            //kopieren van board, zodat die weer meegestuurd kan worden aan volgende minimax
-
-            //Board.Cell[][] tempCell = this.cell.clone();
             Board.Cell[][] tempCell = copyArray(cell);
 
             setMove(move[0], move[1], player, tempCell);
             tempCell[move[0]][move[1]].setState(player);
 
-            if(depth == 0) {
-                return currentBestMove;
-            }
-
             int val = miniMaxReversi(opponent, tempCell, --depth).score;
 
-
-
             if ((player == GLOBALPLAYER && val > currentBestMove.score) || (player == GLOBALOPPONENT && val < currentBestMove.score )) {
-                System.out.println("new best");
+                //System.out.println("new best");
                 currentBestMove.score = val;
                 currentBestMove.x = move[0];
                 currentBestMove.y = move[1];
@@ -144,9 +133,9 @@ public class AIReversiMiniMax {
     }
 
 
-    public int calculateBoard(Board.Cell[][] cell) {
+    public int calculateBoard(Board.Cell[][] cell, int player) {
         int total = 0;
-        //calculatefield -> alle posities waar player een zet heeft bij optellen, alle posities waar tegenstander een zet heeft ervan afhalen
+
         for(int x = 0; x < 8; x++) {
             for(int y = 0; y < 8; y++){
                 if(cell[x][y].getState() == GLOBALPLAYER) {
@@ -319,10 +308,10 @@ public class AIReversiMiniMax {
         if(cell[x][y].getState() == player && flag>0) {
             if(flip) {
                 if(!flipList.isEmpty()) {
-                    for (int[] flipItem : flipList) {
-                        cell[flipItem[1]][flipItem[0]].setState(player);
+                            for (int[] flipItem : flipList) {
+                        cell[flipItem[0]][flipItem[1]].setState(player);
                         //board.setPosition(player, getPos(flipItem[1], flipItem[0]));
-                        //ystem.out.println("Flip " + player + " - " + flipItem[0] + ", " + flipItem[1]);
+                        //System.out.println("Flip " + player + " - " + flipItem[0] + ", " + flipItem[1]);
                     }
                     flipList = new ArrayList<>();
                 }

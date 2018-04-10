@@ -20,7 +20,7 @@ public class TicTacToeController extends Controller{
         super(ta, gameStage);
 
         makeBoard(boardsize);
-        ai = new AIPlayerMiniMax(board);
+        //ai = new AIPlayerMiniMax(board);
     }
 
     @Override

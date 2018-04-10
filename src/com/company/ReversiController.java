@@ -31,7 +31,7 @@ public class ReversiController extends Controller{
         makeBoard(boardsize);
         //ai = new AIPlayerMiniMax(board);\
 
-        AIReversiMiniMax ai = new AIReversiMiniMax(board);
+        ai = new AIReversiMiniMax(board);
 
     }
 
@@ -62,14 +62,18 @@ public class ReversiController extends Controller{
     void setMove(int pos) {
         AIReversiMiniMax ai = new AIReversiMiniMax(board);
         int[] move = ai.doMove();
-        System.out.println("MOVES CALCULATED BY AI " + move[0] + " " + move[1]);
+        System.out.println("MOVES CALCULATED BY AI " + move[1] + " " + move[0]);
         //controlerne of move mogelijk is
         //int[] move = board.convertPos(pos);
+        int pos1 = getPos(move[0], move[1]);
         //System.out.println("Check move " + move[0] + ", " + move[1] + " - position " + pos);
-        if(checkMove(move[0], move[1], 1)) {
-            conn.sendCommand("move " + pos);
+        if(checkMove(move[1], move[0], 1)) {
+            conn.sendCommand("move " + pos1);
             //flipBoard(move[0], move[1], 1);
             //updateBoard();
+        }
+        else {
+            System.out.println("false move");
         }
     }
 

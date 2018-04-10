@@ -18,7 +18,7 @@ public class Main extends Application {
     Controller gameController;
 
     static String playerName;
-    static int playerMode = 0;
+    static int playerMode = 1;
     VBox players;
     
     public static void main(String[] args) {
