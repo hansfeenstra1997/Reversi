@@ -1,9 +1,11 @@
-package com.company;
+package com.company.controller;
 
-import javafx.scene.control.TextArea;
+import com.company.AIPlayerMiniMax;
+import com.company.model.Board;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import com.company.*;
 
 import java.util.ArrayList;
 

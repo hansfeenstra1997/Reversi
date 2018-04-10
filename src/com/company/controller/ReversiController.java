@@ -1,13 +1,11 @@
-package com.company;
+package com.company.controller;
 
-import javafx.scene.control.TextArea;
+import com.company.AIReversiMiniMax;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import javax.xml.soap.Text;
 import java.util.ArrayList;
-import java.util.Stack;
 
 public class ReversiController extends Controller{
 
@@ -66,10 +64,10 @@ public class ReversiController extends Controller{
     @Override
     void setMove(int pos) {
         AIReversiMiniMax ai = new AIReversiMiniMax(board);
-        int[] move = ai.doMove();
-        System.out.println("MOVES CALCULATED BY AI " + move[0] + " " + move[1]);
+        //int[] move = ai.doMove();
+        //System.out.println("MOVES CALCULATED BY AI " + move[0] + " " + move[1]);
         //controlerne of move mogelijk is
-        //int[] move = board.convertPos(pos);
+        int[] move = board.convertPos(pos);
         //System.out.println("Check move " + move[0] + ", " + move[1] + " - position " + pos);
         if(checkMove(move[0], move[1], 1)) {
             conn.sendCommand("move " + pos);

@@ -1,6 +1,9 @@
-package com.company;
+package com.company.controller;
 
-import javafx.animation.RotateTransition;
+import com.company.*;
+import com.company.Connection.Connection;
+import com.company.model.Board;
+import com.company.view.LoadIcon;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -11,9 +14,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -65,7 +66,7 @@ public abstract class Controller implements Runnable{
     //reafcatoring needed
     public Controller(VBox playerList, Stage gameStage) {
         conn = Connection.getInstance();
-        readerQueue = conn.getReader().queue;
+        readerQueue = conn.getReader().getQueue();
 
         stage = gameStage;
         players = playerList;
@@ -75,7 +76,7 @@ public abstract class Controller implements Runnable{
         board = new Board(size);
     }
 
-    void setupFX(){
+    public void setupFX(){
         pane = (BorderPane) stage.getScene().getRoot();
         main = (VBox) pane.getCenter();
         bottom = (BorderPane) pane.getBottom();
@@ -111,9 +112,9 @@ public abstract class Controller implements Runnable{
     abstract Image setCellImage(int state);
     abstract String getGameName();
 
-    void makePlayer(int playerMode){
+    public void makePlayer(int playerMode){
         if (playerMode == 0) {
-            player = new ManualPlayer(Main.playerName);
+            player = new ManualPlayer(Main.getPlayerName());
         } else if(playerMode == 1){
             //player = makeAI();
         }
@@ -133,13 +134,13 @@ public abstract class Controller implements Runnable{
 
             ArrayList<String> values = command.getValue();
 
-            if(key == "PLAYERS"){
+            if(key.equals("PLAYERS")){
                 Platform.runLater(()->{
                     players.getChildren().clear();
 //                    playerTA.getChildren().cla;
 //
                     for(String value:values){
-                        if (!value.equals(Main.playerName)){
+                        if (!value.equals(Main.getPlayerName())){
                             System.out.println(value);
                             Button button = new Button("Challenge: " + value);
                             button.setOnAction((event)->{
@@ -153,7 +154,7 @@ public abstract class Controller implements Runnable{
                 });
             }
 
-            if(key == "CHALLENGE"){
+            if(key.equals("CHALLENGE")){
                 Platform.runLater(()-> {
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("Challenge Offered");
@@ -172,20 +173,20 @@ public abstract class Controller implements Runnable{
                 });
             }
 
-            if(key == "MATCH"){
+            if(key.equals("MATCH")){
                 Platform.runLater(() -> statusText.setText("Opponent's turn"));
                 activeGame = true;
                 startTimer();
                 String opponent = values.get(2);
 
-                if(Main.playerName.equals(values.get(0))){
-                    firstPlayer = Main.playerName;
+                if(Main.getPlayerName().equals(values.get(0))){
+                    firstPlayer = Main.getPlayerName();
                     secondPlayer = values.get(2);
                     firstPlayerID = 1;
                     secondPlayerID = 2;
                 } else {
                     firstPlayer = values.get(2);
-                    secondPlayer = Main.playerName;
+                    secondPlayer = Main.getPlayerName();
                     firstPlayerID = 2;
                     secondPlayerID = 1;
                 }
@@ -198,7 +199,7 @@ public abstract class Controller implements Runnable{
                     HBox playColor = (HBox) top.getChildren().get(1);
 
                     Label playerName = (Label) playerInfo.getChildren().get(1);
-                    playerName.setText(player.playerName + " - ");
+                    playerName.setText(player.getPlayerName() + " - ");
                     Label opponentName = (Label) playerInfo.getChildren().get(3);
                     opponentName.setText(opponent);
 
@@ -220,10 +221,10 @@ public abstract class Controller implements Runnable{
             }
 
 
-            if (key == "MOVE") {
+            if (key.equals("MOVE")) {
                 startTimer();
                 int player = 1;
-                if(!values.get(0).equals(Main.playerName)){
+                if(!values.get(0).equals(Main.getPlayerName())){
                     player = 2;
                 }
                 int move = Integer.parseInt(values.get(1));
@@ -253,11 +254,11 @@ public abstract class Controller implements Runnable{
                 }
             }
 
-            if (key == "YOURTURN"){
+            if (key.equals("YOURTURN")){
                 Platform.runLater(() -> statusText.setText("Your turn"));
                 //AI mode;
                 //Set 0 zero for manual
-                if (Main.playerMode == 1){
+                if (Main.getPlayerMode() == 1){
                     int[] xy = ai.doMove();
                     int pos = xy[0] * 3 + xy[1];
 
