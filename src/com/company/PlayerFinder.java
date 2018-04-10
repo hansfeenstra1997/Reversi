@@ -1,19 +1,50 @@
 package com.company;
 
 import javafx.application.Application;
+import javafx.application.Platform;
+import Controller.LauncherController;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
-public class PlayerFinder extends Application {
+import java.util.Optional;
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        Pane rootPane = new Pane();
-        Scene scene = new Scene(rootPane, 300, 150);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+public class PlayerFinder{
+
+    public PlayerFinder() {
+        Dialog<String> dialog = new Dialog<>();
+        dialog.setTitle("TestName");
+
+        ButtonType loginButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+
+        GridPane gridPane = new GridPane();
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+        gridPane.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField from = new TextField();
+        from.setPromptText("Specify player name");
+
+        gridPane.add(from, 0, 0);
+
+        dialog.getDialogPane().setContent(gridPane);
+
+        Platform.runLater(() -> from.requestFocus());
+
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == loginButtonType) {
+                LauncherController.setSpecificName(from.getText());
+            }
+            return null;
+        });
+
+        Optional<String> result = dialog.showAndWait();
     }
 }

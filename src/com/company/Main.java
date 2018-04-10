@@ -115,10 +115,15 @@ public class Main extends Application {
         playerList.setMinWidth(200);
         Label label = new Label("Playernames: " + LauncherController.getPlayerName());
         Label gameLabel = new Label("\n\nGame: " + LauncherController.getGame());
+        System.out.println(LauncherController.specificPlayerIsSelected());
         if (LauncherController.getOpponent() == "ai") {
             Label modeLabel = new Label("\n\nMode: " + LauncherController.getAiMode());
             Label reactionTimeLabel = new Label("\nAI R:eaction Time: " + LauncherController.getResponseTime() + "seconds");
             playerList.getChildren().addAll(modeLabel, reactionTimeLabel);
+        }
+        if (LauncherController.specificPlayerIsSelected() == true) {
+            Label searchForPlayerLabel = new Label("\n\nWaiting for  " + LauncherController.getSpecificPlayerName());
+            playerList.getChildren().addAll(searchForPlayerLabel);
         }
         Connection.getInstance().sendCommand("get playerlist");
 

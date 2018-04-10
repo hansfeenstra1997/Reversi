@@ -1,5 +1,6 @@
 package View;
 
+import com.company.PlayerFinder;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -194,6 +195,12 @@ public class LauncherView extends Application {
         specificPlayer.setLayoutY(60);
         specificPlayer.setLayoutX(vsPlayerButtonX - 20);
         specificPlayer.setDisable(true);
+        specificPlayer.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                PlayerFinder pf = new PlayerFinder();
+            }
+        });
 
         comboBox.setLayoutX(vsPlayerButtonX + 100);
         comboBox.setPromptText("AI Mode");

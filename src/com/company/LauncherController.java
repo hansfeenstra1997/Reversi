@@ -20,6 +20,7 @@ public class LauncherController {
     //SETTINGS:
     private static String game = ""; // BKE or Reversi?
     private static String opponent = ""; // AI or Player?
+    private static String specificPlayerName = ""; // If the Specific Player box is checked, this variable specifies his name.
     private static String aiMode = ""; // What AI difficulty?
     private static int gameID = 999; // 0 = Reversi, 1 = BKE
 
@@ -87,9 +88,6 @@ public class LauncherController {
             ErrorWindow error = new ErrorWindow("Warning",
                     "Spaces are not allowed in names.",
                     "Please remove the spaces and try again.");
-        }
-        else if (View.LauncherView.specificPlayer() == true) {
-            System.out.println("Venster om een specifieke speler te kiezen zou nu moeten komen");
         } else {
             Main.startGame(game, gameID);
             Main.login(View.LauncherView.getNameField());
@@ -131,11 +129,14 @@ public class LauncherController {
 
 
     // GETTERS
-    public static String getGame() {
-        return game;
-    }
+    public static String getGame() { return game; }
     public static String getOpponent() {return opponent;}
     public static String getPlayerName() { return View.LauncherView.getNameField();}
     public static String getAiMode() {return aiMode;}
     public static int getResponseTime() {return View.LauncherView.getReactionTime();}
+    public static Boolean specificPlayerIsSelected() { return View.LauncherView.specificPlayer(); }
+    public static String getSpecificPlayerName() {  return specificPlayerName;}
+
+    // SETTERS
+    public static void setSpecificName(String name) {specificPlayerName = name; System.out.println(getSpecificPlayerName()); }
 }
