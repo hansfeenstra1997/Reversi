@@ -39,7 +39,7 @@ public class TicTacToeController extends Controller{
 
     @Override
     ArrayList<int[]> getPossibleMoves() {
-        return null;
+        return new ArrayList<>();
     }
 
     //needs to return Image
@@ -47,10 +47,8 @@ public class TicTacToeController extends Controller{
     Image setCellImage(int state) {
         if(state == firstPlayerID){
             //return "X";
-            return new Image("");
         } else if(state == secondPlayerID){
             //return "O";
-            return new Image("");
         }
         //return "";
         return null;

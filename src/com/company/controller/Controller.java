@@ -337,7 +337,10 @@ public abstract class Controller implements Runnable{
 
                 int state = board.getBoard()[x][y].getState();
                 Image image = this.setCellImage(state);
-                Button button = new Button("", new ImageView(image));
+                ImageView imageV = new ImageView(image);
+                imageV.setFitWidth(50);
+                imageV.setFitHeight(50);
+                Button button = new Button("", imageV);
 
                 //call to ConcreteController
                 //Puts the right characters on the screen

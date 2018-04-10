@@ -90,10 +90,10 @@ public class ReversiController extends Controller{
     @Override
     Image setCellImage(int state) {
         if(state == firstPlayerID){
-            return new Image("/black.png");
+            return new Image("/black.png", 50, 50, false, false);
             //return "B";
         } else if(state == secondPlayerID){
-            return new Image("/white.png");
+            return new Image("/white.png", 50, 50, false, false);
             //return "W";
         }
         return null;
