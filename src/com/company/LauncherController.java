@@ -1,6 +1,19 @@
 package Controller;
 
+import com.company.ErrorWindow;
 import com.company.Main;
+import com.company.PlayerFinder;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
+import java.util.Optional;
 
 public class LauncherController {
 
@@ -66,10 +79,17 @@ public class LauncherController {
 
     public static void startGamePressed() {
         if (opponent == "ai" && aiMode == "") {
-            View.LauncherView.setError("No AI Mode has been selected!");
+            ErrorWindow error = new ErrorWindow("Warning",
+                    "You want to play against AI, but no AI mode has been selected",
+                    "Please click on the dropdown box and select a mode.");
         }
         else if (View.LauncherView.getNameField().contains(" ")) {
-            View.LauncherView.setError(("Spaces are not allowed in a username!"));
+            ErrorWindow error = new ErrorWindow("Warning",
+                    "Spaces are not allowed in names.",
+                    "Please remove the spaces and try again.");
+        }
+        else if (View.LauncherView.specificPlayer() == true) {
+            System.out.println("Venster om een specifieke speler te kiezen zou nu moeten komen");
         } else {
             Main.startGame(game, gameID);
             Main.login(View.LauncherView.getNameField());

@@ -76,7 +76,7 @@ public class GUI extends Application{
     }
 
     public void createGamePane() {
-        int reversiButtonX = 140;
+        int reversiButtonX = 160;
         gamePane.setLayoutY(gamePaneYPos);
         modePane.setStyle("-fx-background-color: #707070");
         gamePane.setStyle("-fx-border-color: #FFFFFF");
