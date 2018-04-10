@@ -72,6 +72,7 @@ public class LauncherController {
             View.LauncherView.setError(("Spaces are not allowed in a username!"));
         } else {
             Main.startGame(game, gameID);
+            Main.login(View.LauncherView.getNameField());
             View.LauncherView.setError("Starting a game...");
             View.LauncherView.disableAll();
             System.out.println("== GAME SETTINGS == " +
@@ -84,7 +85,7 @@ public class LauncherController {
             }
             System.out.println(
                     "Specific player selected:    " + View.LauncherView.specificPlayer() +
-                            "\n\n=== OPTIONS == " +
+                      "\n\n=== OPTIONS == " +
                             "\nAI Reaction Time:            " + View.LauncherView.getReactionTime() + " Seconds" +
                             "\nNightmode:                   " + View.LauncherView.nightModeChecked() +
                             "\nSound Effects:               " + View.LauncherView.soundChecked());
@@ -106,5 +107,12 @@ public class LauncherController {
             Model.LauncherModel.aiButtonEnable();
         }
         opponentSelected = true;
+    }
+
+
+    // GETTERS
+
+    public String getGame() {
+        return game;
     }
 }

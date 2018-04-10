@@ -87,7 +87,7 @@ public abstract class Controller implements Runnable{
         timerText = (Label) right.getChildren().get(0);
 
         main.setAlignment(Pos.CENTER);
-        Label waitText = new Label("Waiting for match...");
+        Label waitText = new Label("Waiting for match");
         main.getChildren().add(waitText);
 
         stage.setTitle("Game");

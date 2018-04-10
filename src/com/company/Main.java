@@ -66,7 +66,7 @@ public class Main extends Application {
         Connection.getInstance().sendCommand(command);
     }
 
-    private void login(String username) {
+    public static void login(String username) {
         playerName = username;
         Connection.getInstance().sendCommand("login " + username);
     }
