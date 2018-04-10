@@ -34,20 +34,22 @@ public class ChoiceScreen extends View {
 
         playerList.getChildren().addAll(label, players);
 
+        HBox refresh = new HBox();
+        refresh.setMinWidth(200);
+        Button refreshButton = new Button("Refresh");
+        refreshButton.setOnAction(event -> Connection.getInstance().sendCommand("get playerlist"));
+
         HBox subscribe = new HBox();
         subscribe.setMinWidth(200);
         Button subscribeButton = new Button("Subscribe");
         subscribeButton.setOnAction((event)->{
-            //int position = grid.getChildren().indexOf(event.getSource());
             Connection.getInstance().sendCommand("subscribe " + gameName);
-            //challenge accept 0
         });
-        //action
-        //makeScene(gameStage);
 
+        refresh.getChildren().add(refreshButton);
         subscribe.getChildren().add(subscribeButton);
 
-        content.getChildren().addAll(playerList, subscribe);
+        content.getChildren().addAll(playerList, refresh, subscribe);
 
         gameBorderPane.setTop(top);
         gameBorderPane.setCenter(content);
