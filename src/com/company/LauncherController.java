@@ -117,4 +117,5 @@ public class LauncherController {
     public static String getOpponent() {return opponent;}
     public static String getPlayerName() { return View.LauncherView.getNameField();}
     public static String getAiMode() {return aiMode;}
+    public static int getResponseTime() {return View.LauncherView.getReactionTime();}
 }

@@ -117,7 +117,8 @@ public class Main extends Application {
         Label gameLabel = new Label("\n\nGame: " + LauncherController.getGame());
         if (LauncherController.getOpponent() == "ai") {
             Label modeLabel = new Label("\n\nMode: " + LauncherController.getAiMode());
-            playerList.getChildren().add(modeLabel);
+            Label reactionTimeLabel = new Label("\nAI R:eaction Time: " + LauncherController.getResponseTime() + "seconds");
+            playerList.getChildren().addAll(modeLabel, reactionTimeLabel);
         }
         Connection.getInstance().sendCommand("get playerlist");
 
