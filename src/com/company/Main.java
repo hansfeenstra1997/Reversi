@@ -1,10 +1,10 @@
 package com.company;
 
 import javafx.application.Application;
+import Controller.LauncherController;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
@@ -112,7 +112,7 @@ public class Main extends Application {
 
         HBox playerList = new HBox();
         playerList.setMinWidth(200);
-        Label label = new Label("Playernames:");
+        Label label = new Label("Playernames: " + LauncherController.getPlayerName());
         Connection.getInstance().sendCommand("get playerlist");
 
 
