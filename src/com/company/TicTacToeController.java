@@ -32,6 +32,11 @@ public class TicTacToeController extends Controller{
     }
 
     @Override
+    String getGameName(){
+        return "Tic-tac-toe";
+    }
+
+    @Override
     ArrayList<int[]> getPossibleMoves() {
         return null;
     }
