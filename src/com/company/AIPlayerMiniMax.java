@@ -6,11 +6,11 @@ import com.company.model.Board;
  * This class will calculate the best move to do whilst playing Tic-Tac-Toe
  * @author Robert
  */
-public class AIPlayerMiniMax {
+public class AIPlayerMiniMax extends AIPlayer{
         private Board board;
         private Board.Cell[][] cell;
 
-        
+
         public AIPlayerMiniMax(Board board) {
             this.board = board;
             cell = board.getBoard();
@@ -32,7 +32,7 @@ public class AIPlayerMiniMax {
 
 
         private BestMove miniMaxTicTacToe(int player) {
-            int winner = checkWinner();
+            int winner = checkWinner(cell);
             if(winner == GLOBAL_PLAYER) {
                 return new BestMove(3, 0, 0);
             }
@@ -86,7 +86,7 @@ public class AIPlayerMiniMax {
             return true;
         }
 
-        private int checkWinner() {
+        int checkWinner(Board.Cell[][] cell) {
             int[][][] winPatterns = {{ {0,0},{0,1},{0,2} }, { {0,0},{1,1},{2,2} }, { {0,0},{1,0},{2,0} }, { {2,0},{2,1},{2,2} }, { {0,2},{1,2},{2,2} }, { {1,0},{1,1},{1,2} }, { {2,0},{1,1},{0,2} }, { {0,1},{1,1},{2,1} }};
 
             for(int i = 0; i < 8; i++) {
@@ -98,22 +98,6 @@ public class AIPlayerMiniMax {
                 }
             }
             return 0;
-
-
-
-            //possible ways to win:
-            //0,0 0,1 0,2
-            //0,0 1,1 2,2
-            //0,0 1,0 2,0
-            //2,0 2,1 2,2
-            //0,2 1,2 2,2
-            //1,0 1,1 1,2
-            //2,0 1,1 0,2
-            //0,1 1,1 2,1
-
-
-
-            // implementatie om hele bord te checken of er een winnaar is.
         }
 
     class BestMove {
