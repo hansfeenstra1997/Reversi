@@ -204,7 +204,7 @@ public abstract class Controller implements Runnable{
 
                     Label playerName = (Label) playerInfo.getChildren().get(1);
 
-                    playerName.setText(player.getPlayerName() + " - ");
+                    playerName.setText(Main.getPlayerName() + " - ");
                     Label opponentName = (Label) playerInfo.getChildren().get(3);
                     opponentName.setText(opponent);
 
