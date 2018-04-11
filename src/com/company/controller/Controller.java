@@ -265,7 +265,7 @@ public abstract class Controller implements Runnable{
                 //AI mode;
                 //Set 0 zero for manual
                 if (Main.getPlayerMode() == 1){
-                    int[] xy = ai.doMove();
+                    int[] xy = ai.doEasyMove();
                     //@TODO REFACTORTING!!!!!!!!!!!
                     int pos = xy[0] * 8 + xy[1];
 

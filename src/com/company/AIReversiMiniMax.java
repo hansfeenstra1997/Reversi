@@ -34,14 +34,14 @@ public class AIReversiMiniMax extends AIPlayer {
             {200,-20,  20,  5,  5, 20,-20,200}};
 
     private final int[][] SECOND_WEIGHT = {
-            {200,  5,  20,  5,  5, 20,  5,200},
-            {  5,  0,   3,  3,  3,  3,  0,  5},
+            {200,  2,  20,  5,  5, 20,  2,200},
+            {  2,  0,   3,  3,  3,  3,  0,  2},
             {20,   3,  15,  6,  6, 15,  3, 20},
             {5,    3,   6,  6,  6,  6,  3,  5},
             {5,    3,   6,  6,  6,  6,  3,  5},
             {20,   3,  15,  6,  6, 15,  3, 20},
-            {  5,  0,   3,  3,  3,  3,  0,  5},
-            {200,  5,  20,  5,  5, 20,  5,200}};
+            {  2,  0,   3,  3,  3,  3,  0,  2},
+            {200,  2,  20,  5,  5, 20,  2,200}};
 
     public AIReversiMiniMax(Board board) {
         this.board = board;
@@ -59,7 +59,15 @@ public class AIReversiMiniMax extends AIPlayer {
     }
 
 
-    private int[] doMoveDifferent() {
+    public int[] doMoveDifferent() {
+        //calculateboard
+        //do move
+        //calculate new board
+        //check diffence
+        //if difference is bigger than other difference, do move
+
+        int old_total = calculateBoard(this.cell);
+
         this.cell = board.getBoard();
         int score = 0;
         int x = 0;
@@ -67,11 +75,27 @@ public class AIReversiMiniMax extends AIPlayer {
 
         ArrayList<int[]> moves = getPossibleMoves(1, this.cell);
         for (int[] move : moves) {
-            if (SECOND_WEIGHT[move[1]][move[0]] > score) {
-                score = SECOND_WEIGHT[move[1]][move[0]];
+
+            Board.Cell[][] newCell = copyArray(this.cell);
+
+            setMove(move[0], move[1], 1, newCell);
+            newCell[move[0]][move[1]].setState(1);
+
+            int new_total = calculateBoard(newCell);
+            int difference = new_total - old_total;
+
+            if (difference > score) {
+                score = difference;
                 y = move[1];
                 x = move[0];
             }
+
+//
+//            if (SECOND_WEIGHT[move[1]][move[0]] > score) {
+//                score = SECOND_WEIGHT[move[1]][move[0]];
+//                y = move[1];
+//                x = move[0];
+//            }
         }
 
         return new int[]{x, y};
@@ -87,6 +111,18 @@ public class AIReversiMiniMax extends AIPlayer {
 
         return new int[]{best.x, best.y};
     }
+
+
+    public int[] doEasyMove() {
+        ArrayList<int[]> moves = getPossibleMoves(1, this.cell);
+
+        int range = (moves.size() -1) + 1;
+        int get = (int)(Math.random() * range);
+
+        return moves.get(get);
+
+    }
+
 
     /**
      *
@@ -109,10 +145,10 @@ public class AIReversiMiniMax extends AIPlayer {
         int winner = checkWinner(cell);
 
         if (winner == GLOBALPLAYER && moves.isEmpty() && opponentMoves.isEmpty()) {
-            System.out.println("winner is me");
+            //System.out.println("winner is me");
             return new BestMove(Integer.MAX_VALUE - 1, 0, 0);
         } else if (winner == GLOBALOPPONENT && moves.isEmpty() && opponentMoves.isEmpty()) {
-            System.out.println("Winner is opp " + ", depth: " + depth);
+            //System.out.println("Winner is opp " + ", depth: " + depth);
             return new BestMove(Integer.MIN_VALUE + 1, 0, 0);
         }
 
@@ -157,6 +193,20 @@ public class AIReversiMiniMax extends AIPlayer {
                 }
                 else if(cell[x][y].getState() == opp) {
                     total -= this.SQUARE_WEIGHTS[x][y];
+                }
+            }
+        }
+
+        return total;
+    }
+
+    private int calculateBoard(Board.Cell[][] cell) {
+        int total = 0;
+
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                if(cell[x][y].getState() == 1) {
+                    total += this.SECOND_WEIGHT[x][y];
                 }
             }
         }

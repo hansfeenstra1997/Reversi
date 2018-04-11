@@ -2,6 +2,8 @@ package com.company;
 
 import com.company.model.Board;
 
+import java.util.ArrayList;
+
 /**
  * This class will calculate the best move to do whilst playing Tic-Tac-Toe
  * @author Robert
@@ -30,6 +32,22 @@ public class AIPlayerMiniMax extends AIPlayer{
             return new int[]{best.x, best.y};
         }
 
+
+        public int[] doEasyMove() {
+            ArrayList<int[]> avaiableMoves = new ArrayList<>();
+
+            for(int x = 0; x < 3; x++) {
+                for(int y = 0; y < 3; y++) {
+                    if (cell[x][y].getState() == 0) {
+                        avaiableMoves.add(new int[]{x,y});
+                    }
+                }
+            }
+            int range = (avaiableMoves.size() -1) + 1;
+            int get = (int)(Math.random() * range);
+
+            return avaiableMoves.get(get);
+        }
 
         private BestMove miniMaxTicTacToe(int player) {
             int winner = checkWinner(cell);
