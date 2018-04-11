@@ -118,7 +118,7 @@ public class Main extends Application {
         System.out.println(LauncherController.specificPlayerIsSelected());
         if (LauncherController.getOpponent() == "ai") {
             Label modeLabel = new Label("\n\nMode: " + LauncherController.getAiMode());
-            Label reactionTimeLabel = new Label("\nAI R:eaction Time: " + LauncherController.getResponseTime() + "seconds");
+            Label reactionTimeLabel = new Label("\nAI Reaction Time: " + LauncherController.getResponseTime() + "seconds");
             playerList.getChildren().addAll(modeLabel, reactionTimeLabel);
         }
         if (LauncherController.specificPlayerIsSelected() == true) {

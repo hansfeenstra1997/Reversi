@@ -19,15 +19,15 @@ public class PlayerFinder{
 
     public PlayerFinder() {
         Dialog<String> dialog = new Dialog<>();
-        dialog.setTitle("TestName");
+        dialog.setTitle("Specify a player name:");
 
         ButtonType loginButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType);
 
         GridPane gridPane = new GridPane();
         gridPane.setHgap(10);
         gridPane.setVgap(10);
-        gridPane.setPadding(new Insets(20, 150, 10, 10));
+        gridPane.setPadding(new Insets(20, 70, 10, 10));
 
         TextField from = new TextField();
         from.setPromptText("Specify player name");
@@ -39,7 +39,7 @@ public class PlayerFinder{
         Platform.runLater(() -> from.requestFocus());
 
         dialog.setResultConverter(dialogButton -> {
-            if (dialogButton == loginButtonType) {
+            if (from.getText().length() >= 5) {
                 LauncherController.setSpecificName(from.getText());
             }
             return null;

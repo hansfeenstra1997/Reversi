@@ -8,7 +8,7 @@ import java.util.Optional;
 public class ErrorWindow {
 
     public ErrorWindow(String title, String message, String solution) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(message);
         alert.setContentText(solution);

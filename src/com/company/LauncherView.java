@@ -198,7 +198,9 @@ public class LauncherView extends Application {
         specificPlayer.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                PlayerFinder pf = new PlayerFinder();
+                if (specificPlayer.isSelected() == true) {
+                    PlayerFinder pf = new PlayerFinder();
+                }
             }
         });
 

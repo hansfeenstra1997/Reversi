@@ -84,6 +84,7 @@ public class LauncherController {
                     "You want to play against AI, but no AI mode has been selected",
                     "Please click on the dropdown box and select a mode.");
         }
+        // If player name contains a space....
         else if (View.LauncherView.getNameField().contains(" ")) {
             ErrorWindow error = new ErrorWindow("Warning",
                     "Spaces are not allowed in names.",
