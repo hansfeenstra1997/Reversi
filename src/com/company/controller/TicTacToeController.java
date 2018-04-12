@@ -14,8 +14,6 @@ public class TicTacToeController extends GameController{
 
     @Override
     void initBoard() {}
-    @Override
-    void flipBoard(int x, int y, int selfOrOpponent) {}
 
     public TicTacToeController() {
 
@@ -50,11 +48,6 @@ public class TicTacToeController extends GameController{
     @Override
     String getGameName(){
         return "Tic-tac-toe";
-    }
-
-    @Override
-    ArrayList<int[]> getPossibleMoves() {
-        return new ArrayList<>();
     }
 
     @Override

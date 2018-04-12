@@ -44,6 +44,23 @@ public class ManualPlayerReversi implements Player {
         return false;
     }
 
+    public ArrayList<int[]> getPossibleMoves(int player, Board board, int boardSize) {
+        ArrayList<int[]> moves = new ArrayList<>();
+
+        for(int y=0; y<boardSize; y++) {
+            for(int x=0; x<boardSize; x++) {
+                if(board.getCellState(y,x) == 0) {
+                    //if(cell[x][y].getState() == 0) {
+                    int[] result = checkValidMove(x, y, player);
+                    if(result[0] != -1) {
+                        moves.add(result);
+                    }
+                }
+            }
+        }
+        return moves;
+    }
+
     protected int[] checkValidMove(int x, int y, int player) {
         int[] move = {-1,-1};
         for(String direction: directions) {
@@ -166,5 +183,15 @@ public class ManualPlayerReversi implements Player {
 
     private int getPos(int row, int pos) {
         return (row*boardSize)+pos;
+    }
+
+    public void flipBoard(int x, int y, int player) {
+        for(String direction: directions) {
+            flip(x, y, direction, player);
+        }
+    }
+
+    private void flip(int x, int y, String direction, int player) {
+        checkDirection(x, y, direction, 0, true, player);
     }
 }

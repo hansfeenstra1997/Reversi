@@ -30,9 +30,7 @@ public abstract class GameController {
     }
 
     abstract void initBoard();
-    abstract void flipBoard(int x, int y, int selfOrOpponent);
     abstract void setMove(int pos);
-    abstract ArrayList<int[]> getPossibleMoves();
     abstract Image setCellImage(int state);
     abstract String getGameName();
     abstract void makePlayer(String gm);
