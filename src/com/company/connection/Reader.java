@@ -95,8 +95,4 @@ public class Reader implements Runnable {
     public ArrayList<Map.Entry<String, ArrayList<String>>> getQueue() {
         return queue;
     }
-
-    public void setQueue(ArrayList<Map.Entry<String, ArrayList<String>>> queue) {
-        this.queue = queue;
-    }
 }

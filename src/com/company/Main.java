@@ -27,7 +27,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         StartView startView = new StartView(primaryStage);
 
-        startView.getStartBtn().setOnAction((event) -> startGame("Tic-tac-toe", "ai-easy"));
+        startView.getStartBtn().setOnAction((event) -> startGame("Tic-tac-toe", "manual"));
         startView.getStartReversiBtn().setOnAction((event) -> startGame("Reversi", "manual"));
         
         startView.getLoginBtn().setOnAction((event) -> login(startView.getUsernameFieldText()));

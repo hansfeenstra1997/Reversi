@@ -2,16 +2,12 @@ package com.company.controller;
 
 import com.company.*;
 import javafx.scene.image.Image;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-
 import java.util.ArrayList;
 
 public class ReversiController extends GameController{
 
     private int boardsize = 8;
     private static final ArrayList<String> directions = new ArrayList<>();
-    private ArrayList<int[]> flipList = new ArrayList<>();
 
 
     public ReversiController() {
@@ -27,13 +23,6 @@ public class ReversiController extends GameController{
         directions.add("down");
         directions.add("leftDownDiagonal");
         directions.add("left");
-
-        //ai = new AIPlayerMiniMax(board);\
-
-        //ai = new AIReversiMiniMax(board);
-
-
-
     }
 
     public void makePlayer(String gm){
@@ -88,10 +77,8 @@ public class ReversiController extends GameController{
     Image setCellImage(int state) {
         if(state == firstPlayerID){
             return new Image("/black.png", 50, 50, false, false);
-            //return "B";
         } else if(state == secondPlayerID){
             return new Image("/white.png", 50, 50, false, false);
-            //return "W";
         }
         return null;
     }

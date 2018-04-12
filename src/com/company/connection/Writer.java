@@ -24,9 +24,6 @@ public class Writer implements Runnable {
 
     @Override
     public void run() {
-        Scanner scanner = new Scanner(System.in);
-        String line;
-
         while(true){
             try {
                 String message = writeBuffer.take();
@@ -41,10 +38,6 @@ public class Writer implements Runnable {
     public void addMessage(String message) {
         try {
             writeBuffer.put(message);
-//            Iterator<String> it = writeBuffer.iterator();
-//            while(it.hasNext()) {
-//                System.out.println(it.next());
-//            }
         }
         catch(InterruptedException e) {
             e.printStackTrace();

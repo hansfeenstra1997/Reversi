@@ -27,10 +27,9 @@ import java.util.*;
 public class Controller implements Runnable{
 
     private static final int RESPONSETIME = 9;
-    Connection conn;
+    private Connection conn;
     private ArrayList<Map.Entry<String, ArrayList<String>>> readerQueue;
 
-    //Board board;
 
     //Game Section
     GameController gameController;
@@ -74,9 +73,6 @@ public class Controller implements Runnable{
     public void makeGameController(String gameName){
         GameFactory gameFactory = new GameFactory();
         gameController = gameFactory.makeGame(gameName);
-        //removed from main, currently no idea how to use it
-        // or in controller of gamecontroller
-        //gameController.makePlayer(playerMode);
     }
 
     public void setupFX(){
@@ -209,11 +205,6 @@ public class Controller implements Runnable{
                 //TTT: X or O
                 //Rev: Black or White
 
-                //needs to be image
-
-
-
-                //button.setText(image);
                 button.setOnAction((event)->{
                     int position = grid.getChildren().indexOf(event.getSource());
                     gameController.setMove(position);
@@ -225,7 +216,6 @@ public class Controller implements Runnable{
         }
 
         //possible moves
-        //ArrayList<int[]> possibleMoves =  gameController.getPossibleMoves();
         ArrayList<int[]> possibleMoves =  gameController.player.getPossibleMoves(1, gameController.board, gameController.board.getSize());
 
         for(int[] move: possibleMoves) {

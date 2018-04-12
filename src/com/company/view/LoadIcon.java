@@ -13,7 +13,6 @@ public class LoadIcon extends ImageView {
         rotate = new RotateTransition(Duration.millis(3000), this);
         rotate.setByAngle(360);
         rotate.setCycleCount(INDEFINITE);
-        //rotate.setDuration(Duration.INDEFINITE);
         rotate.play();
     }
 }
