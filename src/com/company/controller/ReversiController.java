@@ -7,15 +7,15 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
-public class ReversiController extends Controller{
+public class ReversiController extends GameController{
 
     private int boardsize = 8;
     private static final ArrayList<String> directions = new ArrayList<>();
     private ArrayList<int[]> flipList = new ArrayList<>();
 
 
-    public ReversiController(VBox ta, Stage gameStage) {
-        super(ta, gameStage);
+    public ReversiController() {
+        super();
 
         directions.add("leftUpDiagonal");
         directions.add("up");
@@ -29,7 +29,7 @@ public class ReversiController extends Controller{
         makeBoard(boardsize);
         //ai = new AIPlayerMiniMax(board);\
 
-        ai = new AIReversiMiniMax(board);
+        //ai = new AIReversiMiniMax(board);
 
     }
 

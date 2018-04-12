@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
-public class TicTacToeController extends Controller{
+public class TicTacToeController extends GameController{
 
     private int boardsize = 3;
 
@@ -17,8 +17,8 @@ public class TicTacToeController extends Controller{
     @Override
     void flipBoard(int x, int y, int selfOrOpponent) {}
 
-    public TicTacToeController(VBox ta, Stage gameStage) {
-        super(ta, gameStage);
+    public TicTacToeController() {
+        super();
 
         makeBoard(boardsize);
         //ai = new AIPlayerMiniMax(board);
@@ -29,7 +29,6 @@ public class TicTacToeController extends Controller{
         //controleren of move kan
 
         conn.sendCommand("move " + pos);
-        updateBoard();
     }
 
     @Override
@@ -54,10 +53,6 @@ public class TicTacToeController extends Controller{
         }
         //return "";
         return null;
-    }
-
-    void makeAI(Board board) {
-
     }
 
 }

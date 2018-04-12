@@ -14,9 +14,9 @@ public class Main extends Application {
 
     private GameFactory gameFactory = new GameFactory();
 
-    private Controller gameController;
+    private Controller headController;
     private static String playerName;
-    private static int playerMode = 1;
+    private static int playerMode = 0;
     private VBox players;
     
     public static void main(String[] args) {
@@ -49,12 +49,13 @@ public class Main extends Application {
         Stage gameStage = new Stage();
         players = new VBox();
 
-        gameController = gameFactory.makeGame(gameName, players, gameStage);
-        gameController.makePlayer(playerMode);
+        headController = new Controller(players, gameStage);
+        headController.makeGameController(gameName);
+
 
         makeChoiceScreen(gameStage, gameName);
 
-        Thread thread = new Thread(gameController);
+        Thread thread = new Thread(headController);
         thread.start();
     }
 
@@ -65,7 +66,7 @@ public class Main extends Application {
 
     private void makeScene(Stage gameStage){
         new BoardView(gameStage);
-        gameController.setupFX();
+        headController.setupFX();
     }
 
     public static String getPlayerName() {
