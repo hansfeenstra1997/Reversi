@@ -4,4 +4,5 @@ public interface Player {
 
     void doMove(int position);
 
+
 }

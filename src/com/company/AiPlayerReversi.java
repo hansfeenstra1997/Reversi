@@ -26,13 +26,16 @@ public class AiPlayerReversi extends ManualPlayerReversi {
 
     @Override
     public void doMove(int position) {
-        if(gameMode.equals("easy")) {
-            ;
-        }
-        else if(gameMode.equals("hard")) {
-            int[] xy = doMoveDifferent();
-            int pos = xy[1] * 8 + xy[0];
-            Connection.getInstance().sendCommand("move " + pos);
+        switch(gameMode) {
+            case "easy":
+                break;
+            case "hard":
+                int[] xy = doMoveDifferent();
+                int pos = xy[1] * 8 + xy[0];
+                Connection.getInstance().sendCommand("move " + pos);
+                break;
+            default:
+                break;
         }
     }
 

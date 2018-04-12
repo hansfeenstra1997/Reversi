@@ -4,7 +4,6 @@ import com.company.*;
 import com.company.connection.Connection;
 import com.company.model.Board;
 import com.company.view.LoadIcon;
-import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
