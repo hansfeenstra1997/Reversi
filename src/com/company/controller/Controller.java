@@ -44,7 +44,7 @@ public class Controller implements Runnable{
     private Text statusText;
 
     //??
-    private VBox top;
+    private HBox top;
     private VBox right;
     private BorderPane bottom;
     private Label timerText;
@@ -86,7 +86,7 @@ public class Controller implements Runnable{
         statusText = (Text) bottom.getLeft();
         lastMove = (Label) bottom.getCenter();
 
-        top = (VBox) pane.getTop();
+        top = (HBox) pane.getTop();
         right = (VBox) pane.getRight();
         timerText = (Label) right.getChildren().get(0);
 
@@ -323,8 +323,9 @@ public class Controller implements Runnable{
 
             //Show playernames on screen
             Platform.runLater(() -> {
-                HBox playerInfo = (HBox) top.getChildren().get(0);
-                HBox playColor = (HBox) top.getChildren().get(1);
+                VBox top1 = (VBox)top.getChildren().get(0);
+                HBox playerInfo = (HBox) top1.getChildren().get(0);
+                HBox playColor = (HBox) top1.getChildren().get(1);
 
                 Label playerName = (Label) playerInfo.getChildren().get(1);
 
