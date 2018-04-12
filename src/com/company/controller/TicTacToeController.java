@@ -1,7 +1,7 @@
 package com.company.controller;
 
-import com.company.AIPlayerMiniMax;
-import com.company.model.Board;
+import com.company.AiPlayerTicTacToe;
+import com.company.ManualPlayerTicTacToe;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -17,18 +17,33 @@ public class TicTacToeController extends Controller{
     @Override
     void flipBoard(int x, int y, int selfOrOpponent) {}
 
-    public TicTacToeController(VBox ta, Stage gameStage) {
+    public TicTacToeController(VBox ta, Stage gameStage, String gameMode) {
         super(ta, gameStage);
 
         makeBoard(boardsize);
-        //ai = new AIPlayerMiniMax(board);
+
+        this.gameMode = gameMode;
+
+        switch(gameMode) {
+            case "manual":
+                player = new ManualPlayerTicTacToe(board);
+                break;
+            case "ai-easy":
+                player = new AiPlayerTicTacToe(board, "easy");
+                break;
+            case "ai-hard":
+                player = new AiPlayerTicTacToe(board, "hard");
+                break;
+            default:
+                player = new ManualPlayerTicTacToe(board);
+        }
     }
 
     @Override
     void setMove(int pos) {
-        //controleren of move kan
+        System.out.println("move " + pos);
+        player.doMove(pos);
 
-        conn.sendCommand("move " + pos);
         updateBoard();
     }
 
@@ -42,22 +57,13 @@ public class TicTacToeController extends Controller{
         return new ArrayList<>();
     }
 
-    //needs to return Image
     @Override
     Image setCellImage(int state) {
         if(state == firstPlayerID){
-            //return "X";
             return new Image("/X.png", 40, 40, false, false);
         } else if(state == secondPlayerID){
-            //return "O";
             return new Image("/O.png",  40, 40, false, false);
         }
-        //return "";
         return null;
     }
-
-    void makeAI(Board board) {
-
-    }
-
 }

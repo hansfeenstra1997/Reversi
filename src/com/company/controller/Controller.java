@@ -33,8 +33,7 @@ public abstract class Controller implements Runnable{
     Board board;
 
     //Player section
-    private Player player;
-    AIReversiMiniMax ai;
+    protected Player player;
 
     //need to cleanup
     private Stage stage;
@@ -62,6 +61,7 @@ public abstract class Controller implements Runnable{
     private Timer timer;
     private boolean timerRunning = false;
     private boolean activeGame = false;
+    protected String gameMode;
 
     //reafcatoring needed
     public Controller(VBox playerList, Stage gameStage) {
@@ -111,14 +111,14 @@ public abstract class Controller implements Runnable{
     abstract ArrayList<int[]> getPossibleMoves();
     abstract Image setCellImage(int state);
     abstract String getGameName();
-
-    public void makePlayer(int playerMode){
-        if (playerMode == 0) {
-            player = new ManualPlayer(Main.getPlayerName());
-        } else if(playerMode == 1){
-            //player = makeAI();
-        }
-    }
+//
+//    public void makePlayer(int playerMode){
+//        if (playerMode == 0) {
+//            player = new ManualPlayer(Main.getPlayerName());
+//        } else if(playerMode == 1){
+//            //player = makeAI();
+//        }
+//    }
 
     private void readQueue() {
         Map.Entry<String, ArrayList<String>> command = readerQueue.get(0);
@@ -128,7 +128,6 @@ public abstract class Controller implements Runnable{
     }
 
     private void queueParser(Map.Entry<String, ArrayList<String>> command){
-
         if(command != null){
             String key = command.getKey();
 
@@ -227,6 +226,7 @@ public abstract class Controller implements Runnable{
 
 
             if (key.equals("MOVE")) {
+                Platform.runLater(() -> statusText.setFill(Color.BLACK));
                 startTimer();
                 int player = 1;
                 if(!values.get(0).equals(Main.getPlayerName())){
@@ -264,12 +264,15 @@ public abstract class Controller implements Runnable{
                 Platform.runLater(() -> statusText.setText("Your turn"));
                 //AI mode;
                 //Set 0 zero for manual
-                if (Main.getPlayerMode() == 1){
-                    int[] xy = ai.doMove();
-                    //@TODO REFACTORTING!!!!!!!!!!!
-                    int pos = xy[0] * 8 + xy[1];
 
-                    conn.sendCommand("move " + pos);
+                if(this.gameMode.contains("ai")) {
+                    // calculate move AI
+                    player.doMove(-1);
+//                    int[] xy = ai.doMoveDifferent();
+//                    //@TODO REFACTORTING!!!!!!!!!!!
+//                    int pos = xy[0] * 8 + xy[1];
+//
+//                    conn.sendCommand("move " + pos);
                 }
             }
 
@@ -288,6 +291,16 @@ public abstract class Controller implements Runnable{
                 Platform.runLater(() -> {
                     statusText.setText("You lost the game :(");
                     statusText.setFill(Color.RED);
+                });
+                disableBoard();
+                stopTimer();
+            }
+
+            if(key.equals("DRAW")) {
+                activeGame = false;
+                Platform.runLater(() -> {
+                    statusText.setText("It's a draw!");
+                    statusText.setFill(Color.BLUE);
                 });
                 disableBoard();
                 stopTimer();

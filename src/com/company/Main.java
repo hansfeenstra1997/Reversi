@@ -16,7 +16,7 @@ public class Main extends Application {
 
     private Controller gameController;
     private static String playerName;
-    private static int playerMode = 1;
+    private static int playerMode = 0;
     private VBox players;
     
     public static void main(String[] args) {
@@ -27,8 +27,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         StartView startView = new StartView(primaryStage);
 
-        startView.getStartBtn().setOnAction((event) -> startGame("Tic-tac-toe", 0));
-        startView.getStartReversiBtn().setOnAction((event) -> startGame("Reversi", 0));
+        startView.getStartBtn().setOnAction((event) -> startGame("Tic-tac-toe", "ai-hard"));
+        startView.getStartReversiBtn().setOnAction((event) -> startGame("Reversi", "ai-hard"));
         startView.getLoginBtn().setOnAction((event) -> login(startView.getUsernameFieldText()));
         startView.getCommandButton().setOnAction((event) -> {sendCommand(startView.getCommandFieldText()); startView.setCommandFieldText("");});
     }
@@ -42,15 +42,14 @@ public class Main extends Application {
         sendCommand("login " + username);
     }
 
-    private void startGame(String gameName, int gameMode) {
+    private void startGame(String gameName, String gameMode) {
         //kiezen tussen subscriben en match aangeboden krijgen
         //sendCommand("subscribe " + gameName);
 
         Stage gameStage = new Stage();
         players = new VBox();
 
-        gameController = gameFactory.makeGame(gameName, players, gameStage);
-        gameController.makePlayer(playerMode);
+        gameController = gameFactory.makeGame(gameName, players, gameStage, gameMode);
 
         makeChoiceScreen(gameStage, gameName);
 
