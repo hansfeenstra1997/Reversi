@@ -223,7 +223,7 @@ public class Controller implements Runnable{
                     else {
                         playerName = gameController.getSecondPlayer();
                     }
-                    gameController.flipBoard(pos[0], pos[1], player);
+                    gameController.player.flipBoard(pos[0], pos[1], player);
                     gameController.board.setPosition(player, move);
 
                     Platform.runLater(() -> lastMove.setText("Last move: " + playerName + " at " + (pos[0]+1) + ", "+ (pos[1]+1)));
@@ -359,7 +359,8 @@ public class Controller implements Runnable{
         }
 
         //possible moves
-        ArrayList<int[]> possibleMoves =  gameController.getPossibleMoves();
+        //ArrayList<int[]> possibleMoves =  gameController.getPossibleMoves();
+        ArrayList<int[]> possibleMoves =  gameController.player.getPossibleMoves(1, gameController.board, gameController.board.getSize());
 
         for(int[] move: possibleMoves) {
             //get cell; cell xy omzetten naar positie

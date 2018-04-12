@@ -72,21 +72,4 @@ public class AiPlayerReversi extends ManualPlayerReversi {
 
     }
 
-    public ArrayList<int[]> getPossibleMoves(int player, Board board, int boardSize) {
-        ArrayList<int[]> moves = new ArrayList<>();
-
-        for(int y=0; y<boardSize; y++) {
-            for(int x=0; x<boardSize; x++) {
-                if(board.getCellState(y,x) == 0) {
-                //if(cell[x][y].getState() == 0) {
-                    int[] result = checkValidMove(x, y, player);
-                    if(result[0] != -1) {
-                        moves.add(result);
-                    }
-                }
-            }
-        }
-        return moves;
-    }
-
 }
