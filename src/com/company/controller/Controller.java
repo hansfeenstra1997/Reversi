@@ -55,6 +55,8 @@ public class Controller implements Runnable{
     private boolean timerRunning = false;
     private boolean activeGame = false;
 
+    private Parser parser = new Parser();
+
 
     //reafcatoring needed
     public Controller(VBox playerList, Stage gameStage) {
@@ -119,167 +121,31 @@ public class Controller implements Runnable{
 
             ArrayList<String> values = command.getValue();
 
-            if(key.equals("PLAYERS")){
-                Platform.runLater(()->{
-                    players.getChildren().clear();
-//
-                    for(String value:values){
-                        if (!value.equals(Main.getPlayerName())){
-                            System.out.println(value);
-                            Button button = new Button("Challenge: " + value);
-                            button.setOnAction((event)->{
-                                //int position = grid.getChildren().indexOf(event.getSource());
-                                conn.sendCommand("challenge \"" + value + "\" \"" + gameController.getGameName() + "\"");
-                                        //challenge accept 0
-                            });
-                            players.getChildren().add(button);
-                        }
-                    }
-                });
-            }
-
-            if(key.equals("CHALLENGE")){
-                Platform.runLater(()-> {
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle("Challenge Offered");
-                    alert.setHeaderText(values.get(0) + " offered you to play the game: " + values.get(2));
-                    alert.setContentText("Would you like to play this game?");
-
-                    Optional<ButtonType> result = alert.showAndWait();
-                    if (result.get() == ButtonType.OK) {
-                        //send confurmation
-                        conn.sendCommand("challenge accept " + values.get(1));
-                        //stage.show();
-                        System.out.println("OK");
-                    } else {
-                        System.out.println("Cancel");
-                    }
-                });
-            }
-
-            if(key.equals("MATCH")){
-                gameController.board.clearBoard();
-
-                Platform.runLater(() -> {
-                    stage.show();
-                    statusText.setText("Opponent's turn");
-                });
-                activeGame = true;
-                startTimer();
-                String opponent = values.get(2);
-
-                if(Main.getPlayerName().equals(values.get(0))){
-                    gameController.setPlayers(Main.getPlayerName(), values.get(2), 1, 2);
-                } else {
-                    gameController.setPlayers(values.get(2), Main.getPlayerName(), 2, 1);
-                }
-
-                gameController.initBoard();
-
-                //Show playernames on screen
-                Platform.runLater(() -> {
-                    HBox playerInfo = (HBox) top.getChildren().get(0);
-                    HBox playColor = (HBox) top.getChildren().get(1);
-
-                    Label playerName = (Label) playerInfo.getChildren().get(1);
-
-                    playerName.setText(Main.getPlayerName() + " - ");
-                    Label opponentName = (Label) playerInfo.getChildren().get(3);
-                    opponentName.setText(opponent);
-
-                    Label blackPlayer = (Label) playColor.getChildren().get(1);
-                    blackPlayer.setText(gameController.getFirstPlayer() + " - ");
-                    Label whitePlayer = (Label) playColor.getChildren().get(3);
-                    whitePlayer.setText(gameController.getSecondPlayer());
-                });
-
-                //playertomove is beginner
-                //dus moet kruisje zijn
-                //dit is het statement als er een nieuwe match is
-
-                //makeGridpane
-                updateBoard();
-                if(values.get(0).equals(gameController.getFirstPlayer()) && gameController.getFirstPlayerID()==2) {
-                    disableBoard();
-                }
-            }
-
-
-            if (key.equals("MOVE")) {
-                Platform.runLater(() -> statusText.setFill(Color.BLACK));
-                startTimer();
-                int player = 1;
-                if(!values.get(0).equals(Main.getPlayerName())){
-                    player = 2;
-                }
-                int move = Integer.parseInt(values.get(1));
-
-                if(move>=0 && move<=((gameController.board.getSize()* gameController.board.getSize())-1) && !values.get(2).equals("Illegal move")) {
-                    int[] pos = Board.convertPos(move);
-                    String playerName;
-                    if(gameController.getFirstPlayerID() == player) {
-                        playerName = gameController.getFirstPlayer();
-                    }
-                    else {
-                        playerName = gameController.getSecondPlayer();
-                    }
-                    gameController.player.flipBoard(pos[0], pos[1], player);
-                    gameController.board.setPosition(player, move);
-
-                    Platform.runLater(() -> lastMove.setText("Last move: " + playerName + " at " + (pos[0]+1) + ", "+ (pos[1]+1)));
-                }
-
-                updateBoard();
-                if(player==1) {
-                    disableBoard();
-                    Platform.runLater(() -> statusText.setText("Opponent's turn"));
-                }
-                else {
-                    Platform.runLater(() -> statusText.setText("Your turn"));
-                }
-            }
-
-            if (key.equals("YOURTURN")){
-                updateBoard();
-                Platform.runLater(() -> statusText.setText("Your turn"));
-                //AI mode;
-                //Set 0 zero for manual
-
-                if(this.gameController.gameMode.contains("ai")) {
-                    // calculate move AI
-                    //@TODO steeds gamcontroller. aanroepen miss even anders
-                    gameController.player.doMove(-1);
-                }
-            }
-
-            if(key.equals("WIN")) {
-                activeGame = false;
-                Platform.runLater(() -> {
-                    statusText.setText("You're the winner! Congratulations!");
-                    statusText.setFill(Color.GREEN);
-                });
-                disableBoard();
-                stopTimer();
-            }
-
-            if(key.equals("LOSS")) {
-                activeGame = false;
-                Platform.runLater(() -> {
-                    statusText.setText("You lost the game :(");
-                    statusText.setFill(Color.RED);
-                });
-                disableBoard();
-                stopTimer();
-            }
-
-            if(key.equals("DRAW")) {
-                activeGame = false;
-                Platform.runLater(() -> {
-                    statusText.setText("It's a draw!");
-                    statusText.setFill(Color.BLUE);
-                });
-                disableBoard();
-                stopTimer();
+            switch(key) {
+                case "PLAYERS":
+                    parser.parsePlayers(values);
+                    break;
+                case "CHALLENGE":
+                    parser.parseChallenge(values);
+                    break;
+                case "MATCH":
+                    parser.parseMatch(values);
+                    break;
+                case "MOVE":
+                    parser.parseMove(values);
+                    break;
+                case "YOURTURN":
+                    parser.parseYourTurn(values);
+                    break;
+                case "LOSS":
+                    parser.parseLoss(values);
+                    break;
+                case "BRAW":
+                    parser.parseDraw(values);
+                    break;
+                case "WIN":
+                    parser.parseWin(values);
+                    break;
             }
         }
     }
@@ -393,6 +259,167 @@ public class Controller implements Runnable{
 
         }
 
+    }
+
+
+    // ------------ PARSING ---------------- //
+
+
+    private class Parser {
+        private void parsePlayers(ArrayList<String> values) {
+            Platform.runLater(()->{
+                players.getChildren().clear();
+//
+                for(String value:values){
+                    if (!value.equals(Main.getPlayerName())){
+                        System.out.println(value);
+                        Button button = new Button("Challenge: " + value);
+                        button.setOnAction((event)->{
+                            //int position = grid.getChildren().indexOf(event.getSource());
+                            conn.sendCommand("challenge \"" + value + "\" \"" + gameController.getGameName() + "\"");
+                            //challenge accept 0
+                        });
+                        players.getChildren().add(button);
+                    }
+                }
+            });
+        }
+        private void parseChallenge(ArrayList<String> values) {
+            Platform.runLater(()-> {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Challenge Offered");
+                alert.setHeaderText(values.get(0) + " offered you to play the game: " + values.get(2));
+                alert.setContentText("Would you like to play this game?");
+
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK) {
+                    //send confurmation
+                    conn.sendCommand("challenge accept " + values.get(1));
+                    //stage.show();
+                    System.out.println("OK");
+                } else {
+                    System.out.println("Cancel");
+                }
+            });
+        }
+        private void parseMatch(ArrayList<String> values) {
+            gameController.board.clearBoard();
+
+            Platform.runLater(() -> {
+                stage.show();
+                statusText.setText("Opponent's turn");
+            });
+            activeGame = true;
+            startTimer();
+            String opponent = values.get(2);
+
+            if(Main.getPlayerName().equals(values.get(0))){
+                gameController.setPlayers(Main.getPlayerName(), values.get(2), 1, 2);
+            } else {
+                gameController.setPlayers(values.get(2), Main.getPlayerName(), 2, 1);
+            }
+
+            gameController.initBoard();
+
+            //Show playernames on screen
+            Platform.runLater(() -> {
+                HBox playerInfo = (HBox) top.getChildren().get(0);
+                HBox playColor = (HBox) top.getChildren().get(1);
+
+                Label playerName = (Label) playerInfo.getChildren().get(1);
+
+                playerName.setText(Main.getPlayerName() + " - ");
+                Label opponentName = (Label) playerInfo.getChildren().get(3);
+                opponentName.setText(opponent);
+
+                Label blackPlayer = (Label) playColor.getChildren().get(1);
+                blackPlayer.setText(gameController.getFirstPlayer() + " - ");
+                Label whitePlayer = (Label) playColor.getChildren().get(3);
+                whitePlayer.setText(gameController.getSecondPlayer());
+            });
+
+            //playertomove is beginner
+            //dus moet kruisje zijn
+            //dit is het statement als er een nieuwe match is
+
+            //makeGridpane
+            updateBoard();
+            if(values.get(0).equals(gameController.getFirstPlayer()) && gameController.getFirstPlayerID()==2) {
+                disableBoard();
+            }
+        }
+        private void parseMove(ArrayList<String> values) {
+            Platform.runLater(() -> statusText.setFill(Color.BLACK));
+            startTimer();
+            int player = 1;
+            if(!values.get(0).equals(Main.getPlayerName())){
+                player = 2;
+            }
+            int move = Integer.parseInt(values.get(1));
+
+            if(move>=0 && move<=((gameController.board.getSize()* gameController.board.getSize())-1) && !values.get(2).equals("Illegal move")) {
+                int[] pos = Board.convertPos(move);
+                String playerName;
+                if(gameController.getFirstPlayerID() == player) {
+                    playerName = gameController.getFirstPlayer();
+                }
+                else {
+                    playerName = gameController.getSecondPlayer();
+                }
+                gameController.player.flipBoard(pos[0], pos[1], player);
+                gameController.board.setPosition(player, move);
+
+                Platform.runLater(() -> lastMove.setText("Last move: " + playerName + " at " + (pos[0]+1) + ", "+ (pos[1]+1)));
+            }
+
+            updateBoard();
+            if(player==1) {
+                disableBoard();
+                Platform.runLater(() -> statusText.setText("Opponent's turn"));
+            }
+            else {
+                Platform.runLater(() -> statusText.setText("Your turn"));
+            }
+        }
+        private void parseYourTurn(ArrayList<String> values) {
+            updateBoard();
+            Platform.runLater(() -> statusText.setText("Your turn"));
+            //AI mode;
+            //Set 0 zero for manual
+
+            if(gameController.gameMode.contains("ai")) {
+                // calculate move AI
+                //@TODO steeds gamcontroller. aanroepen miss even anders
+                gameController.player.doMove(-1);
+            }
+        }
+        private void parseDraw(ArrayList<String> values) {
+            activeGame = false;
+            Platform.runLater(() -> {
+                statusText.setText("It's a draw!");
+                statusText.setFill(Color.BLUE);
+            });
+            disableBoard();
+            stopTimer();
+        }
+        private void parseWin(ArrayList<String> values) {
+            activeGame = false;
+            Platform.runLater(() -> {
+                statusText.setText("You're the winner! Congratulations!");
+                statusText.setFill(Color.GREEN);
+            });
+            disableBoard();
+            stopTimer();
+        }
+        private void parseLoss(ArrayList<String> values) {
+            activeGame = false;
+            Platform.runLater(() -> {
+                statusText.setText("You lost the game :(");
+                statusText.setFill(Color.RED);
+            });
+            disableBoard();
+            stopTimer();
+        }
     }
 
 }
