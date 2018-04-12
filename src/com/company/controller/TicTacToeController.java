@@ -10,15 +10,13 @@ import java.util.ArrayList;
 
 public class TicTacToeController extends GameController{
 
-    private int boardsize = 3;
+    private final int boardsize = 3;
 
     @Override
     void initBoard() {}
 
     public TicTacToeController() {
-
         makeBoard(boardsize);
-
     }
 
     public void makePlayer(String gm){

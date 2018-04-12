@@ -27,10 +27,9 @@ import java.util.*;
 public class Controller implements Runnable{
 
     private static final int RESPONSETIME = 9;
-    Connection conn;
+    private Connection conn;
     private ArrayList<Map.Entry<String, ArrayList<String>>> readerQueue;
 
-    //Board board;
 
     //Game Section
     GameController gameController;
@@ -44,7 +43,7 @@ public class Controller implements Runnable{
     private Text statusText;
 
     //??
-    private VBox top;
+    private HBox top;
     private VBox right;
     private BorderPane bottom;
     private Label timerText;
@@ -74,9 +73,6 @@ public class Controller implements Runnable{
     public void makeGameController(String gameName){
         GameFactory gameFactory = new GameFactory();
         gameController = gameFactory.makeGame(gameName);
-        //removed from main, currently no idea how to use it
-        // or in controller of gamecontroller
-        //gameController.makePlayer(playerMode);
     }
 
     public void setupFX(){
@@ -86,7 +82,7 @@ public class Controller implements Runnable{
         statusText = (Text) bottom.getLeft();
         lastMove = (Label) bottom.getCenter();
 
-        top = (VBox) pane.getTop();
+        top = (HBox) pane.getTop();
         right = (VBox) pane.getRight();
         timerText = (Label) right.getChildren().get(0);
 
@@ -209,11 +205,6 @@ public class Controller implements Runnable{
                 //TTT: X or O
                 //Rev: Black or White
 
-                //needs to be image
-
-
-
-                //button.setText(image);
                 button.setOnAction((event)->{
                     int position = grid.getChildren().indexOf(event.getSource());
                     gameController.setMove(position);
@@ -225,7 +216,6 @@ public class Controller implements Runnable{
         }
 
         //possible moves
-        //ArrayList<int[]> possibleMoves =  gameController.getPossibleMoves();
         ArrayList<int[]> possibleMoves =  gameController.player.getPossibleMoves(1, gameController.board, gameController.board.getSize());
 
         for(int[] move: possibleMoves) {
@@ -323,8 +313,9 @@ public class Controller implements Runnable{
 
             //Show playernames on screen
             Platform.runLater(() -> {
-                HBox playerInfo = (HBox) top.getChildren().get(0);
-                HBox playColor = (HBox) top.getChildren().get(1);
+                VBox top1 = (VBox)top.getChildren().get(0);
+                HBox playerInfo = (HBox) top1.getChildren().get(0);
+                HBox playColor = (HBox) top1.getChildren().get(1);
 
                 Label playerName = (Label) playerInfo.getChildren().get(1);
 

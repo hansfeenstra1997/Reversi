@@ -24,7 +24,6 @@ public class Connection {
     private void makeConnection() {
         try {
             Socket clientSocket = new Socket("145.37.157.115", 7789);
-            //Socket clientSocket = new Socket("145.33.225.170", 7789);
 
             reader = new Reader(clientSocket);
             writer = new Writer(clientSocket);
@@ -46,9 +45,5 @@ public class Connection {
 
     public Reader getReader() {
         return reader;
-    }
-
-    public Writer getWriter() {
-        return writer;
     }
 }

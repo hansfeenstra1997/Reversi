@@ -82,8 +82,8 @@ public class Board {
 
     public class Cell {
         // State 0 = empty
-        // State 1 = self (white)
-        // State 2 = opponent (black)
+        // State 1 = self
+        // State 2 = opponent
         private int state;
 
         private Cell() {

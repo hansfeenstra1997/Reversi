@@ -54,14 +54,12 @@ public class ChoiceScreen extends View {
         gameBorderPane.setTop(top);
         gameBorderPane.setCenter(content);
 
-        Text turn = new Text("test");
+        Text turn = new Text();
         turn.setId("turnText");
         gameBorderPane.setBottom(turn);
 
         Scene scene = new Scene(gameBorderPane);
         choiceStage.setScene(scene);
         choiceStage.show();
-
-
     }
 }
