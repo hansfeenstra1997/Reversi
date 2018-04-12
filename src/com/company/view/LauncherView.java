@@ -1,6 +1,7 @@
-package View;
+package com.company.view;
 
 import com.company.PlayerFinder;
+import com.company.controller.LauncherController;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -109,13 +110,13 @@ public class LauncherView extends Application {
         gameIcon.setLayoutX(launcherWidth - 100);
 
         settingIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            Controller.LauncherController.optionsButton();
+            LauncherController.optionsButton();
             settingIcon.setImage(settingsPicturePressed);
             gameIcon.setImage(gamePicture);
         });
 
         gameIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            Controller.LauncherController.gameButton();
+            LauncherController.gameButton();
             settingIcon.setImage(settingsPicture);
             gameIcon.setImage(gamePicturePressed);
         });
@@ -139,13 +140,13 @@ public class LauncherView extends Application {
         reversiButton.setLayoutY(30);
         reversiButton.setLayoutX(reversiButtonX);
         reversiButton.setOnAction((event) -> {
-            Controller.LauncherController.reversiButton();
+            LauncherController.reversiButton();
         });
 
         ticTacToeButton.setLayoutY(30);
         ticTacToeButton.setLayoutX(reversiButtonX + 100);
         ticTacToeButton.setOnAction((event) -> {
-            Controller.LauncherController.bkeButton();
+            LauncherController.bkeButton();
         });
 
         ImageView revIcon = new ImageView();
@@ -183,11 +184,11 @@ public class LauncherView extends Application {
         vsPlayer.setLayoutX(vsPlayerButtonX);
 
         vsPlayer.setOnAction((event) -> {
-            Controller.LauncherController.vsPlayerButton();
+            LauncherController.vsPlayerButton();
         });
 
         vsAiButton.setOnAction((event) -> {
-            Controller.LauncherController.vsAiButton();
+            LauncherController.vsAiButton();
         });
 
         specificPlayer.setText("Search for \n specific player?");
@@ -210,7 +211,7 @@ public class LauncherView extends Application {
         comboBox.setDisable(true);
         comboBox.valueProperty().addListener(new ChangeListener<String>() {
             @Override public void changed(ObservableValue ov, String t, String t1) {
-                Controller.LauncherController.aiSelection(t1);
+                LauncherController.aiSelection(t1);
             }
         });
 
@@ -261,12 +262,12 @@ public class LauncherView extends Application {
 
         start.layoutXProperty().bind(startPane.widthProperty().subtract(start.widthProperty()).divide(1.5));
         start.setLayoutY(10);
-        start.setOnAction((event) -> { Controller.LauncherController.startGamePressed(); });
+        start.setOnAction((event) -> { LauncherController.startGamePressed(); });
         start.setDisable(true);
 
         reset.layoutXProperty().bind(startPane.widthProperty().subtract(start.widthProperty()).divide(3));
         reset.setLayoutY(10);
-        reset.setOnAction((event) -> { Controller.LauncherController.resetButtonPressed(); });
+        reset.setOnAction((event) -> { LauncherController.resetButtonPressed(); });
 
         errorMessage.setLayoutY(40);
         errorMessage.layoutXProperty().bind(startPane.widthProperty().subtract(errorMessage.widthProperty()).divide(2));

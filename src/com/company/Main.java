@@ -1,230 +1,78 @@
 package com.company;
 
+import com.company.connection.Connection;
+import com.company.controller.Controller;
+import com.company.controller.GameFactory;
+import com.company.view.BoardView;
+import com.company.view.ChoiceScreen;
+import com.company.view.StartView;
+import com.company.view.LauncherView;
 import javafx.application.Application;
-import Controller.LauncherController;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import sun.misc.Launcher;
-
 
 public class Main extends Application {
 
-    private static GameFactory gameFactory = new GameFactory();
-    static Controller gameController;
+    private GameFactory gameFactory = new GameFactory();
 
-    static String playerName;
-    static int playerMode = 0;
-    static VBox players;
+    private static Controller headController;
+    private static String playerName;
+    private static int playerMode = 0;
+    private static VBox players;
     
     public static void main(String[] args) {
-        Application.launch(View.LauncherView.class, args);
+        Application.launch(LauncherView.class,args);
     }
 
-//    @Override
+    @Override
     public void start(Stage primaryStage) throws Exception {
-//        BorderPane mainPane = new BorderPane();
-//        mainPane.setMinSize(200, 200);
-//        VBox main = new VBox();
-//        GridPane controlPane = new GridPane();
-//
-//        Button startBtn = new Button("Start Tic-Tac-Toe");
-//        startBtn.setOnAction((event) -> startGame("Tic-tac-toe", 0));
-//        controlPane.add(startBtn, 0, 0);
-//
-//        Button startReversiBtn = new Button("Start Reversi");
-//        startReversiBtn.setOnAction((event) -> startGame("Reversi", 0));
-//        controlPane.add(startReversiBtn, 0, 1);
-//
-//        TextField usernameField = new TextField();
-//        controlPane.add(usernameField, 0, 2);
-//
-//        Button loginBtn = new Button("Login");
-//        loginBtn.setOnAction((event) -> login(usernameField.getText()));
-//        controlPane.add(loginBtn, 1, 2);
-//
-//        TextField commandField = new TextField();
-//        controlPane.add(commandField,0, 3);
-//        Button commandButton = new Button("Send");
-//        commandButton.setOnAction((event) -> {sendCommand(commandField.getText()); commandField.setText("");});
-//        controlPane.add(commandButton,1,3);
-//
-//        main.getChildren().add(controlPane);
-//
-//        mainPane.setCenter(main);
-//
-//        Scene scene = new Scene(mainPane);
-//        primaryStage.setScene(scene);
-//        primaryStage.show();
+        StartView startView = new StartView(primaryStage);
+
+        startView.getStartBtn().setOnAction((event) -> startGame("Tic-tac-toe", "ai-easy"));
+        startView.getStartReversiBtn().setOnAction((event) -> startGame("Reversi", "ai-hard"));
+
+        startView.getLoginBtn().setOnAction((event) -> login(startView.getUsernameFieldText()));
+        startView.getCommandButton().setOnAction((event) -> {sendCommand(startView.getCommandFieldText()); startView.setCommandFieldText("");});
     }
 
-    private void sendCommand(String command) {
+    private static void sendCommand(String command) {
         Connection.getInstance().sendCommand(command);
     }
 
     public static void login(String username) {
         playerName = username;
-        Connection.getInstance().sendCommand("login " + username);
+        sendCommand("login " + username);
     }
 
-    public static void startGame(String gameName, int gameMode) {
-
-        //kiezen tussen subscriben en match aangeboden krijgen
-        Connection.getInstance().sendCommand("subscribe " + gameName);
-
-
-        //makeScene(gameStage);
-
+    public static void startGame(String gameName, String gameMode) {
         Stage gameStage = new Stage();
         players = new VBox();
 
+        headController = new Controller(players, gameStage);
+        headController.makeGameController(gameName);
+        headController.makePlayer(gameMode);
 
-        gameController = gameFactory.makeGame(gameName, players, gameStage);
-        gameController.makePlayer(playerMode);
+        makeChoiceScreen(gameStage, gameName);
 
-        makeChoiceScreen(gameStage);
-
-        //makeScene(gameStage);
-
-        Thread thread = new Thread(gameController);
+        Thread thread = new Thread(headController);
         thread.start();
     }
 
-    private static void makeChoiceScreen(Stage gameStage){
-        Stage choiceStage = new Stage();
-
-        BorderPane gameBorderPane = new BorderPane();
-
-        gameBorderPane.setMinSize(400, 400);
-
-        VBox top = new VBox();
-        HBox topBox = new HBox();
-
-        Label topLabel = new Label("Choice menu:");
-        topBox.getChildren().add(top);
-
-        //left Playernames, right subscribe button
-        HBox content = new HBox();
-
-        HBox playerList = new HBox();
-        playerList.setMinWidth(200);
-        Label label = new Label("Playernames: " + LauncherController.getPlayerName());
-        Label gameLabel = new Label("\n\nGame: " + LauncherController.getGame());
-        System.out.println(LauncherController.specificPlayerIsSelected());
-        if (LauncherController.getOpponent() == "ai") {
-            Label modeLabel = new Label("\n\nMode: " + LauncherController.getAiMode());
-            Label reactionTimeLabel = new Label("\nAI Reaction Time: " + LauncherController.getResponseTime() + "seconds");
-            playerList.getChildren().addAll(modeLabel, reactionTimeLabel);
-        }
-        if (LauncherController.specificPlayerIsSelected() == true) {
-            Label searchForPlayerLabel = new Label("\n\nWaiting for  " + LauncherController.getSpecificPlayerName());
-            playerList.getChildren().addAll(searchForPlayerLabel);
-        }
-        Connection.getInstance().sendCommand("get playerlist");
-
-
-
-
-        //COnnection get playerlist
-        //alle values tonen in ding
-        //VBox outer = new VBox();
-        //outer.getChildren().add(players);
-        //outer.ddAll(label, players);
-        playerList.getChildren().addAll(label, players, gameLabel);
-
-
-
-        HBox subscribe = new HBox();
-        subscribe.setMinWidth(200);
-        Button subscribeButton = new Button("Subscribe");
-        //action
-        //makeScene(gameStage);
-
-        subscribe.getChildren().add(subscribeButton);
-
-        content.getChildren().addAll(playerList, subscribe);
-
-
-
-        gameBorderPane.setTop(top);
-        gameBorderPane.setCenter(content);
-
-        Text turn = new Text("test");
-        turn.setId("turnText");
-        gameBorderPane.setBottom(turn);
-
-        Scene scene = new Scene(gameBorderPane);
-        choiceStage.setScene(scene);
-        choiceStage.show();
-
+    private static void makeChoiceScreen(Stage gameStage, String gameName){
+        new ChoiceScreen(gameStage, players, gameName);
         makeScene(gameStage);
-
-
-
     }
 
-    public static void makeScene(Stage gameStage){
+    private static void makeScene(Stage gameStage){
+        new BoardView(gameStage);
+        headController.setupFX();
+    }
 
-        BorderPane gameBorderPane = new BorderPane();
-        VBox gameVBox = new VBox();
-
-        gameBorderPane.setMinSize(500, 500);
-
-        VBox top = new VBox();
-        VBox right = new VBox();
-        HBox playerInfo = new HBox();
-        HBox playColor = new HBox();
-        BorderPane statusBox = new BorderPane();
-
-        Label player = new Label("Player: ");
-        Label playerName = new Label();
-
-        Label opponent = new Label("Opponent: ");
-        Label opponentName = new Label();
-
-        playerInfo.getChildren().addAll(player, playerName, opponent, opponentName);
-
-        Label white = new Label("White: ");
-        Label whitePlayer = new Label();
-
-        Label black = new Label("Black: ");
-        Label blackPlayer = new Label();
-
-        Label timerText = new Label();
-        timerText.setFont(Font.font(40));
-
-        playColor.getChildren().addAll(black, blackPlayer, white, whitePlayer);
-
-        top.getChildren().addAll(playerInfo, playColor);
-        right.getChildren().add(timerText);
-
-        gameBorderPane.setRight(right);
-        gameBorderPane.setTop(top);
-        gameBorderPane.setCenter(gameVBox);
-
-        Text turn = new Text("");
-        turn.setId("statusText");
-        statusBox.setLeft(turn);
-        //statusBox.getChildren().add(turn);
-
-        Label lastMove = new Label();
-        statusBox.setCenter(lastMove);
-        //statusBox.getChildren().add(lastMove);
-        //HBox.setHgrow(statusBox.getChildren().get(1), Priority.ALWAYS);
-
-
-        gameBorderPane.setBottom(statusBox);
-
-        Scene scene = new Scene(gameBorderPane);
-        gameStage.setScene(scene);
-        //gameStage.show();
-
-        gameController.setupFX();
+    public static String getPlayerName() {
+        return playerName;
+    }
+    public static int getPlayerMode() {
+        return playerMode;
     }
 }
 

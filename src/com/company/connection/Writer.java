@@ -1,10 +1,7 @@
-package com.company;
+package com.company.connection;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Queue;
 import java.util.Scanner;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -27,9 +24,6 @@ public class Writer implements Runnable {
 
     @Override
     public void run() {
-        Scanner scanner = new Scanner(System.in);
-        String line;
-
         while(true){
             try {
                 String message = writeBuffer.take();
@@ -44,10 +38,6 @@ public class Writer implements Runnable {
     public void addMessage(String message) {
         try {
             writeBuffer.put(message);
-//            Iterator<String> it = writeBuffer.iterator();
-//            while(it.hasNext()) {
-//                System.out.println(it.next());
-//            }
         }
         catch(InterruptedException e) {
             e.printStackTrace();

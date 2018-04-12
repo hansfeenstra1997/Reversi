@@ -1,19 +1,9 @@
-package Controller;
+package com.company.controller;
 
 import com.company.ErrorWindow;
 import com.company.Main;
-import com.company.PlayerFinder;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-
-import java.util.Optional;
+import com.company.model.LauncherModel;
+import com.company.view.LauncherView;
 
 public class LauncherController {
 
@@ -21,8 +11,8 @@ public class LauncherController {
     private static String game = ""; // BKE or Reversi?
     private static String opponent = ""; // AI or Player?
     private static String specificPlayerName = ""; // If the Specific Player box is checked, this variable specifies his name.
-    private static String aiMode = ""; // What AI difficulty?
-    private static int gameID = 999; // 0 = Reversi, 1 = BKE
+    private static String aiMode; // What AI difficulty?
+    private static String aiDiff; // 0 = Reversi, 1 = BKE
 
     private static boolean modeIsSet = false; // Prevents the GUI from adding the same pane twice.
     private static boolean specificPlayer = false; // Has a specific player been selected?
@@ -32,7 +22,7 @@ public class LauncherController {
 
     public static void optionsButton() {
         if (optionsExpanded == false) {
-            Model.LauncherModel.optionsClicked();
+            LauncherModel.optionsClicked();
             optionsExpanded = true;
             System.out.println("Options button clicked");
         }
@@ -40,39 +30,45 @@ public class LauncherController {
 
     public static void gameButton() {
         if (optionsExpanded == true) {
-            Model.LauncherModel.gameClicked();
+            LauncherModel.gameClicked();
             optionsExpanded = false;
         }
     }
 
     public static void reversiButton() {
         if (gameModeSelected == false) {
-            Model.LauncherModel.reversiEnable();
+            LauncherModel.reversiEnable();
             gameModeSelected = true;
             game = "Reversi";
-            gameID = 0;
         }
     }
 
     public static void bkeButton() {
         if (gameModeSelected == false) {
-            Model.LauncherModel.bkeEnable();
+            LauncherModel.bkeEnable();
             gameModeSelected = true;
             game = "Tic-tac-toe";
-            gameID = 1;
         }
     }
 
     public static void aiSelection(String mode) {
+        System.out.println(mode);
         modeIsSet = true;
-        aiMode = mode;
+        mode = aiMode;
+        if (mode == "Smart Ai") {
+            aiMode = "ai-hard";
+            System.out.println(aiMode);
+        } else if (mode == "Random Ai") {
+            aiMode = "ai-easy";
+            System.out.println("Ai mode:" + aiMode);
+        }
 
     }
 
 
     public static void resetButtonPressed() {
-        Model.LauncherModel.resetSettings();
-        View.LauncherView.setError("");
+        LauncherModel.resetSettings();
+        LauncherView.setError("");
         gameModeSelected = false;
         optionsExpanded = false;
         opponentSelected = false;
@@ -83,19 +79,21 @@ public class LauncherController {
             ErrorWindow error = new ErrorWindow("Warning",
                     "You want to play against AI, but no AI mode has been selected",
                     "Please click on the dropdown box and select a mode.");
+            System.out.println(opponent + aiMode);
+
         }
         // If player name contains a space....
-        else if (View.LauncherView.getNameField().contains(" ")) {
+        else if (LauncherView.getNameField().contains(" ")) {
             ErrorWindow error = new ErrorWindow("Warning",
                     "Spaces are not allowed in names.",
                     "Please remove the spaces and try again.");
         } else {
-            Main.startGame(game, gameID);
-            Main.login(View.LauncherView.getNameField());
-            View.LauncherView.setError("Starting a game...");
-            View.LauncherView.disableAll();
+            Main.startGame(game, aiMode);
+            Main.login(LauncherView.getNameField());
+            LauncherView.setError("Starting a game...");
+            LauncherView.disableAll();
             System.out.println("== GAME SETTINGS == " +
-                    "\nUsername:                    " + View.LauncherView.getNameField() +
+                    "\nUsername:                    " + LauncherView.getNameField() +
                     "\nGame:                        " + game +
                     "\nOpponent:                    " + opponent);
             if (opponent == "ai") {
@@ -103,11 +101,11 @@ public class LauncherController {
                         "AI Mode:                    " + aiMode);
             }
             System.out.println(
-                    "Specific player selected:    " + View.LauncherView.specificPlayer() +
+                    "Specific player selected:    " + LauncherView.specificPlayer() +
                       "\n\n=== OPTIONS == " +
-                            "\nAI Reaction Time:            " + View.LauncherView.getReactionTime() + " Seconds" +
-                            "\nNightmode:                   " + View.LauncherView.nightModeChecked() +
-                            "\nSound Effects:               " + View.LauncherView.soundChecked());
+                            "\nAI Reaction Time:            " + LauncherView.getReactionTime() + " Seconds" +
+                            "\nNightmode:                   " + LauncherView.nightModeChecked() +
+                            "\nSound Effects:               " + LauncherView.soundChecked());
 
         }
     }
@@ -115,7 +113,7 @@ public class LauncherController {
     public static void vsPlayerButton() {
         if (opponentSelected == false) {
             opponent = "player";
-            Model.LauncherModel.playerButtonEnable();
+            LauncherModel.playerButtonEnable();
         }
         opponentSelected = true;
     }
@@ -123,7 +121,8 @@ public class LauncherController {
     public static void vsAiButton() {
         if (opponentSelected == false) {
             opponent = "ai";
-            Model.LauncherModel.aiButtonEnable();
+            System.out.println("Opponent set to " + opponent);
+            LauncherModel.aiButtonEnable();
         }
         opponentSelected = true;
     }
@@ -132,10 +131,10 @@ public class LauncherController {
     // GETTERS
     public static String getGame() { return game; }
     public static String getOpponent() {return opponent;}
-    public static String getPlayerName() { return View.LauncherView.getNameField();}
+    public static String getPlayerName() { return LauncherView.getNameField();}
     public static String getAiMode() {return aiMode;}
-    public static int getResponseTime() {return View.LauncherView.getReactionTime();}
-    public static Boolean specificPlayerIsSelected() { return View.LauncherView.specificPlayer(); }
+    public static int getResponseTime() {return LauncherView.getReactionTime();}
+    public static Boolean specificPlayerIsSelected() { return LauncherView.specificPlayer(); }
     public static String getSpecificPlayerName() {  return specificPlayerName;}
 
     // SETTERS

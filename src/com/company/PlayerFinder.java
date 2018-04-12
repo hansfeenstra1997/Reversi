@@ -1,17 +1,10 @@
 package com.company;
 
-import javafx.application.Application;
 import javafx.application.Platform;
-import Controller.LauncherController;
+import com.company.controller.LauncherController;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import javafx.util.Pair;
 
 import java.util.Optional;
 

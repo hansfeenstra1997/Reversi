@@ -1,4 +1,4 @@
-package com.company;
+package com.company.connection;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -12,13 +12,12 @@ import java.net.Socket;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Reader implements Runnable {
-    Socket socket;
-    BufferedReader inputStream;
-    ArrayList<Map.Entry<String, ArrayList<String>>> queue;
+    private Socket socket;
+    private BufferedReader inputStream;
+    private ArrayList<Map.Entry<String, ArrayList<String>>> queue;
+
     private static final String[][] responses = {
             {"SVR GAMELIST", "GAMES"},
             {"SVR PLAYERLIST", "PLAYERS"},
@@ -27,6 +26,7 @@ public class Reader implements Runnable {
             {"SVR GAME MOVE", "MOVE"},
             {"SVR GAME WIN", "WIN"},
             {"SVR GAME LOSS", "LOSS"},
+            {"SVR GAME DRAW", "DRAW"},
             {"SVR GAME CHALLENGE", "CHALLENGE"},
             {"SVR GAME CHALLENGE CANCELLED", "CANCELLED"}
     };
@@ -90,5 +90,9 @@ public class Reader implements Runnable {
             }
         }
         return null;
+    }
+
+    public ArrayList<Map.Entry<String, ArrayList<String>>> getQueue() {
+        return queue;
     }
 }

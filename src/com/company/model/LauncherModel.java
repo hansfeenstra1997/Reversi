@@ -1,17 +1,17 @@
-package Model;
+package com.company.model;
 
-import View.LauncherView;
+import com.company.view.LauncherView;
 
 public class LauncherModel {
 
     // GAME PANE
     public static void reversiEnable() {
-        View.LauncherView.ticTacToeButton.setDisable(true);
+        LauncherView.ticTacToeButton.setDisable(true);
         expandToMode();
     }
 
     public static void bkeEnable() {
-        View.LauncherView.reversiButton.setDisable(true);
+        LauncherView.reversiButton.setDisable(true);
         expandToMode();
     }
     //
@@ -21,15 +21,15 @@ public class LauncherModel {
     }
 
     public static void expandToMode() {
-        View.LauncherView.addMode();
+        LauncherView.addMode();
     }
 
     public static void optionsClicked() {
-        View.LauncherView.addMenu();
+        LauncherView.addMenu();
     }
 
     public static void gameClicked() {
-            View.LauncherView.removeMenu();
+            LauncherView.removeMenu();
     }
 
 
@@ -44,9 +44,9 @@ public class LauncherModel {
     }
 
     public static void resetSettings() {
-        View.LauncherView.removePanes();
-        View.LauncherView.ticTacToeButton.setDisable(false);
-        View.LauncherView.reversiButton.setDisable(false);
-        View.LauncherView.clearModeTweak();
+        LauncherView.removePanes();
+        LauncherView.ticTacToeButton.setDisable(false);
+        LauncherView.reversiButton.setDisable(false);
+        LauncherView.clearModeTweak();
     }
 }

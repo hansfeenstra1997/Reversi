@@ -1,4 +1,6 @@
-package com.company;
+package com.company.model;
+
+import javafx.scene.control.Cell;
 
 public class Board {
     private Cell[][] board;
@@ -17,7 +19,7 @@ public class Board {
         return board;
     }
 
-    public Cell[][] setup(int size) {
+    private Cell[][] setup(int size) {
         Cell[][] board = new Cell[size][size];
         for(int x=0; x<board.length; x++) {
             for(int y=0; y<board[1].length; y++) {
@@ -47,6 +49,10 @@ public class Board {
         board[x][y].setState(selfOrOpponent);
     }
 
+    public void setPosition(int selfOrOpponent, int x, int y) {
+        board[x][y].setState(selfOrOpponent);
+    }
+
     public void printBoard() {
         for(int x=0; x<size; x++) {
             for(int y=0; y<size; y++) {
@@ -56,10 +62,28 @@ public class Board {
         }
     }
 
+    public void setBoard(Board board) {
+        Cell[][] b = board.getBoard();
+
+        for(int x=0; x<8; x++) {
+            for(int y=0; y<8; y++) {
+                b[x][y].setState(this.board[x][y].getState());
+            }
+        }
+    }
+
+    public void clearBoard() {
+        int pos = (size*size)-1;
+        while(pos>=0) {
+            setPosition(0, pos);
+            pos--;
+        }
+    }
+
     public class Cell {
         // State 0 = empty
-        // State 1 = self (white)
-        // State 2 = opponent (black)
+        // State 1 = self
+        // State 2 = opponent
         private int state;
 
         private Cell() {

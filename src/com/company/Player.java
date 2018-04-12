@@ -1,12 +1,14 @@
 package com.company;
 
-public abstract class Player {
+import com.company.model.Board;
 
-    String playerName;
+import java.util.ArrayList;
 
-    public Player(String name){
-        playerName = name;
-    }
+public interface Player {
 
-    abstract void doMove(int position);
+    void doMove(int position);
+
+    ArrayList<int[]> getPossibleMoves(int player, Board board, int boardSize);
+    void flipBoard(int x, int y, int player);
+
 }
