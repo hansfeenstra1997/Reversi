@@ -3,6 +3,8 @@ package com.company;
 import com.company.connection.Connection;
 import com.company.model.Board;
 
+import java.util.ArrayList;
+
 public class AiPlayerTicTacToe extends ManualPlayerTicTacToe {
 
     private String gameMode;
@@ -27,12 +29,30 @@ public class AiPlayerTicTacToe extends ManualPlayerTicTacToe {
                 Connection.getInstance().sendCommand("move " + pos);
                 break;
             case "easy":
+                int[] xy = doEasyMove();
+                pos = xy[0] * boardSize + xy[1];
+                Connection.getInstance().sendCommand("move " + pos);
                 break;
             default:
                 break;
         }
     }
 
+    public int[] doEasyMove() {
+        ArrayList<int[]> availableMoves = new ArrayList<>();
+
+        for(int x = 0; x < 3; x++) {
+            for(int y = 0; y < 3; y++) {
+                if (cell[x][y].getState() == 0) {
+                    availableMoves.add(new int[]{x,y});
+                }
+            }
+        }
+        int range = (availableMoves.size() -1) + 1;
+        int get = (int)(Math.random() * range);
+
+        return availableMoves.get(get);
+    }
 
     private BestMove miniMaxTicTacToe(int player) {
         int winner = checkWinner(cell);

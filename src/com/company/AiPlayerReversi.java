@@ -26,12 +26,17 @@ public class AiPlayerReversi extends ManualPlayerReversi {
 
     @Override
     public void doMove(int position) {
+        int[] xy;
+        int pos;
         switch(gameMode) {
             case "easy":
+                xy = doEasyMove();
+                pos = xy[1] * 8 + xy[0];
+                Connection.getInstance().sendCommand("move " + pos);
                 break;
             case "hard":
-                int[] xy = doMoveDifferent();
-                int pos = xy[1] * 8 + xy[0];
+                xy = doMoveDifferent();
+                pos = xy[1] * 8 + xy[0];
                 Connection.getInstance().sendCommand("move " + pos);
                 break;
             default:
@@ -55,6 +60,16 @@ public class AiPlayerReversi extends ManualPlayerReversi {
         }
 
         return new int[]{x, y};
+    }
+
+    public int[] doEasyMove() {
+        ArrayList<int[]> moves = getPossibleMoves(1, this.board, boardSize);
+
+        int range = (moves.size() -1) + 1;
+        int get = (int)(Math.random() * range);
+
+        return moves.get(get);
+
     }
 
     public ArrayList<int[]> getPossibleMoves(int player, Board board, int boardSize) {
