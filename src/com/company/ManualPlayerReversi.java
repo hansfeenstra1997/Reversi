@@ -1,23 +1,20 @@
-package com.company.controller;
+package com.company;
 
-import com.company.*;
-import javafx.scene.image.Image;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
+import com.company.connection.Connection;
+import com.company.model.Board;
 
 import java.util.ArrayList;
 
-public class ReversiController extends GameController{
+public class ManualPlayerReversi implements Player {
 
-    private int boardsize = 8;
+    protected Board board;
     private static final ArrayList<String> directions = new ArrayList<>();
     private ArrayList<int[]> flipList = new ArrayList<>();
+    protected int boardSize;
 
-
-    public ReversiController() {
-        super();
-
-        makeBoard(boardsize);
+    public ManualPlayerReversi(Board board) {
+        this.board = board;
+        this.boardSize = board.getSize();
 
         directions.add("leftUpDiagonal");
         directions.add("up");
@@ -27,115 +24,38 @@ public class ReversiController extends GameController{
         directions.add("down");
         directions.add("leftDownDiagonal");
         directions.add("left");
-
-        //ai = new AIPlayerMiniMax(board);\
-
-        //ai = new AIReversiMiniMax(board);
-
-
-
     }
 
-    public void makePlayer(String gm){
+    @Override
+    public void doMove(int position) {
+        int[] move = Board.convertPos(position);
 
-        this.gameMode = gm;
-
-        switch(gameMode) {
-            case "manual":
-                player = new ManualPlayerReversi(board);
-                break;
-            case "ai-easy":
-                player = new AiPlayerReversi(board, "easy");
-                break;
-            case "ai-hard":
-                player = new AiPlayerReversi(board, "hard");
-                break;
-            default:
-                player = new ManualPlayerReversi(board);
+        if(checkMove(move[0], move[1], 1)) {
+            Connection.getInstance().sendCommand("move " + position);
         }
     }
 
-    @Override
-    void initBoard() {
-        setStartPosition();
-    }
-
-    @Override
-    String getGameName(){
-        return "Reversi";
-    }
-
-    private void setStartPosition() {
-        int row = (boardsize -1)/2;
-        int pos = (boardsize -1)/2;
-
-        board.setPosition(secondPlayerID, getPos(row, pos));
-        board.setPosition(firstPlayerID, getPos(row, pos+1));
-        board.setPosition(firstPlayerID, getPos(row+1, pos));
-        board.setPosition(secondPlayerID, getPos(row+1, pos+1));
-    }
-
-    private int getPos(int row, int pos) {
-        return (row*boardsize)+pos;
-    }
-
-    @Override
-    void setMove(int pos) {
-        player.doMove(pos);
-    }
-
-    @Override
-    protected void flipBoard(int x, int y, int player) {
-        for(String direction: directions) {
-            flip(x, y, direction, player);
+    private boolean checkMove(int x, int y, int player) {
+        if(board.getCellState(y,x) == 0) {
+            int[] result = checkValidMove(x, y, player);
+            if (result[0] != -1)
+                return true;
         }
+        return false;
     }
 
-    private void flip(int x, int y, String direction, int player) {
-        checkDirection(x, y, direction, 0, true, player);
-    }
-
-    @Override
-    Image setCellImage(int state) {
-        if(state == firstPlayerID){
-            return new Image("/black.png", 50, 50, false, false);
-            //return "B";
-        } else if(state == secondPlayerID){
-            return new Image("/white.png", 50, 50, false, false);
-            //return "W";
-        }
-        return null;
-    }
-
-    public ArrayList<int[]> getPossibleMoves() {
-        ArrayList<int[]> moves = new ArrayList<>();
-
-        for(int y=0; y<boardsize; y++) {
-            for(int x=0; x<boardsize; x++) {
-                if(board.getCellState(y, x) == 0) {
-                    int[] result = checkValidMove(x, y, 1);
-                    if(result[0] != -1) {
-                        moves.add(result);
-                    }
-                }
-            }
-        }
-        return moves;
-    }
-
-    private int[] checkValidMove(int x, int y, int player) {
+    protected int[] checkValidMove(int x, int y, int player) {
         int[] move = {-1,-1};
         for(String direction: directions) {
             if(checkDirection(x, y, direction, 0, false, player)) {
                 move[0] = x;
                 move[1] = y;
-                //System.out.println("Hit! : " + x + ", " + y + " in direction " + direction);
             }
         }
         return move;
     }
 
-    private boolean checkDirection(int x, int y, String direction, int flag, boolean flip, int player) {
+    public boolean checkDirection(int x, int y, String direction, int flag, boolean flip, int player) {
         switch(direction) {
             case "leftUpDiagonal":
                 if(x>0 && y>0) {
@@ -157,7 +77,7 @@ public class ReversiController extends GameController{
                 }
                 break;
             case "rightUpDiagonal":
-                if(x<boardsize-1 && y>0) {
+                if(x<boardSize-1 && y>0) {
                     x++;
                     y--;
                 }
@@ -167,7 +87,7 @@ public class ReversiController extends GameController{
                 }
                 break;
             case "right":
-                if(x<boardsize-1) {
+                if(x<boardSize-1) {
                     x++;
                 } else {
                     flipList = new ArrayList<>();
@@ -175,7 +95,7 @@ public class ReversiController extends GameController{
                 }
                 break;
             case "rightDownDiagonal":
-                if(x<boardsize-1 && y<boardsize-1) {
+                if(x<boardSize-1 && y<boardSize-1) {
                     x++;
                     y++;
                 } else {
@@ -184,7 +104,7 @@ public class ReversiController extends GameController{
                 }
                 break;
             case "down":
-                if(y<boardsize-1) {
+                if(y<boardSize-1) {
                     y++;
                 } else {
                     flipList = new ArrayList<>();
@@ -192,7 +112,7 @@ public class ReversiController extends GameController{
                 }
                 break;
             case "leftDownDiagonal":
-                if(x>0 && y<boardsize-1) {
+                if(x>0 && y<boardSize-1) {
                     x--;
                     y++;
                 } else {
@@ -210,22 +130,27 @@ public class ReversiController extends GameController{
                 break;
         }
 
-        if(board.getCellState(y,x) == player && flag>0) {
+        if(board.getCellState(y, x) == player && flag>0) {
+        //if(cell[x][y].getState() == player && flag>0) {
             if(flip) {
                 if(!flipList.isEmpty()) {
                     for (int[] flipItem : flipList) {
                         board.setPosition(player, getPos(flipItem[1], flipItem[0]));
-                        //ystem.out.println("Flip " + player + " - " + flipItem[0] + ", " + flipItem[1]);
+                        //cell[flipItem[0]][flipItem[1]].setState(player);
+                        //board.setPosition(player, getPos(flipItem[1], flipItem[0]));
+                        //System.out.println("Flip " + player + " - " + flipItem[0] + ", " + flipItem[1]);
                     }
                     flipList = new ArrayList<>();
                 }
             }
             return true;
         }
+        //else if((cell[x][y].getState()==player) && flag==0) {
         else if((board.getCellState(y,x)==player) && flag==0) {
             flipList = new ArrayList<>();
             return false;
         }
+        //if(cell[x][y].getState() == 0) {
         if(board.getCellState(y,x) == 0) {
             flipList = new ArrayList<>();
             return false;
@@ -239,4 +164,7 @@ public class ReversiController extends GameController{
         return checkDirection(x, y, direction, flag, flip, player);
     }
 
+    private int getPos(int row, int pos) {
+        return (row*boardSize)+pos;
+    }
 }

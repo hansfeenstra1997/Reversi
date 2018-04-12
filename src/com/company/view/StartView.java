@@ -45,6 +45,7 @@ public class StartView extends View {
 
         Scene scene = new Scene(mainPane);
         primaryStage.setScene(scene);
+        primaryStage.setTitle("Games4You");
         primaryStage.show();
     }
 

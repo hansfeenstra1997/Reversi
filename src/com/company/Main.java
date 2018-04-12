@@ -27,8 +27,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         StartView startView = new StartView(primaryStage);
 
-        startView.getStartBtn().setOnAction((event) -> startGame("Tic-tac-toe", 0));
-        startView.getStartReversiBtn().setOnAction((event) -> startGame("Reversi", 0));
+        startView.getStartBtn().setOnAction((event) -> startGame("Tic-tac-toe", "ai-hard"));
+        startView.getStartReversiBtn().setOnAction((event) -> startGame("Reversi", "ai-hard"));
         startView.getLoginBtn().setOnAction((event) -> login(startView.getUsernameFieldText()));
         startView.getCommandButton().setOnAction((event) -> {sendCommand(startView.getCommandFieldText()); startView.setCommandFieldText("");});
     }
@@ -42,7 +42,7 @@ public class Main extends Application {
         sendCommand("login " + username);
     }
 
-    private void startGame(String gameName, int gameMode) {
+    private void startGame(String gameName, String gameMode) {
         //kiezen tussen subscriben en match aangeboden krijgen
         //sendCommand("subscribe " + gameName);
 
@@ -51,6 +51,8 @@ public class Main extends Application {
 
         headController = new Controller(players, gameStage);
         headController.makeGameController(gameName);
+        headController.makePlayer(gameMode);
+
 
 
         makeChoiceScreen(gameStage, gameName);

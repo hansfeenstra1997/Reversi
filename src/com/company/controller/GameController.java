@@ -1,5 +1,6 @@
 package com.company.controller;
 
+import com.company.Player;
 import com.company.connection.Connection;
 import com.company.model.Board;
 import javafx.scene.image.Image;
@@ -19,6 +20,11 @@ public abstract class GameController {
     protected int firstPlayerID;
     protected int secondPlayerID;
 
+    //Player section
+    protected Player player;
+
+    protected String gameMode;
+
     GameController(){
         conn = Connection.getInstance();
     }
@@ -29,6 +35,7 @@ public abstract class GameController {
     abstract ArrayList<int[]> getPossibleMoves();
     abstract Image setCellImage(int state);
     abstract String getGameName();
+    abstract void makePlayer(String gm);
 
     public void makeBoard(int size) {
         board = new Board(size);

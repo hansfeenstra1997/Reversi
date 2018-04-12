@@ -26,6 +26,7 @@ public class Reader implements Runnable {
             {"SVR GAME MOVE", "MOVE"},
             {"SVR GAME WIN", "WIN"},
             {"SVR GAME LOSS", "LOSS"},
+            {"SVR GAME DRAW", "DRAW"},
             {"SVR GAME CHALLENGE", "CHALLENGE"},
             {"SVR GAME CHALLENGE CANCELLED", "CANCELLED"}
     };
