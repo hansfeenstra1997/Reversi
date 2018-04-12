@@ -64,7 +64,7 @@ public class ManualPlayerReversi implements Player {
     protected int[] checkValidMove(int x, int y, int player) {
         int[] move = {-1,-1};
         for(String direction: directions) {
-            if(checkDirection(x, y, direction, 0, false, player)) {
+            if(checkDirection(x, y, direction, 0, false, player, board)) {
                 move[0] = x;
                 move[1] = y;
             }
@@ -72,7 +72,7 @@ public class ManualPlayerReversi implements Player {
         return move;
     }
 
-    public boolean checkDirection(int x, int y, String direction, int flag, boolean flip, int player) {
+    public boolean checkDirection(int x, int y, String direction, int flag, boolean flip, int player, Board board) {
         switch(direction) {
             case "leftUpDiagonal":
                 if(x>0 && y>0) {
@@ -178,20 +178,30 @@ public class ManualPlayerReversi implements Player {
             int[] res = {x,y};
             flipList.add(res);
         }
-        return checkDirection(x, y, direction, flag, flip, player);
+        return checkDirection(x, y, direction, flag, flip, player, board);
     }
 
     private int getPos(int row, int pos) {
         return (row*boardSize)+pos;
     }
 
+    public void flipBoard(int x, int y, int player, Board board) {
+        flipBoardNew(x, y, player, board);
+    }
+
+
     public void flipBoard(int x, int y, int player) {
+        flipBoardNew(x, y, player, this.board);
+    }
+
+    private void flipBoardNew(int x, int y, int player, Board board) {
         for(String direction: directions) {
-            flip(x, y, direction, player);
+            flip(x, y, direction, player, board);
         }
     }
 
-    private void flip(int x, int y, String direction, int player) {
-        checkDirection(x, y, direction, 0, true, player);
+
+    private void flip(int x, int y, String direction, int player, Board board) {
+        checkDirection(x, y, direction, 0, true, player, board);
     }
 }

@@ -49,12 +49,26 @@ public class Board {
         board[x][y].setState(selfOrOpponent);
     }
 
+    public void setPosition(int selfOrOpponent, int x, int y) {
+        board[x][y].setState(selfOrOpponent);
+    }
+
     public void printBoard() {
         for(int x=0; x<size; x++) {
             for(int y=0; y<size; y++) {
                 System.out.print(board[x][y].getState() + " ");
             }
             System.out.println();
+        }
+    }
+
+    public void setBoard(Board board) {
+        Cell[][] b = board.getBoard();
+
+        for(int x=0; x<8; x++) {
+            for(int y=0; y<8; y++) {
+                b[x][y].setState(this.board[x][y].getState());
+            }
         }
     }
 
