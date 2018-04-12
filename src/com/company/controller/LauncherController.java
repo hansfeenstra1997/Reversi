@@ -20,6 +20,14 @@ public class LauncherController {
     private static boolean gameModeSelected = false; // Prevents the GUI from adding the same pane twice.
     private static boolean opponentSelected = false; // Prevents the GUI from adding the same pane twice.
 
+    public static void setNight() {
+        LauncherView.setNightmode(true);
+    }
+
+    public static void setLight() {
+        LauncherView.setNightmode(false);
+    }
+
     public static void optionsButton() {
         if (optionsExpanded == false) {
             LauncherModel.optionsClicked();

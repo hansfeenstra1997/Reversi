@@ -18,6 +18,7 @@ public class LauncherModel {
     public static void expandToName(int mode) {
         LauncherView.addModeTweak(mode);
         LauncherView.addStartButton();
+        LauncherView.addName();
     }
 
     public static void expandToMode() {

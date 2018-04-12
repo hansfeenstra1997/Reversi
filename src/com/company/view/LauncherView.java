@@ -76,6 +76,9 @@ public class LauncherView extends Application {
     private Image gamePicture = new Image("img/gameIcon.png");
     private Image gamePicturePressed = new Image("img/gameIcon-pressed.png");
 
+    public static String stylePane = "paneStyle-Light";
+    public static String styleLabel = "labelPanes";
+
     static ObservableList<String> options =
             FXCollections.observableArrayList(
                     "Randomized",
@@ -127,15 +130,14 @@ public class LauncherView extends Application {
     public void createGamePane() {
         int reversiButtonX = 140;
         gamePane.setLayoutY(gamePaneYPos);
-        modePane.setStyle("-fx-background-color: #707070");
-        gamePane.setStyle("-fx-border-color: #FFFFFF");
+        gamePane.getStyleClass().add(stylePane);
         gamePane.setPrefSize(launcherWidth, 100);
         gamePane.getStyleClass().add("Panes");
 
         gameLabel.setLayoutY(5);
         gameLabel.layoutXProperty().bind(gamePane.widthProperty().subtract(gameLabel.widthProperty()).divide(2));
         gameLabel.setTextFill(Color.rgb(255, 255, 255));
-        gameLabel.getStyleClass().add("LabelPanes");
+        gameLabel.getStyleClass().add(styleLabel);
 
         reversiButton.setLayoutY(30);
         reversiButton.setLayoutX(reversiButtonX);
@@ -167,15 +169,15 @@ public class LauncherView extends Application {
 
     public void createModePane() {
         int vsPlayerButtonX = 140;
-        modePane.setStyle("-fx-background-color: #707070");
+        modePane.getStyleClass().add(stylePane);
         modePane.setLayoutY(gamePaneYPos + 100);
         modePane.setPrefSize(launcherWidth, 100);
-        modePane.getStyleClass().add("Panes");
+        modePane.getStyleClass().add(stylePane);
 
         modeLabel.layoutXProperty().bind(modePane.widthProperty().subtract(modeLabel.widthProperty()).divide(2));
         modeLabel.setLayoutY(5);
         modeLabel.setTextFill(Color.rgb(255, 255, 255));
-        modeLabel.getStyleClass().add("LabelPanes");
+        modeLabel.getStyleClass().add(styleLabel);
 
         vsAiButton.setLayoutY(30);
         vsAiButton.setLayoutX(vsPlayerButtonX + 100);
@@ -235,10 +237,9 @@ public class LauncherView extends Application {
 
     public void createNamePane() {
         int nameLabelX = 50;
-        namePane.setStyle("-fx-background-color: #707070");
+        namePane.getStyleClass().add(stylePane);
         namePane.setLayoutY(modePaneYPos + 100);
         namePane.setPrefSize(launcherWidth, namePaneHeight);
-        namePane.getStyleClass().add("PanesLast");
 
         nameLabel.setLayoutY(15);
         nameLabel.setLayoutX(nameLabelX);
@@ -278,7 +279,7 @@ public class LauncherView extends Application {
     public void createMenuPane() {
         menuPane.setPrefSize(launcherWidth, launcherHeight - headerPaneHeight);
         menuPane.setLayoutY(headerPaneHeight);
-        menuPane.setStyle("-fx-background-color: #707070");
+        menuPane.getStyleClass().add(stylePane);
 
         // AI REACTION TIME
         reactionTimeLabel.setTextFill(Color.rgb(255, 255, 255));
@@ -300,6 +301,17 @@ public class LauncherView extends Application {
         nightMode.setLayoutY(170);
         nightMode.setLayoutX(10);
         nightMode.setTextFill(Color.rgb(255, 255, 255));
+        nightMode.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if (nightMode.isSelected() == true) {
+                    LauncherController.setNight();
+                } else {
+                    System.out.println("Executing");
+                    LauncherController.setLight();
+                }
+            }
+        });
 
         // SOUND
         soundOption.setLayoutY(200);
@@ -322,13 +334,19 @@ public class LauncherView extends Application {
         rootPane.getChildren().remove(menuPane);
     }
 
-    public static void addMenu() {
-        rootPane.getChildren().add(menuPane);
-    }
     public static void addMode() {
         rootPane.getChildren().add(modePane);
     }
-    public static void addName() { rootPane.getChildren().add(namePane); }
+
+    public static void addName() {
+        rootPane.getChildren().add(namePane);
+    }
+
+    public static void addPanes() {
+        rootPane.getChildren().addAll(modePane, namePane, startPane);
+    }
+    public static void addMenu() {
+        rootPane.getChildren().add(menuPane); }
 
     //  Player = 0 // AI = 1
     public static void addModeTweak(int mode) {
@@ -340,7 +358,6 @@ public class LauncherView extends Application {
             comboBox.setDisable(false);
             vsPlayer.setDisable(true);
         }
-        addName();
     }
 
     public static void clearModeTweak() {
@@ -383,6 +400,29 @@ public class LauncherView extends Application {
     public static void setError(String error) {
         errorMessage.setText(error);
     }
+    public static void setNightmode(boolean activated) {
+        if (activated == true) {
+            stylePane = "paneStyle-Dark";
+        }
+        if (activated == false) {
+            stylePane = "paneStyle-notDark";
+            gamePane.getStyleClass().clear();
+            System.out.println(gamePane.getStyleClass());
+        }
+
+        gamePane.getStyleClass().clear();
+        modePane.getStyleClass().clear();
+        startPane.getStyleClass().clear();
+        namePane.getStyleClass().clear();
+        menuPane.getStyleClass().clear();
+
+        gamePane.getStyleClass().add(stylePane);
+        modePane.getStyleClass().add(stylePane);
+        startPane.getStyleClass().add(stylePane);
+        namePane.getStyleClass().add(stylePane);
+        menuPane.getStyleClass().add(stylePane);
+    }
+
     public static void addStartButton() {
         rootPane.getChildren().add(startPane);
     }
@@ -399,6 +439,8 @@ public class LauncherView extends Application {
 
         primaryStage.setTitle("Boardgame Launcher");
         primaryStage.setScene(scene);
+        primaryStage.setWidth(457);
+        primaryStage.setHeight(381);
         primaryStage.show();
         primaryStage.setResizable(false);
 

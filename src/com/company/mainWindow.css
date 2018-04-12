@@ -3,19 +3,25 @@
     -fx-border-color: black;
 }
 
-.animalPane {
-    -fx-background-color: #333333;
-    -fx-padding: 15;
-    -fx-spacing: 10;
-    -fx-border-color: #888888;
-    -fx-border-width: 4;
+.paneStyle-Light {
+    -fx-background-color: #707070;
+    -fx-border-style: solid solid none solid;
+    -fx-border-width: 1;
+    -fx-border-color: #808080;
 }
 
-.animalPane:hover {
-    -fx-background-color: #555555;
-    -fx-padding: 15;
-    -fx-spacing: 10;
-    -fx-border-color: #888888;
+.paneStyle-notDark {
+    -fx-background-color: #707070;
+     -fx-border-style: solid solid none solid;
+     -fx-border-width: 1;
+    -fx-border-color: #808080;
+}
+
+.paneStyle-Dark {
+    -fx-background-color: #303030;
+    -fx-border-style: solid solid none solid;
+    -fx-border-width: 1;
+    -fx-border-color: #404040;
 }
 
 .ClassHeader {
@@ -50,12 +56,4 @@
         -fx-border-style: none none none solid;
         -fx-border-width: 1;
         -fx-border-color: white;}
-.ButtonPanelAnimal:hover {
-    -fx-background-color: #666666;
-    -fx-border-radius: 10;
-}
-
-.LabelHealth {
-    -fx-font: 26 calibri;
-    -fx-text-base-color: #333333;
 }
