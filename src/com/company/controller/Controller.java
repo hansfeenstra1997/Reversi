@@ -33,7 +33,7 @@ public abstract class Controller implements Runnable{
     Board board;
 
     //Player section
-    private Player player;
+    protected Player player;
 
     //need to cleanup
     private Stage stage;
