@@ -26,6 +26,7 @@
 
 .ClassHeader {
     -fx-font: 20 'Bookshelf Symbol 7';
+    -fx-text-fill: red;
 }
 
 .LabelHeader {
@@ -34,6 +35,7 @@
 
 .LabelPanes {
     -fx-font: 14 'Bookshelf Symbol 7';
+    -fx-text-fill: red;
 }
 
 .LabelClass {

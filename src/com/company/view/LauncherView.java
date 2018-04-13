@@ -442,6 +442,7 @@ public class LauncherView extends Application {
         primaryStage.setWidth(457);
         primaryStage.setHeight(381);
         primaryStage.show();
+        primaryStage.getIcons().add(new Image("/img/icon.png"));
         primaryStage.setResizable(false);
 
     }
