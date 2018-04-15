@@ -54,7 +54,6 @@ public class LauncherView extends Application {
 
     private static TextField nameInput = new TextField();
     private static TextField reactionInput = new TextField("5");
-    private static CheckBox specificPlayer = new CheckBox();
     private static CheckBox nightMode = new CheckBox("Nightmode");
     private static CheckBox soundOption = new CheckBox("Enable sound");
     private static CheckBox placeholderOption = new CheckBox("Placeholder");
@@ -193,20 +192,6 @@ public class LauncherView extends Application {
             LauncherController.vsAiButton();
         });
 
-        specificPlayer.setText("Search for \n specific player?");
-        specificPlayer.setTextFill(Color.rgb(255, 255, 255));
-        specificPlayer.setLayoutY(60);
-        specificPlayer.setLayoutX(vsPlayerButtonX - 20);
-        specificPlayer.setDisable(true);
-        specificPlayer.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if (specificPlayer.isSelected() == true) {
-                    PlayerFinder pf = new PlayerFinder();
-                }
-            }
-        });
-
         comboBox.setLayoutX(vsPlayerButtonX + 100);
         comboBox.setPromptText("AI Mode");
         comboBox.setLayoutY(60);
@@ -231,7 +216,7 @@ public class LauncherView extends Application {
         playerIcon.setLayoutX(0);
         playerIcon.setLayoutY(10);
 
-        modePane.getChildren().addAll(vsAiButton, vsPlayer, modeLabel, playerIcon, aiIcon, specificPlayer, comboBox);
+        modePane.getChildren().addAll(vsAiButton, vsPlayer, modeLabel, playerIcon, aiIcon, comboBox);
 
     }
 
@@ -351,7 +336,6 @@ public class LauncherView extends Application {
     //  Player = 0 // AI = 1
     public static void addModeTweak(int mode) {
         if (mode == 0) {
-            specificPlayer.setDisable(false);
             vsAiButton.setDisable(true);
         }
         if (mode == 1) {
@@ -361,7 +345,6 @@ public class LauncherView extends Application {
     }
 
     public static void clearModeTweak() {
-        specificPlayer.setDisable(true);
         vsAiButton.setDisable(false);
         comboBox.setDisable(true);
         vsPlayer.setDisable(false);
@@ -372,7 +355,6 @@ public class LauncherView extends Application {
     }
 
     public static void disableAll() {
-        specificPlayer.setDisable(true);
         vsAiButton.setDisable(true);
         comboBox.setDisable(true);
         vsPlayer.setDisable(true);
@@ -385,7 +367,6 @@ public class LauncherView extends Application {
     public static String getNameField() {
         return nameInput.getText();
     }
-    public static boolean specificPlayer() {return specificPlayer.isSelected();}
     public static boolean nightModeChecked() {
         return nightMode.isSelected();
     }

@@ -11,7 +11,7 @@ public class LauncherController {
     private static String game = ""; // BKE or Reversi?
     private static String opponent = ""; // AI or Player?
     private static String specificPlayerName = ""; // If the Specific Player box is checked, this variable specifies his name.
-    private static String aiMode; // What AI difficulty?
+    private static String mode; // What AI difficulty?
     private static String aiDiff; // 0 = Reversi, 1 = BKE
 
     private static boolean modeIsSet = false; // Prevents the GUI from adding the same pane twice.
@@ -62,13 +62,11 @@ public class LauncherController {
     public static void aiSelection(String mode) {
         System.out.println(mode);
         modeIsSet = true;
-        mode = aiMode;
+        mode = LauncherController.mode;
         if (mode == "Smart Ai") {
-            aiMode = "ai-hard";
-            System.out.println(aiMode);
+            LauncherController.mode = "ai-hard";
         } else if (mode == "Random Ai") {
-            aiMode = "ai-easy";
-            System.out.println("Ai mode:" + aiMode);
+            LauncherController.mode = "ai-easy";
         }
 
     }
@@ -83,11 +81,10 @@ public class LauncherController {
     }
 
     public static void startGamePressed() {
-        if (opponent == "ai" && aiMode == "") {
+        if (opponent == "ai" && mode == "") {
             ErrorWindow error = new ErrorWindow("Warning",
                     "You want to play against AI, but no AI mode has been selected",
                     "Please click on the dropdown box and select a mode.");
-            System.out.println(opponent + aiMode);
 
         }
         // If player name contains a space....
@@ -96,7 +93,7 @@ public class LauncherController {
                     "Spaces are not allowed in names.",
                     "Please remove the spaces and try again.");
         } else {
-            Main.startGame(game, aiMode);
+            Main.startGame(game, mode);
             Main.login(LauncherView.getNameField());
             LauncherView.setError("Starting a game...");
             LauncherView.disableAll();
@@ -106,10 +103,9 @@ public class LauncherController {
                     "\nOpponent:                    " + opponent);
             if (opponent == "ai") {
                 System.out.println(
-                        "AI Mode:                    " + aiMode);
+                        "AI Mode:                    " + mode);
             }
             System.out.println(
-                    "Specific player selected:    " + LauncherView.specificPlayer() +
                       "\n\n=== OPTIONS == " +
                             "\nAI Reaction Time:            " + LauncherView.getReactionTime() + " Seconds" +
                             "\nNightmode:                   " + LauncherView.nightModeChecked() +
@@ -122,6 +118,7 @@ public class LauncherController {
         if (opponentSelected == false) {
             opponent = "player";
             LauncherModel.playerButtonEnable();
+            mode = "manual";
         }
         opponentSelected = true;
     }
@@ -140,9 +137,8 @@ public class LauncherController {
     public static String getGame() { return game; }
     public static String getOpponent() {return opponent;}
     public static String getPlayerName() { return LauncherView.getNameField();}
-    public static String getAiMode() {return aiMode;}
+    public static String getMode() {return mode;}
     public static int getResponseTime() {return LauncherView.getReactionTime();}
-    public static Boolean specificPlayerIsSelected() { return LauncherView.specificPlayer(); }
     public static String getSpecificPlayerName() {  return specificPlayerName;}
 
     // SETTERS

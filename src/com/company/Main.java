@@ -3,10 +3,7 @@ package com.company;
 import com.company.connection.Connection;
 import com.company.controller.Controller;
 import com.company.controller.GameFactory;
-import com.company.view.BoardView;
-import com.company.view.ChoiceScreen;
-import com.company.view.StartView;
-import com.company.view.LauncherView;
+import com.company.view.*;
 import javafx.application.Application;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -21,14 +18,14 @@ public class Main extends Application {
     private static VBox players;
     
     public static void main(String[] args) {
-        Application.launch(LauncherView.class,args);
+        Application.launch(LauncherView.class, args);
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         StartView startView = new StartView(primaryStage);
 
-        startView.getStartBtn().setOnAction((event) -> startGame("Tic-tac-toe", "ai-easy"));
+        startView.getStartBtn().setOnAction((event) -> startGame("Tic-tac-toe", "manual"));
         startView.getStartReversiBtn().setOnAction((event) -> startGame("Reversi", "ai-hard"));
 
         startView.getLoginBtn().setOnAction((event) -> login(startView.getUsernameFieldText()));
