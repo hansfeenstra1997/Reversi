@@ -46,7 +46,7 @@ public class LauncherView extends Application {
 
     private Label labelLauncherHeader = new Label();
     private Label gameLabel = new Label("Select a game to play");
-    private Label modeLabel = new Label("Select an opponent");
+    private Label modeLabel = new Label("Manual play or AI Play?");
     private Label nameLabel = new Label("Specifiy a username");
     private Label reactionTimeLabel = new Label("A.I Reaction Time (in seconds)");
     private Label languageLabel = new Label("Change language");
@@ -61,8 +61,8 @@ public class LauncherView extends Application {
     public static Button ticTacToeButton = new Button("Play BKE");      // !NIET OP PUBLIC HOUDEN!
     private static Button start = new Button("Start a game");
     private Button reset = new Button("Reset options");
-    static Button vsAiButton = new Button("Versus AI");
-    static Button vsPlayer = new Button("Versus Player");
+    static Button vsAiButton = new Button("AI Mode");
+    static Button vsPlayer = new Button("Manual Mode");
     private Button switchEnglish = new Button("English");
     private Button switchDutch = new Button("Dutch");
 
@@ -81,8 +81,7 @@ public class LauncherView extends Application {
     static ObservableList<String> options =
             FXCollections.observableArrayList(
                     "Randomized",
-                    "Smart Ai",
-                    "Ai vs Ai"
+                    "Smart Ai"
             );
     static final ComboBox comboBox = new ComboBox(options);
 
@@ -180,9 +179,15 @@ public class LauncherView extends Application {
 
         vsAiButton.setLayoutY(30);
         vsAiButton.setLayoutX(vsPlayerButtonX + 100);
+        vsAiButton.setTooltip(
+                new Tooltip("Add yourself to a game as an AI. Requires no manual play")
+        );
 
         vsPlayer.setLayoutY(30);
         vsPlayer.setLayoutX(vsPlayerButtonX);
+        vsPlayer.setTooltip(
+                new Tooltip("Play as a human player. No AI involved.")
+        );
 
         vsPlayer.setOnAction((event) -> {
             LauncherController.vsPlayerButton();
@@ -194,6 +199,11 @@ public class LauncherView extends Application {
 
         comboBox.setLayoutX(vsPlayerButtonX + 100);
         comboBox.setPromptText("AI Mode");
+        comboBox.setTooltip(new Tooltip(
+                "How do you want the AI to act?" +
+                        "\n RANDOMIZED: AI will place randomly around the field." +
+                        "\n SMART AI: AI is more intelligent using a more advanced algorithm"
+        ));
         comboBox.setLayoutY(60);
         comboBox.setDisable(true);
         comboBox.valueProperty().addListener(new ChangeListener<String>() {

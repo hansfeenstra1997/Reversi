@@ -8,7 +8,7 @@ import javafx.application.Application;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-public class Main extends Application {
+public class Main {
 
     private GameFactory gameFactory = new GameFactory();
 
@@ -19,17 +19,6 @@ public class Main extends Application {
     
     public static void main(String[] args) {
         Application.launch(LauncherView.class, args);
-    }
-
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        StartView startView = new StartView(primaryStage);
-
-        startView.getStartBtn().setOnAction((event) -> startGame("Tic-tac-toe", "manual"));
-        startView.getStartReversiBtn().setOnAction((event) -> startGame("Reversi", "ai-hard"));
-
-        startView.getLoginBtn().setOnAction((event) -> login(startView.getUsernameFieldText()));
-        startView.getCommandButton().setOnAction((event) -> {sendCommand(startView.getCommandFieldText()); startView.setCommandFieldText("");});
     }
 
     private static void sendCommand(String command) {

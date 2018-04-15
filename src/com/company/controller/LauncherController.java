@@ -13,7 +13,6 @@ public class LauncherController {
     private static String specificPlayerName = ""; // If the Specific Player box is checked, this variable specifies his name.
     private static String mode; // What AI difficulty?
     private static String aiDiff; // 0 = Reversi, 1 = BKE
-
     private static boolean modeIsSet = false; // Prevents the GUI from adding the same pane twice.
     private static boolean specificPlayer = false; // Has a specific player been selected?
     private static boolean optionsExpanded = false; // Prevents the GUI from adding the same pane twice.
