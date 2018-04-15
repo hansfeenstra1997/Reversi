@@ -38,7 +38,7 @@ public class AiPlayerTicTacToe extends ManualPlayerTicTacToe {
         }
     }
 
-    public int[] doEasyMove() {
+    private int[] doEasyMove() {
         ArrayList<int[]> availableMoves = new ArrayList<>();
 
         for(int x = 0; x < 3; x++) {

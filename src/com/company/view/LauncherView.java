@@ -1,6 +1,5 @@
 package com.company.view;
 
-import com.company.PlayerFinder;
 import com.company.controller.LauncherController;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -66,14 +65,14 @@ public class LauncherView extends Application {
     private Button switchEnglish = new Button("English");
     private Button switchDutch = new Button("Dutch");
 
-    private Image reversiIcon = new Image("img/reversiIcon.png");
-    private Image tictactoeIcon = new Image("img/tictactoe.png");
-    private Image playerPicture = new Image("img/playerIcon.png");
-    private Image aiPicture = new Image("img/aiIcon.png");
-    private Image settingsPicture = new Image("img/settings.png");
-    private Image settingsPicturePressed = new Image("img/settings-pressed.png");
-    private Image gamePicture = new Image("img/gameIcon.png");
-    private Image gamePicturePressed = new Image("img/gameIcon-pressed.png");
+    private Image reversiIcon = new Image("reversiIcon.png");
+    private Image tictactoeIcon = new Image("tictactoe.png");
+    private Image playerPicture = new Image("playerIcon.png");
+    private Image aiPicture = new Image("aiIcon.png");
+    private Image settingsPicture = new Image("settings.png");
+    private Image settingsPicturePressed = new Image("settings-pressed.png");
+    private Image gamePicture = new Image("gameIcon.png");
+    private Image gamePicturePressed = new Image("gameIcon-pressed.png");
 
     public static String stylePane = "paneStyle-Light";
     public static String styleLabel = "labelPanes";
@@ -433,7 +432,7 @@ public class LauncherView extends Application {
         primaryStage.setWidth(457);
         primaryStage.setHeight(381);
         primaryStage.show();
-        primaryStage.getIcons().add(new Image("/img/icon.png"));
+        primaryStage.getIcons().add(new Image("/icon.png"));
         primaryStage.setResizable(false);
 
     }

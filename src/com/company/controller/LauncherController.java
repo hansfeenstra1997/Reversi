@@ -94,8 +94,6 @@ public class LauncherController {
         } else {
             Main.startGame(game, mode);
             Main.login(LauncherView.getNameField());
-            LauncherView.setError("Starting a game...");
-            LauncherView.disableAll();
             System.out.println("== GAME SETTINGS == " +
                     "\nUsername:                    " + LauncherView.getNameField() +
                     "\nGame:                        " + game +

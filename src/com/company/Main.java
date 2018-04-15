@@ -3,7 +3,10 @@ package com.company;
 import com.company.connection.Connection;
 import com.company.controller.Controller;
 import com.company.controller.GameFactory;
-import com.company.view.*;
+import com.company.view.BoardView;
+import com.company.view.ChoiceScreen;
+import com.company.view.LauncherView;
+import com.company.view.StartView;
 import javafx.application.Application;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -20,6 +23,7 @@ public class Main {
     public static void main(String[] args) {
         Application.launch(LauncherView.class, args);
     }
+
 
     private static void sendCommand(String command) {
         Connection.getInstance().sendCommand(command);
