@@ -287,6 +287,7 @@ public class Controller implements Runnable{
                 alert.setTitle("Challenge Offered");
                 alert.setHeaderText(values.get(0) + " offered you to play the game: " + values.get(2));
                 alert.setContentText("Would you like to play this game?");
+                stage.setAlwaysOnTop(true);
 
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {

@@ -26,6 +26,9 @@ public class ChoiceScreen extends View {
         Stage choiceStage = new Stage();
 
         BorderPane gameBorderPane = new BorderPane();
+
+
+
         gameBorderPane.getStylesheets().add(getClass().getResource("mainWindow.css").toExternalForm());
         gameBorderPane.getStyleClass().add(backgroundColor);
 

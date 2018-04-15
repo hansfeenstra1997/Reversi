@@ -1,6 +1,6 @@
 package com.company.controller;
 
-import com.company.ErrorWindow;
+import com.company.view.ErrorWindow;
 import com.company.Main;
 import com.company.model.LauncherModel;
 import com.company.view.LauncherView;
@@ -58,15 +58,14 @@ public class LauncherController {
         }
     }
 
-    public static void aiSelection(String mode) {
-        System.out.println(mode);
+    public static void aiSelection(String givenMode) {
         modeIsSet = true;
-        mode = LauncherController.mode;
-        if (mode == "Smart Ai") {
-            LauncherController.mode = "ai-hard";
-        } else if (mode == "Random Ai") {
-            LauncherController.mode = "ai-easy";
+        if (givenMode == "Smart Ai") {
+            mode = "ai-hard";
+        } else if (givenMode == "Randomized") {
+            mode = "ai-easy";
         }
+        System.out.println(mode);
 
     }
 
@@ -92,6 +91,7 @@ public class LauncherController {
                     "Spaces are not allowed in names.",
                     "Please remove the spaces and try again.");
         } else {
+            System.out.println("Mode is" + mode);
             Main.startGame(game, mode);
             Main.login(LauncherView.getNameField());
             System.out.println("== GAME SETTINGS == " +

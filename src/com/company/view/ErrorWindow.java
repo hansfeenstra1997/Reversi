@@ -1,4 +1,4 @@
-package com.company;
+package com.company.view;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
