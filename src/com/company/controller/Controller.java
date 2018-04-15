@@ -56,6 +56,13 @@ public class Controller implements Runnable{
 
     private Parser parser = new Parser();
 
+    public static boolean getNightModeBackground() {
+        if (LauncherController.getNightModeValue() == true) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     //reafcatoring needed
     public Controller(VBox playerList, Stage gameStage) {

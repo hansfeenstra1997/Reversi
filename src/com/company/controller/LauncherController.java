@@ -136,6 +136,13 @@ public class LauncherController {
     public static String getPlayerName() { return LauncherView.getNameField();}
     public static String getMode() {return mode;}
     public static int getResponseTime() {return LauncherView.getReactionTime();}
+    public static boolean getNightModeValue() {
+        if (LauncherView.nightModeChecked() == true) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     public static String getSpecificPlayerName() {  return specificPlayerName;}
 
     // SETTERS

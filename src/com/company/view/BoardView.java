@@ -1,6 +1,7 @@
 package com.company.view;
 
 import com.company.connection.Connection;
+import com.company.controller.Controller;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -22,7 +23,19 @@ public class BoardView extends View {
         BorderPane gameBorderPane = new BorderPane();
         VBox gameVBox = new VBox();
 
+        String fontColor = "";
+        String backgroundColor = "";
+        if (Controller.getNightModeBackground() == true) {
+            fontColor = "labelText-White";
+            backgroundColor = "paneStyle-Dark";
+        }  else {
+            fontColor = "labelText-Dark";
+            backgroundColor = "paneStyle-Light";
+        }
+
         gameBorderPane.setMinSize(500, 500);
+        gameBorderPane.getStylesheets().add(getClass().getResource("mainWindow.css").toExternalForm());
+        gameBorderPane.getStyleClass().add(backgroundColor);
 
         HBox top = new HBox();
         VBox topInfo = new VBox();
@@ -38,18 +51,26 @@ public class BoardView extends View {
         forfeitBox.setPadding(new Insets(0, 0, 0, 40));
 
         Label player = new Label("Player: ");
+        player.getStyleClass().add(fontColor);
         Label playerName = new Label();
+        playerName.getStyleClass().add(fontColor);
 
         Label opponent = new Label("Opponent: ");
+        opponent.getStyleClass().add(fontColor);
         Label opponentName = new Label();
+        opponentName.getStyleClass().add(fontColor);
 
         playerInfo.getChildren().addAll(player, playerName, opponent, opponentName);
 
         Label white = new Label("White: ");
+        white.getStyleClass().add(fontColor);
         Label whitePlayer = new Label();
+        whitePlayer.getStyleClass().add(fontColor);
 
         Label black = new Label("Black: ");
+        black.getStyleClass().add(fontColor);
         Label blackPlayer = new Label();
+        blackPlayer.getStyleClass().add(fontColor);
 
         Label timerText = new Label();
         timerText.setFont(Font.font(40));
@@ -75,5 +96,6 @@ public class BoardView extends View {
 
         Scene scene = new Scene(gameBorderPane);
         gameStage.setScene(scene);
+
     }
 }
