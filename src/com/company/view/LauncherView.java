@@ -140,12 +140,16 @@ public class LauncherView extends Application {
         reversiButton.setLayoutX(reversiButtonX);
         reversiButton.setOnAction((event) -> {
             LauncherController.reversiButton();
+            vsPlayer.setDisable(false);
+            vsAiButton.setDisable(false);
         });
 
         ticTacToeButton.setLayoutY(30);
         ticTacToeButton.setLayoutX(reversiButtonX + 100);
         ticTacToeButton.setOnAction((event) -> {
             LauncherController.bkeButton();
+            vsPlayer.setDisable(false);
+            vsAiButton.setDisable(false);
         });
 
         ImageView revIcon = new ImageView();
@@ -178,12 +182,14 @@ public class LauncherView extends Application {
 
         vsAiButton.setLayoutY(30);
         vsAiButton.setLayoutX(vsPlayerButtonX + 100);
+        vsAiButton.setDisable(true);
         vsAiButton.setTooltip(
                 new Tooltip("Add yourself to a game as an AI. Requires no manual play")
         );
 
         vsPlayer.setLayoutY(30);
         vsPlayer.setLayoutX(vsPlayerButtonX);
+        vsPlayer.setDisable(true);
         vsPlayer.setTooltip(
                 new Tooltip("Play as a human player. No AI involved.")
         );
@@ -328,13 +334,8 @@ public class LauncherView extends Application {
         rootPane.getChildren().remove(menuPane);
     }
 
-    public static void addMode() {
-        rootPane.getChildren().add(modePane);
-    }
-
-    public static void addName() {
-        rootPane.getChildren().add(namePane);
-    }
+    public static void addMode() {}
+    public static void addName() {}
 
     public static void addPanes() {
         rootPane.getChildren().addAll(modePane, namePane, startPane);
@@ -354,9 +355,9 @@ public class LauncherView extends Application {
     }
 
     public static void clearModeTweak() {
-        vsAiButton.setDisable(false);
+        vsAiButton.setDisable(true);
         comboBox.setDisable(true);
-        vsPlayer.setDisable(false);
+        vsPlayer.setDisable(true);
         ticTacToeButton.setDisable(false);
         reversiButton.setDisable(false);
         nameInput.setDisable(false);
@@ -425,7 +426,7 @@ public class LauncherView extends Application {
         createMenuPane();
         createStartPane();
         scene.getStylesheets().add("com/company/mainWindow.css");
-        rootPane.getChildren().addAll(headerPane, gamePane);
+        rootPane.getChildren().addAll(headerPane, gamePane, modePane, namePane, startPane);
 
         primaryStage.setTitle("Boardgame Launcher");
         primaryStage.setScene(scene);

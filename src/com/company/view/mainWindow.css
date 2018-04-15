@@ -24,6 +24,19 @@
     -fx-border-color: #404040;
 }
 
+.sideBar-Light {
+    -fx-background-color: #858585;
+}
+
+
+.sideBar-Dark {
+    -fx-background-color: #505050;
+}
+
+.sideBarLabel-Dark {
+    -fx-text-fill: #ffffff;
+}
+
 .ClassHeader {
     -fx-font: 20 'Bookshelf Symbol 7';
     -fx-text-fill: red;

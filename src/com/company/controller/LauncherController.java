@@ -11,7 +11,7 @@ public class LauncherController {
     private static String game = ""; // BKE or Reversi?
     private static String opponent = ""; // AI or Player?
     private static String specificPlayerName = ""; // If the Specific Player box is checked, this variable specifies his name.
-    private static String mode; // What AI difficulty?
+    private static String mode = ""; // What AI difficulty?
     private static String aiDiff; // 0 = Reversi, 1 = BKE
     private static boolean modeIsSet = false; // Prevents the GUI from adding the same pane twice.
     private static boolean specificPlayer = false; // Has a specific player been selected?
@@ -81,7 +81,7 @@ public class LauncherController {
     public static void startGamePressed() {
         if (opponent == "ai" && mode == "") {
             ErrorWindow error = new ErrorWindow("Warning",
-                    "You want to play against AI, but no AI mode has been selected",
+                    "You want to add an AI, but no mode has been selected!",
                     "Please click on the dropdown box and select a mode.");
 
         }

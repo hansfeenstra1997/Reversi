@@ -23,21 +23,26 @@ public class BoardView extends View {
         BorderPane gameBorderPane = new BorderPane();
         VBox gameVBox = new VBox();
 
-        String fontColor = "";
-        String backgroundColor = "";
+        String fontColor ;
+        String backgroundColor;
+        String sideBarColor;
+
         if (Controller.getNightModeBackground() == true) {
             fontColor = "labelText-White";
             backgroundColor = "paneStyle-Dark";
+            sideBarColor = "sideBar-Dark";
         }  else {
             fontColor = "labelText-Dark";
             backgroundColor = "paneStyle-Light";
+            sideBarColor = "sideBar-Light";
         }
 
         gameBorderPane.setMinSize(500, 500);
         gameBorderPane.getStylesheets().add(getClass().getResource("mainWindow.css").toExternalForm());
         gameBorderPane.getStyleClass().add(backgroundColor);
 
-        HBox top = new HBox();
+        VBox left = new VBox(50);
+        HBox top = new HBox(500);
         VBox topInfo = new VBox();
         VBox right = new VBox();
         HBox playerInfo = new HBox();
@@ -78,11 +83,17 @@ public class BoardView extends View {
         playColor.getChildren().addAll(black, blackPlayer, white, whitePlayer);
 
         topInfo.getChildren().addAll(playerInfo, playColor);
-        top.getChildren().addAll(topInfo, forfeitBox);
-        right.getChildren().add(timerText);
+        top.getChildren().addAll(topInfo);
+        top.getStyleClass().add(sideBarColor);
+        top.setPrefSize(400, 50);
+        left.getStyleClass().add(sideBarColor);
+        left.getChildren().addAll(forfeitBox);
+        left.setPrefSize(100, 500);
+        right.getChildren().addAll(timerText);
 
         gameBorderPane.setRight(right);
         gameBorderPane.setTop(top);
+        gameBorderPane.setLeft(left);
         gameBorderPane.setCenter(gameVBox);
 
         Text turn = new Text("");

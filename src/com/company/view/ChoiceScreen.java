@@ -13,14 +13,17 @@ import javafx.stage.Stage;
 
 public class ChoiceScreen extends View {
     public ChoiceScreen(Stage gameStage, VBox players, String gameName) {
-        String fontColor = "";
-        String backgroundColor = "";
+        String fontColor;
+        String backgroundColor;
+        String sideBarColor;
         if (Controller.getNightModeBackground() == true) {
             fontColor = "labelText-White";
             backgroundColor = "paneStyle-Dark";
+            sideBarColor = "sideBar-Dark";
         }  else {
             fontColor = "labelText-Dark";
             backgroundColor = "paneStyle-Light";
+            sideBarColor = "sideBar-Light";
         }
 
         Stage choiceStage = new Stage();

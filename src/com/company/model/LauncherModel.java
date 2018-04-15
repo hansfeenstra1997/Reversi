@@ -17,8 +17,6 @@ public class LauncherModel {
     //
     public static void expandToName(int mode) {
         LauncherView.addModeTweak(mode);
-        LauncherView.addStartButton();
-        LauncherView.addName();
     }
 
     public static void expandToMode() {
@@ -45,7 +43,6 @@ public class LauncherModel {
     }
 
     public static void resetSettings() {
-        LauncherView.removePanes();
         LauncherView.ticTacToeButton.setDisable(false);
         LauncherView.reversiButton.setDisable(false);
         LauncherView.clearModeTweak();
