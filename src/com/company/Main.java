@@ -14,9 +14,6 @@ public class Main {
     private static String playerName;
     private static int playerMode = 0;
 
-    private boolean loggedIn;
-    private StartView startView;
-
     /**
      * main in Main
      * @param args
@@ -40,22 +37,10 @@ public class Main {
      * @param username
      * This function will send the login command to the server.
      */
-    //need to be checked by wesley and jella
-//    public static void login(String username) {
-//        if (loggedIn){
-//            startView.setStatusText("Already logged in! " + username);
-//        } else {
-//            playerName = username.replaceAll("[^a-zA-Z0-9 ]", "");
-//            playerName = playerName.trim();
-//            sendCommand("login " + playerName);
-//            loggedIn = true;
-//            startView.setStatusText("Welcome " + playerName);
-//        }
-//    }
-
     public static void login(String username) {
-        playerName = username;
-        sendCommand("login " + username);
+        playerName = username.replaceAll("[^a-zA-Z0-9 ]", "");
+        playerName = playerName.trim();
+        sendCommand("login " + playerName);
     }
 
     /**
