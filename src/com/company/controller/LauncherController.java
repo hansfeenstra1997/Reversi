@@ -99,33 +99,47 @@ public class LauncherController {
                     "Spaces are not allowed in names.",
                     "Please remove the spaces and try again.");
         } else {
-            LauncherView.setError("Starting the game!");
-            LauncherView.disableAllButtons();
-            Main.startGame(game, mode);
-            if (mode != "manual") {
-                playerName = "[AI] " + getPlayerName();
-                Main.login(playerName);
-
-            } else {
-                Main.login(LauncherView.getNameField());
+            try {
+                LauncherView.setConnectionMessage("Attempting to connect...");
+                Socket clientSocket = new Socket(LauncherController.getIP(), LauncherController.getPort());
+                succes = true;
+            } catch (IOException e) {
+                ErrorWindow error = new ErrorWindow("Warning",
+                        "A connection could not be established",
+                        "Go to the Options menu and select a valid IP Address and Port Number");
+                LauncherController.connectionError(true);
+                succes = false;
             }
-            System.out.println("== GAME SETTINGS == " +
-                    "\nUsername:                    " + LauncherView.getNameField() +
-                    "\nGame:                        " + game +
-                    "\nOpponent:                    " + opponent);
-            if (opponent == "ai") {
+            if (succes == true) {
+                LauncherController.connectionError(false);
+                LauncherView.setError("Starting the game!");
+                LauncherView.disableAllButtons();
+                Main.startGame(game, mode);
+                if (mode != "manual") {
+                    playerName = "[AI] " + getPlayerName();
+                    Main.login(playerName);
+
+                } else {
+                    Main.login(LauncherView.getNameField());
+                }
+                System.out.println("== GAME SETTINGS == " +
+                        "\nUsername:                    " + LauncherView.getNameField() +
+                        "\nGame:                        " + game +
+                        "\nOpponent:                    " + opponent);
+                if (opponent == "ai") {
+                    System.out.println(
+                            "AI Mode:                    " + mode);
+                }
                 System.out.println(
-                        "AI Mode:                    " + mode);
-            }
-            System.out.println(
-                      "\n\n=== OPTIONS == " +
-                            "\nAI Reaction Time:            " + LauncherView.getReactionTime() + " Seconds" +
-                            "\nSelected IP:                 " + getIP()    + ":" + getPort() +
-                            "\nNightmode:                   " + LauncherView.nightModeChecked() +
-                            "\nSound Effects:               " + LauncherView.soundChecked());
+                        "\n\n=== OPTIONS == " +
+                                "\nAI Reaction Time:            " + LauncherView.getReactionTime() + " Seconds" +
+                                "\nSelected IP:                 " + getIP()    + ":" + getPort() +
+                                "\nNightmode:                   " + LauncherView.nightModeChecked() +
+                                "\nSound Effects:               " + LauncherView.soundChecked());
 
+            }
+            }
         }
-    }
 
     public static void vsPlayerButton() {
         if (opponentSelected == false) {
@@ -180,6 +194,9 @@ public class LauncherController {
             LauncherView.setConnectionMessage("Attempting to connect...");
             Socket clientSocket = new Socket(LauncherController.getIP(), LauncherController.getPort());
             succes = true;
+        } catch (UnknownHostException ex) {
+            LauncherController.connectionError(true);
+            succes = false;
         } catch (IOException e) {
             e.printStackTrace();
             LauncherController.connectionError(true);

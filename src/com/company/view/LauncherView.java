@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 
 public class LauncherView extends Application {
     static int launcherWidth = 450;
-    static int launcherHeight = 360;
+    static int launcherHeight = 400;
 
 
     static Pane rootPane = new Pane();
@@ -280,6 +280,7 @@ public class LauncherView extends Application {
         reset.setOnAction((event) -> { LauncherController.resetButtonPressed(); });
 
         errorMessage.setLayoutY(35);
+        errorMessage.setTextFill(Color.rgb(255, 255, 255));
         errorMessage.layoutXProperty().bind(startPane.widthProperty().subtract(errorMessage.widthProperty()).divide(2));
 
         startPane.getChildren().addAll(start, reset, errorMessage);
@@ -500,7 +501,7 @@ public class LauncherView extends Application {
         primaryStage.setTitle("Boardgame Launcher");
         primaryStage.setScene(scene);
         primaryStage.setWidth(457);
-        primaryStage.setHeight(381);
+        primaryStage.setHeight(380);
         primaryStage.show();
         primaryStage.getIcons().add(new Image("/icon.png"));
         primaryStage.setResizable(false);

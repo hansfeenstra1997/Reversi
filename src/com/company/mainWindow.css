@@ -1,12 +1,12 @@
 .root{
-    -fx-background-color: #666666;
+-fx-background-color: #707070;
     -fx-border-color: black;
     -fx-font: 13 'Bookshelf Symbol 7';
 }
 
 .paneStyle-Light {
     -fx-background-color: #707070;
-    -fx-border-style: solid solid none solid;
+    -fx-border-style: solid solid solid solid;
     -fx-border-width: 1;
     -fx-border-color: #808080;
 }
@@ -58,10 +58,10 @@
 .Panes {
         -fx-border-style: solid solid none solid;
         -fx-border-width: 1;
-        -fx-border-color: white;
+        -fx-border-color: #808080;
   }
 .PanesLast {
         -fx-border-style: none none none solid;
         -fx-border-width: 1;
-        -fx-border-color: white;}
+        -fx-border-color: #808080;}
 }
