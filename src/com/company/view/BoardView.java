@@ -2,22 +2,34 @@ package com.company.view;
 
 import com.company.connection.Connection;
 import com.company.controller.Controller;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import javax.swing.*;
+import java.time.Duration;
 import java.util.Comparator;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class BoardView extends View {
     private Stage stage;
-
+    private static int matchTimeVar;
+    private static Label matchTimeDisplay = new Label();
     public BoardView(Stage gameStage) {
         this.stage = gameStage;
         BorderPane gameBorderPane = new BorderPane();
@@ -41,21 +53,33 @@ public class BoardView extends View {
         gameBorderPane.getStylesheets().add(getClass().getResource("mainWindow.css").toExternalForm());
         gameBorderPane.getStyleClass().add(backgroundColor);
 
-        VBox left = new VBox(50);
+        StackPane left = new StackPane();
         HBox top = new HBox(500);
         VBox topInfo = new VBox();
         VBox right = new VBox();
+        VBox botLeft = new VBox();
+        VBox topLeft = new VBox();
         HBox playerInfo = new HBox();
         HBox playColor = new HBox();
         HBox forfeitBox = new HBox();
         BorderPane statusBox = new BorderPane();
 
+        CheckBox nightModeBox = new CheckBox("Enable NightMode");
+        CheckBox soundEffectBox = new CheckBox("Enable Sound");
+
         Button forfeitBtn = new Button("Forfeit");
+        Timer timer = new Timer();
         forfeitBtn.setOnAction((e) -> Connection.getInstance().sendCommand("forfeit"));
-        forfeitBox.getChildren().add(forfeitBtn);
         forfeitBox.setPadding(new Insets(0, 0, 0, 40));
 
         Label player = new Label("Player: ");
+
+        Label matchTimeLabel = new Label("Match Time:");
+        matchTimeLabel.setFont(Font.font(20));
+
+        Label timeLeft = new Label("Time Left:");
+        timeLeft.setFont(Font.font(20));
+
         player.getStyleClass().add(fontColor);
         Label playerName = new Label();
         playerName.getStyleClass().add(fontColor);
@@ -65,6 +89,7 @@ public class BoardView extends View {
         Label opponentName = new Label();
         opponentName.getStyleClass().add(fontColor);
 
+        playerInfo.setAlignment(Pos.CENTER);
         playerInfo.getChildren().addAll(player, playerName, opponent, opponentName);
 
         Label white = new Label("White: ");
@@ -85,10 +110,25 @@ public class BoardView extends View {
         topInfo.getChildren().addAll(playerInfo, playColor);
         top.getChildren().addAll(topInfo);
         top.getStyleClass().add(sideBarColor);
+
+        ////////////// SIDE PANEL
+        topLeft.getChildren().addAll(matchTimeLabel, matchTimeDisplay, timerText, timeLeft);
+        topLeft.setAlignment(Pos.TOP_CENTER);
+        matchTimeLabel.setAlignment(Pos.CENTER);
+        timerText.setAlignment(Pos.CENTER);
+
+        botLeft.getChildren().addAll(nightModeBox, soundEffectBox, forfeitBtn);
+        botLeft.setAlignment(Pos.BOTTOM_LEFT);
         top.setPrefSize(400, 50);
         left.getStyleClass().add(sideBarColor);
-        left.getChildren().addAll(forfeitBox);
-        left.setPrefSize(100, 500);
+        left.setAlignment(botLeft, Pos.BOTTOM_LEFT);
+        left.setAlignment(topLeft, Pos.TOP_LEFT);
+
+        left.setPrefSize(150, 500);
+        left.getChildren().addAll(botLeft, topLeft);
+
+        // TIMER UPDATES EVERY SECOND
+
         right.getChildren().addAll(timerText);
 
         gameBorderPane.setRight(right);
@@ -109,4 +149,11 @@ public class BoardView extends View {
         gameStage.setScene(scene);
 
     }
+
+    public static void updateTimer() {
+        System.out.println("Update...");
+        matchTimeVar++;
+        matchTimeDisplay.setText(Integer.toString(matchTimeVar) + " seconds");
+    }
+
 }

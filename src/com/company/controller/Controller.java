@@ -3,6 +3,7 @@ package com.company.controller;
 import com.company.*;
 import com.company.connection.Connection;
 import com.company.model.Board;
+import com.company.view.BoardView;
 import com.company.view.LoadIcon;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -175,6 +176,7 @@ public class Controller implements Runnable{
                     timerRunning = true;
                     if (interval > 0 && activeGame) {
                         Platform.runLater(() -> timerText.setText(Integer.toString(interval)));
+                        Platform.runLater(() -> updateMatchTime());
                         interval--;
                     } else {
                         stopTimer();
@@ -182,6 +184,10 @@ public class Controller implements Runnable{
                 }
             }, (RESPONSETIME*100), (RESPONSETIME*100));
         }
+    }
+
+    public void updateMatchTime() {
+       BoardView.updateTimer();
     }
 
     private void disableBoard() {
