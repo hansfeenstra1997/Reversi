@@ -4,6 +4,7 @@ import com.company.*;
 import com.company.connection.Connection;
 import com.company.model.Board;
 import com.company.view.BoardView;
+import com.company.view.ChoiceScreen;
 import com.company.view.LoadIcon;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -31,31 +32,34 @@ public class Controller implements Runnable{
     private Connection conn;
     private ArrayList<Map.Entry<String, ArrayList<String>>> readerQueue;
 
-
-    //Game Section
+    //Controller
     GameController gameController;
 
-    //view parts
-    //need to cleanup
-    private Stage stage;
-    private BorderPane pane;
-    private VBox main;
+    //View
+    BoardView boardView;
+    ChoiceScreen choiceScreen;
+
     private GridPane grid;
-    private Text statusText;
 
-    //??
-    private HBox top;
-    private VBox right;
-    private BorderPane bottom;
-    private Label timerText;
-    private Label lastMove;
-
-    private VBox players;
     private Timer timer;
     private boolean timerRunning = false;
     private boolean activeGame = false;
 
     private Parser parser = new Parser();
+
+    /**
+     * Constructor of Controller
+     * @param cView
+     * @param bView
+     * Initializes the variables of the controller.
+     */
+    public Controller(ChoiceScreen cView, BoardView bView) {
+        conn = Connection.getInstance();
+        readerQueue = conn.getReader().getQueue();
+
+        choiceScreen = cView;
+        boardView = bView;
+    }
 
     public static boolean getNightModeBackground() {
         if (LauncherController.getNightModeValue() == true) {
@@ -65,40 +69,36 @@ public class Controller implements Runnable{
         }
     }
 
-    //reafcatoring needed
-    public Controller(VBox playerList, Stage gameStage) {
-        conn = Connection.getInstance();
-        readerQueue = conn.getReader().getQueue();
-
-        stage = gameStage;
-        players = playerList;
-    }
-
+    /**
+     * makePlayer in Controller
+     * @param gameMode
+     * This function calls the makePlayer function in the concrete gameController
+     */
     public void makePlayer(String gameMode){
         gameController.makePlayer(gameMode);
     }
 
+    /**
+     * makeGameController in Controller
+     * @param gameName
+     * This function creates a gameFactory which will create a concrete gameController
+     */
     public void makeGameController(String gameName){
         GameFactory gameFactory = new GameFactory();
         gameController = gameFactory.makeGame(gameName);
     }
 
+    /**
+     * setupFX in Controller
+     * This function fills all the JavaFX variables for updateing the board status on the view
+     */
     public void setupFX(){
-        pane = (BorderPane) stage.getScene().getRoot();
-        main = (VBox) pane.getCenter();
-        bottom = (BorderPane) pane.getBottom();
-        statusText = (Text) bottom.getLeft();
-        lastMove = (Label) bottom.getCenter();
 
-        top = (HBox) pane.getTop();
-        right = (VBox) pane.getRight();
-        timerText = (Label) right.getChildren().get(0);
-
-        main.setAlignment(Pos.CENTER);
+        boardView.getCenter().setAlignment(Pos.CENTER);
         Label waitText = new Label("Waiting for match...");
-        main.getChildren().add(waitText);
+        boardView.getCenter().getChildren().add(waitText);
 
-        stage.setTitle("Game");
+        boardView.getStage().setTitle("Game");
 
         LoadIcon loadIconView = new LoadIcon();
         try {
@@ -109,9 +109,14 @@ public class Controller implements Runnable{
             System.out.println("Load icon not found");
         }
 
-        Platform.runLater(() -> main.getChildren().add(loadIconView));
+        Platform.runLater(() -> boardView.getCenter().getChildren().add(loadIconView));
     }
 
+    /**
+     * readQueue in Controller
+     * This function reads the queue from the reader, this function will execute the queueParser
+     * This function will be called every 500 milliseconds.
+     */
     private void readQueue() {
         Map.Entry<String, ArrayList<String>> command = readerQueue.get(0);
         System.out.println(command);
@@ -119,6 +124,11 @@ public class Controller implements Runnable{
         queueParser(command);
     }
 
+    /**
+     * queueParser in Controller
+     * @param command
+     * This function parses the command from the server. Calls the right function in private Parser class.
+     */
     private void queueParser(Map.Entry<String, ArrayList<String>> command){
         if(command != null){
             String key = command.getKey();
@@ -154,19 +164,27 @@ public class Controller implements Runnable{
         }
     }
 
+    /**
+     * stopTimer in Controller
+     * This function stops the timer that will show in screen.
+     */
     private void stopTimer() {
         if(timerRunning) {
             timer.cancel();
             timer.purge();
             timerRunning = false;
         }
-        Platform.runLater(() -> timerText.setText("-"));
+        Platform.runLater(() -> boardView.getTimerText().setText("-"));
     }
 
+    /**
+     * startTimer in Controller
+     * This function start the timer that will show in screen.
+     */
     private void startTimer() {
         stopTimer();
         if(activeGame) {
-            Platform.runLater(() -> timerText.setText(Integer.toString(RESPONSETIME)));
+            Platform.runLater(() -> boardView.getTimerText().setText(Integer.toString(RESPONSETIME)));
             timer = new Timer();
             timer.scheduleAtFixedRate(new TimerTask() {
                 int interval = RESPONSETIME;
@@ -175,7 +193,7 @@ public class Controller implements Runnable{
                 public void run() {
                     timerRunning = true;
                     if (interval > 0 && activeGame) {
-                        Platform.runLater(() -> timerText.setText(Integer.toString(interval)));
+                        Platform.runLater(() -> boardView.getTimerText().setText(Integer.toString(interval)));
                         Platform.runLater(() -> updateMatchTime());
                         interval--;
                     } else {
@@ -190,6 +208,10 @@ public class Controller implements Runnable{
        BoardView.updateTimer();
     }
 
+    /**
+     * disableBoard in Controller
+     * This function disables the buttons when the it's the opoonent's turn
+     */
     private void disableBoard() {
         Platform.runLater(() -> {
             for(Node node: grid.getChildren()) {
@@ -198,6 +220,10 @@ public class Controller implements Runnable{
         });
     }
 
+    /**
+     * updateBoard in Controller
+     * This function updates the view after every "MOVE" from the server
+     */
     void updateBoard(){
 
         grid = new GridPane();
@@ -240,14 +266,18 @@ public class Controller implements Runnable{
         }
 
         Platform.runLater(()->{
-            main.getChildren().clear();
-            main.getChildren().add(grid);
+            boardView.getCenter().getChildren().clear();
+            boardView.getCenter().getChildren().add(grid);
 
-            stage.sizeToScene();
-            stage.show();
+            boardView.getStage().sizeToScene();
+            boardView.getStage().show();
         });
     }
 
+    /**
+     * run in Controller
+     * This function executes every 500 milliseconds the readQueue function
+     */
     @Override
     public void run() {
         while(true){
@@ -271,7 +301,7 @@ public class Controller implements Runnable{
     private class Parser {
         private void parsePlayers(ArrayList<String> values) {
             Platform.runLater(()->{
-                players.getChildren().clear();
+                choiceScreen.getPlayerlist().getChildren().clear();
 //
                 for(String value:values){
                     if (!value.equals(Main.getPlayerName())){
@@ -282,7 +312,7 @@ public class Controller implements Runnable{
                             conn.sendCommand("challenge \"" + value + "\" \"" + gameController.getGameName() + "\"");
                             //challenge accept 0
                         });
-                        players.getChildren().add(button);
+                        choiceScreen.getPlayerlist().getChildren().add(button);
                     }
                 }
             });
@@ -293,7 +323,8 @@ public class Controller implements Runnable{
                 alert.setTitle("Challenge Offered");
                 alert.setHeaderText(values.get(0) + " offered you to play the game: " + values.get(2));
                 alert.setContentText("Would you like to play this game?");
-                stage.setAlwaysOnTop(true);
+                boardView.getStage().setAlwaysOnTop(true);
+
 
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
@@ -310,8 +341,8 @@ public class Controller implements Runnable{
             gameController.board.clearBoard();
 
             Platform.runLater(() -> {
-                stage.show();
-                statusText.setText("Opponent's turn");
+                boardView.getStage().show();
+                boardView.getTurnText().setText("Opponent's turn");
             });
             activeGame = true;
             startTimer();
@@ -327,7 +358,7 @@ public class Controller implements Runnable{
 
             //Show playernames on screen
             Platform.runLater(() -> {
-                VBox top1 = (VBox)top.getChildren().get(0);
+                VBox top1 = (VBox) boardView.getTop().getChildren().get(0);
                 HBox playerInfo = (HBox) top1.getChildren().get(0);
                 HBox playColor = (HBox) top1.getChildren().get(1);
 
@@ -343,10 +374,6 @@ public class Controller implements Runnable{
                 whitePlayer.setText(gameController.getSecondPlayer());
             });
 
-            //playertomove is beginner
-            //dus moet kruisje zijn
-            //dit is het statement als er een nieuwe match is
-
             //makeGridpane
             updateBoard();
             if(values.get(0).equals(gameController.getFirstPlayer()) && gameController.getFirstPlayerID()==2) {
@@ -354,7 +381,8 @@ public class Controller implements Runnable{
             }
         }
         private void parseMove(ArrayList<String> values) {
-            Platform.runLater(() -> statusText.setFill(Color.BLACK));
+            Platform.runLater(() -> boardView.getTurnText().setFill(Color.BLACK));
+
             startTimer();
             int player = 1;
             if(!values.get(0).equals(Main.getPlayerName())){
@@ -374,35 +402,35 @@ public class Controller implements Runnable{
                 gameController.player.flipBoard(pos[0], pos[1], player);
                 gameController.board.setPosition(player, move);
 
-                Platform.runLater(() -> lastMove.setText("Last move: " + playerName + " at " + (pos[0]+1) + ", "+ (pos[1]+1)));
+                Platform.runLater(() -> boardView.getLastMove().setText("Last move: " + playerName + " at " + (pos[0]+1) + ", "+ (pos[1]+1)));
             }
 
             updateBoard();
             if(player==1) {
                 disableBoard();
-                Platform.runLater(() -> statusText.setText("Opponent's turn"));
+                Platform.runLater(() -> boardView.getTurnText().setText("Opponent's turn"));
             }
             else {
-                Platform.runLater(() -> statusText.setText("Your turn"));
+                Platform.runLater(() -> boardView.getTurnText().setText("Your turn"));
             }
         }
         private void parseYourTurn(ArrayList<String> values) {
             updateBoard();
-            Platform.runLater(() -> statusText.setText("Your turn"));
+            Platform.runLater(() -> boardView.getTurnText().setText("Your turn"));
+
             //AI mode;
             //Set 0 zero for manual
 
             if(gameController.gameMode.contains("ai")) {
                 // calculate move AI
-                //@TODO steeds gamcontroller. aanroepen miss even anders
                 gameController.player.doMove(-1);
             }
         }
         private void parseDraw(ArrayList<String> values) {
             activeGame = false;
             Platform.runLater(() -> {
-                statusText.setText("It's a draw!");
-                statusText.setFill(Color.BLUE);
+                boardView.getTurnText().setText("It's a draw!");
+                boardView.getTurnText().setFill(Color.BLUE);
             });
             disableBoard();
             stopTimer();
@@ -410,8 +438,8 @@ public class Controller implements Runnable{
         private void parseWin(ArrayList<String> values) {
             activeGame = false;
             Platform.runLater(() -> {
-                statusText.setText("You're the winner! Congratulations!");
-                statusText.setFill(Color.GREEN);
+                boardView.getTurnText().setText("You're the winner! Congratulations!");
+                boardView.getTurnText().setFill(Color.GREEN);
             });
             disableBoard();
             stopTimer();
@@ -419,8 +447,8 @@ public class Controller implements Runnable{
         private void parseLoss(ArrayList<String> values) {
             activeGame = false;
             Platform.runLater(() -> {
-                statusText.setText("You lost the game :(");
-                statusText.setFill(Color.RED);
+                boardView.getTurnText().setText("You lost the game :(");
+                boardView.getTurnText().setFill(Color.RED);
             });
             disableBoard();
             stopTimer();

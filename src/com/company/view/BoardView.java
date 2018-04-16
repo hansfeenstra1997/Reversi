@@ -19,21 +19,27 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
-import javax.swing.*;
-import java.time.Duration;
-import java.util.Comparator;
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class BoardView extends View {
-    private Stage stage;
+    //private Stage stage;
     private static int matchTimeVar;
     private static Label matchTimeDisplay = new Label();
-    public BoardView(Stage gameStage) {
-        this.stage = gameStage;
-        BorderPane gameBorderPane = new BorderPane();
-        VBox gameVBox = new VBox();
+
+    Text turnText;
+    Label lastMove;
+
+    Label timerText;
+
+    public BoardView() {
+
+        stage = new Stage();
+        borderPane = new BorderPane();
+
+        center = new VBox();
+
+        borderPane.setMinSize(500, 500);
+
 
         String fontColor ;
         String backgroundColor;
@@ -52,9 +58,8 @@ public class BoardView extends View {
             headerLabelColor = "labelHeader-Dark";
         }
 
-        gameBorderPane.setMinSize(500, 500);
-        gameBorderPane.getStylesheets().add(getClass().getResource("mainWindow.css").toExternalForm());
-        gameBorderPane.getStyleClass().add(backgroundColor);
+        borderPane.getStylesheets().add(getClass().getResource("mainWindow.css").toExternalForm());
+        borderPane.getStyleClass().add(backgroundColor);
 
         StackPane left = new StackPane();
         HBox top = new HBox(500);
@@ -62,6 +67,7 @@ public class BoardView extends View {
         VBox right = new VBox();
         VBox botLeft = new VBox();
         VBox topLeft = new VBox();
+
         HBox playerInfo = new HBox();
         HBox playColor = new HBox();
         HBox forfeitBox = new HBox();
@@ -109,7 +115,7 @@ public class BoardView extends View {
         Label blackPlayer = new Label();
         blackPlayer.getStyleClass().add(fontColor);
 
-        Label timerText = new Label();
+        timerText = new Label();
         timerText.setFont(Font.font(40));
 
         playColor.getChildren().addAll(black, blackPlayer, white, whitePlayer);
@@ -138,22 +144,22 @@ public class BoardView extends View {
 
         right.getChildren().addAll(timerText);
 
-        gameBorderPane.setRight(right);
-        gameBorderPane.setTop(top);
-        gameBorderPane.setLeft(left);
-        gameBorderPane.setCenter(gameVBox);
+        borderPane.setRight(right);
+        borderPane.setTop(top);
+        borderPane.setCenter(center);
+        borderPane.setLeft(left);
 
-        Text turn = new Text("");
-        turn.setId("statusText");
-        statusBox.setLeft(turn);
+        turnText = new Text("");
+        turnText.setId("statusText");
+        statusBox.setLeft(turnText);
 
-        Label lastMove = new Label();
+        lastMove = new Label();
         statusBox.setCenter(lastMove);
 
-        gameBorderPane.setBottom(statusBox);
+        borderPane.setBottom(statusBox);
 
-        Scene scene = new Scene(gameBorderPane);
-        gameStage.setScene(scene);
+        Scene scene = new Scene(borderPane);
+        stage.setScene(scene);
 
     }
 
@@ -163,4 +169,15 @@ public class BoardView extends View {
         matchTimeDisplay.setText(Integer.toString(matchTimeVar) + " seconds");
     }
 
+    public Label getLastMove(){
+        return lastMove;
+    }
+
+    public Text getTurnText(){
+        return turnText;
+    }
+
+    public Label getTimerText(){
+        return timerText;
+    }
 }

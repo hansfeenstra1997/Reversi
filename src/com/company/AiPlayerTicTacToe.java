@@ -14,9 +14,9 @@ public class AiPlayerTicTacToe extends ManualPlayerTicTacToe {
     private Board.Cell[][] cell;
 
     /**
-     * Constructor of AiPlayerTicTacToe
-     * @param board the current board
-     * @param gameMode the gameMode, can be hard or easy
+     * Constructor Ai player Tic-tac-toe
+     * @param board - reference to Board
+     * @param gameMode - game mode (easy or hard)
      */
     public AiPlayerTicTacToe(Board board, String gameMode) {
         super(board);
@@ -29,7 +29,6 @@ public class AiPlayerTicTacToe extends ManualPlayerTicTacToe {
      */
     @Override
     public void doMove(int position) {
-        System.out.println("check");
         switch(gameMode) {
             case "hard":
                 BestMove best = miniMaxTicTacToe(GLOBAL_PLAYER);

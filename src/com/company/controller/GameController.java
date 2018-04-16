@@ -4,7 +4,6 @@ import com.company.Player;
 import com.company.connection.Connection;
 import com.company.model.Board;
 import javafx.scene.image.Image;
-import java.util.ArrayList;
 
 public abstract class GameController {
 
@@ -12,8 +11,6 @@ public abstract class GameController {
 
     Board board;
 
-    //startingPlayer = player with first move
-    //nextPlayer = player plays second
     //Players need to be refactored
     protected String firstPlayer;
     protected String secondPlayer;
@@ -22,9 +19,12 @@ public abstract class GameController {
 
     //Player section
     protected Player player;
-
     protected String gameMode;
 
+    /**
+     * Constructor of GameController
+     * Initializes the connection
+     */
     GameController(){
         conn = Connection.getInstance();
     }
@@ -35,10 +35,23 @@ public abstract class GameController {
     abstract String getGameName();
     abstract void makePlayer(String gm);
 
+    /**
+     * makeBoard in GameController
+     * @param size
+     * This function fills the Board model with a new instance
+     */
     public void makeBoard(int size) {
         board = new Board(size);
     }
 
+    /**
+     * setPlayers in GameController
+     * @param fp
+     * @param sp
+     * @param fpID
+     * @param spID
+     * This function sets the players and their ID for keeping track about which players is which playing color.
+     */
     public void setPlayers(String fp, String sp, int fpID, int spID){
         firstPlayer = fp;
         secondPlayer = sp;
@@ -46,14 +59,29 @@ public abstract class GameController {
         secondPlayerID = spID;
     }
 
+    /**
+     * getFirstPlayer in GameController
+     * @return
+     * This function returns the private firstPlayer field.
+     */
     public String getFirstPlayer() {
         return firstPlayer;
     }
 
+    /**
+     * getSecondPlayer in GameController
+     * @return
+     * This function returns the private secondPlayer field.
+     */
     public String getSecondPlayer() {
         return secondPlayer;
     }
 
+    /**
+     * getFirstPlayerID in GameController
+     * @return
+     * This function returns the private firstPlayerID field.
+     */
     public int getFirstPlayerID() {
         return firstPlayerID;
     }

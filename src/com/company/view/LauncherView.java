@@ -55,7 +55,7 @@ public class LauncherView extends Application {
 
     private static TextField nameInput = new TextField();
     private static TextField reactionInput = new TextField("5");
-    private static TextField ipInput = new TextField("145.33.225.170");
+    private static TextField ipInput = new TextField("localhost");
     private static TextField portInput = new TextField("7789");
 
     private static CheckBox nightMode = new CheckBox("Nightmode");

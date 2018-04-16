@@ -1,8 +1,5 @@
 package com.company.model;
 
-import com.company.controller.LauncherController;
-import javafx.scene.control.Cell;
-
 public class Board {
     private Cell[][] board;
     private static int size;

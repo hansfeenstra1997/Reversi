@@ -148,7 +148,6 @@ public class AiPlayerReversi extends ManualPlayerReversi {
             int difference = newScore - oldScore;
 
             if (difference > score) {
-                System.out.println("difference " + difference);
                 score = difference;
                 bestX = move[0];
                 bestY = move[1];

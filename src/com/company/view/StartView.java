@@ -1,11 +1,13 @@
 package com.company.view;
 
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class StartView extends View {
@@ -15,6 +17,7 @@ public class StartView extends View {
     private Button loginBtn;
     private TextField usernameField;
     private TextField commandField;
+    private Text status;
 
     public StartView(Stage primaryStage) {
         BorderPane mainPane = new BorderPane();
@@ -38,6 +41,9 @@ public class StartView extends View {
         controlPane.add(commandField,0, 3);
         commandButton = new Button("Send");
         controlPane.add(commandButton,1,3);
+
+        status = new Text("Not logged in");
+        controlPane.add(status, 0, 4);
 
         main.getChildren().add(controlPane);
 
@@ -67,7 +73,8 @@ public class StartView extends View {
     public String getCommandFieldText() {
         return commandField.getText();
     }
-    public void setCommandFieldText(String text) {
-        commandField.setText(text);
-    }
+
+    public void setCommandFieldText(String text) { Platform.runLater(() -> commandField.setText(text)); }
+    public void setStatusText(String text) { Platform.runLater(() -> status.setText(text));}
+
 }

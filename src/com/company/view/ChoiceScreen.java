@@ -12,7 +12,11 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class ChoiceScreen extends View {
-    public ChoiceScreen(Stage gameStage, VBox players, String gameName) {
+
+    private VBox pl;
+
+
+    public ChoiceScreen(String gameName) {
         String fontColor;
         String backgroundColor;
         String sideBarColor;
@@ -26,22 +30,23 @@ public class ChoiceScreen extends View {
             sideBarColor = "sideBar-Light";
         }
 
-        Stage choiceStage = new Stage();
+        stage = new Stage();
 
-        BorderPane gameBorderPane = new BorderPane();
+        borderPane = new BorderPane();
 
+        borderPane.getStylesheets().add(getClass().getResource("mainWindow.css").toExternalForm());
+        borderPane.getStyleClass().add(backgroundColor);
+        borderPane.setMinSize(400, 400);
 
-
-        gameBorderPane.getStylesheets().add(getClass().getResource("mainWindow.css").toExternalForm());
-        gameBorderPane.getStyleClass().add(backgroundColor);
-
-        gameBorderPane.setMinSize(400, 400);
+        pl = new VBox();
 
         VBox top = new VBox();
         HBox topBox = new HBox();
 
         Label topLabel = new Label("Choice menu:");
+
         topLabel.getStyleClass().add(fontColor);
+
         topBox.getChildren().add(top);
 
         //left Playernames, right subscribe button
@@ -54,7 +59,7 @@ public class ChoiceScreen extends View {
 
         Connection.getInstance().sendCommand("get playerlist");
 
-        playerList.getChildren().addAll(label, players);
+        playerList.getChildren().addAll(label, pl);
 
         HBox refresh = new HBox();
         refresh.setMinWidth(200);
@@ -73,15 +78,19 @@ public class ChoiceScreen extends View {
 
         content.getChildren().addAll(playerList, refresh, subscribe);
 
-        gameBorderPane.setTop(top);
-        gameBorderPane.setCenter(content);
+        borderPane.setTop(top);
+        borderPane.setCenter(content);
 
         Text turn = new Text();
         turn.setId("turnText");
-        gameBorderPane.setBottom(turn);
+        borderPane.setBottom(turn);
 
-        Scene scene = new Scene(gameBorderPane);
-        choiceStage.setScene(scene);
-        choiceStage.show();
+        Scene scene = new Scene(borderPane);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public VBox getPlayerlist(){
+        return pl;
     }
 }
