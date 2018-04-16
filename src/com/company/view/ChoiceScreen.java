@@ -1,6 +1,7 @@
 package com.company.view;
 
 import com.company.connection.Connection;
+import com.company.controller.Controller;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -14,11 +15,27 @@ public class ChoiceScreen extends View {
 
     private VBox pl;
 
+
     public ChoiceScreen(String gameName) {
+        String fontColor;
+        String backgroundColor;
+        String sideBarColor;
+        if (Controller.getNightModeBackground() == true) {
+            fontColor = "labelText-White";
+            backgroundColor = "paneStyle-Dark";
+            sideBarColor = "sideBar-Dark";
+        }  else {
+            fontColor = "labelText-Dark";
+            backgroundColor = "paneStyle-Light";
+            sideBarColor = "sideBar-Light";
+        }
+
         stage = new Stage();
 
         borderPane = new BorderPane();
 
+        borderPane.getStylesheets().add(getClass().getResource("mainWindow.css").toExternalForm());
+        borderPane.getStyleClass().add(backgroundColor);
         borderPane.setMinSize(400, 400);
 
         pl = new VBox();
@@ -27,6 +44,9 @@ public class ChoiceScreen extends View {
         HBox topBox = new HBox();
 
         Label topLabel = new Label("Choice menu:");
+
+        topLabel.getStyleClass().add(fontColor);
+
         topBox.getChildren().add(top);
 
         //left Playernames, right subscribe button
@@ -35,6 +55,8 @@ public class ChoiceScreen extends View {
         HBox playerList = new HBox();
         playerList.setMinWidth(200);
         Label label = new Label("Playernames:");
+        label.getStyleClass().add(fontColor);
+
         Connection.getInstance().sendCommand("get playerlist");
 
         playerList.getChildren().addAll(label, pl);

@@ -1,7 +1,6 @@
 package com.company.controller;
 
 public class GameFactory {
-
     /**
      * makeGame in GameFactory
      * @param game

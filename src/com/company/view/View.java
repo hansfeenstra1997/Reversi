@@ -1,6 +1,5 @@
 package com.company.view;
 
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -24,6 +23,5 @@ public abstract class View {
     public VBox getCenter(){
         return (VBox) borderPane.getCenter();
     }
-
 
 }

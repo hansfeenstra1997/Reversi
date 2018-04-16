@@ -1,5 +1,8 @@
 package com.company.connection;
 
+import com.company.controller.LauncherController;
+
+
 import java.io.IOException;
 import java.net.Socket;
 
@@ -13,10 +16,10 @@ public class Connection {
     /**
      * Constructor Connection
      */
+
     private Connection() {
         makeConnection();
     }
-
     /**
      * Singleton getInstance() to get instance of the Connection
      * @return Connection instance
@@ -34,7 +37,8 @@ public class Connection {
      */
     private void makeConnection() {
         try {
-            Socket clientSocket = new Socket("localhost", 7789);
+            Socket clientSocket = new Socket(LauncherController.getIP(), LauncherController.getPort());
+            System.out.println(clientSocket);
 
             reader = new Reader(clientSocket);
             writer = new Writer(clientSocket);
@@ -57,6 +61,7 @@ public class Connection {
     public void sendCommand(String command) {
         writer.addMessage(command);
     }
+
 
     /**
      * Get instance of the Reader

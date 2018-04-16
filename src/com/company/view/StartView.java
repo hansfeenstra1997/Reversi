@@ -73,6 +73,8 @@ public class StartView extends View {
     public String getCommandFieldText() {
         return commandField.getText();
     }
+
     public void setCommandFieldText(String text) { Platform.runLater(() -> commandField.setText(text)); }
     public void setStatusText(String text) { Platform.runLater(() -> status.setText(text));}
+
 }

@@ -14,6 +14,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -57,6 +59,14 @@ public class Controller implements Runnable{
 
         choiceScreen = cView;
         boardView = bView;
+    }
+
+    public static boolean getNightModeBackground() {
+        if (LauncherController.getNightModeValue() == true) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -184,6 +194,7 @@ public class Controller implements Runnable{
                     timerRunning = true;
                     if (interval > 0 && activeGame) {
                         Platform.runLater(() -> boardView.getTimerText().setText(Integer.toString(interval)));
+                        Platform.runLater(() -> updateMatchTime());
                         interval--;
                     } else {
                         stopTimer();
@@ -191,6 +202,10 @@ public class Controller implements Runnable{
                 }
             }, (RESPONSETIME*100), (RESPONSETIME*100));
         }
+    }
+
+    public void updateMatchTime() {
+       BoardView.updateTimer();
     }
 
     /**
@@ -308,6 +323,8 @@ public class Controller implements Runnable{
                 alert.setTitle("Challenge Offered");
                 alert.setHeaderText(values.get(0) + " offered you to play the game: " + values.get(2));
                 alert.setContentText("Would you like to play this game?");
+                boardView.getStage().setAlwaysOnTop(true);
+
 
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
@@ -365,6 +382,7 @@ public class Controller implements Runnable{
         }
         private void parseMove(ArrayList<String> values) {
             Platform.runLater(() -> boardView.getTurnText().setFill(Color.BLACK));
+
             startTimer();
             int player = 1;
             if(!values.get(0).equals(Main.getPlayerName())){
@@ -399,12 +417,12 @@ public class Controller implements Runnable{
         private void parseYourTurn(ArrayList<String> values) {
             updateBoard();
             Platform.runLater(() -> boardView.getTurnText().setText("Your turn"));
+
             //AI mode;
             //Set 0 zero for manual
 
             if(gameController.gameMode.contains("ai")) {
                 // calculate move AI
-                //@TODO steeds gamcontroller. aanroepen miss even anders
                 gameController.player.doMove(-1);
             }
         }

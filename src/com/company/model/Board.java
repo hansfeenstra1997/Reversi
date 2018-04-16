@@ -1,7 +1,5 @@
 package com.company.model;
 
-import javafx.scene.control.Cell;
-
 public class Board {
     private Cell[][] board;
     private static int size;

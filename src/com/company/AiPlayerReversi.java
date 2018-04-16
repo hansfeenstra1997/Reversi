@@ -21,7 +21,7 @@ public class AiPlayerReversi extends ManualPlayerReversi {
             {  2,  0,   3,  3,  3,  3,  0,  2},
             {200,  2,  20,  5,  5, 20,  2,200}};
 
-    private final int[][] SECOND_WEIGHT2 = {
+    private int[][] SECOND_WEIGHT2 = {
             {200,  2,  20,  5,  5, 20,  2,200},
             {  2,  -20,   3,  3,  3,  3,  -20,  2},
             {20,   3,  15,  6,  6, 15,  3, 20},
@@ -29,22 +29,12 @@ public class AiPlayerReversi extends ManualPlayerReversi {
             {5,    3,   6,  6,  6,  6,  3,  5},
             {20,   3,  15,  6,  6, 15,  3, 20},
             {  2,  -20,   3,  3,  3,  3,  -20,  2},
-            {200,  2,  20,  5,  5, 20,  2,200}};
-
-    private final int[][] SECOND_WEIGHT3 = {
-            {200,  2,  20,  5,  5, 20,  2,200},
-            {  2,  40,   3,  3,  3,  3,  40,  2},
-            {20,   3,  15,  6,  6, 15,  3, 20},
-            {5,    3,   6,  6,  6,  6,  3,  5},
-            {5,    3,   6,  6,  6,  6,  3,  5},
-            {20,   3,  15,  6,  6, 15,  3, 20},
-            {  2,  40,   3,  3,  3,  3,  40,  2},
             {200,  2,  20,  5,  5, 20,  2,200}};
 
     /**
-     * Constructor for Ai Player Reversi
-     * @param board - reference to Board
-     * @param gameMode - game mode (easy or hard)
+     * Constructor of AiPlayerReversi
+     * @param board the current board
+     * @param gameMode the gameMode, can be hard or easy
      */
     public AiPlayerReversi(Board board, String gameMode) {
         super(board);
@@ -52,8 +42,8 @@ public class AiPlayerReversi extends ManualPlayerReversi {
     }
 
     /**
-     * Calculate and set move based on game mode.
-     * @param position - position on board
+     * Does a Reversi move, can be hard or easy
+     * @param position not used, only for superclass
      */
     @Override
     public void doMove(int position) {
@@ -66,7 +56,7 @@ public class AiPlayerReversi extends ManualPlayerReversi {
                 Connection.getInstance().sendCommand("move " + pos);
                 break;
             case "hard":
-                xy = doMoveDifferent();
+                xy = doMoveDifferent2();
                 pos = xy[1] * 8 + xy[0];
                 Connection.getInstance().sendCommand("move " + pos);
                 break;
@@ -76,8 +66,9 @@ public class AiPlayerReversi extends ManualPlayerReversi {
     }
 
     /**
-     * Calculates which move is the best based on weight of the cells on the board.
-     * @return calculated move for AI
+     * Does a move according to points given for each cell.
+     * Will select the cell with the highest points
+     * @return int[] with x and y position
      */
     private int[] doMoveDifferent() {
         int score = -1;
@@ -99,8 +90,9 @@ public class AiPlayerReversi extends ManualPlayerReversi {
     }
 
     /**
-     *
-     * @return
+     * Same as doMoveDifferent, but if score equals the highest score,
+     * it will be random which will be selected.
+     * @return int[] with x and y position
      */
     public int[] doMoveDifferent2() {
         int score = -1;
@@ -111,9 +103,13 @@ public class AiPlayerReversi extends ManualPlayerReversi {
         for (int[] move : moves) {
             System.out.println(move[0] + ", " + move[1] + " - weight " + SECOND_WEIGHT[move[0]][move[1]]);
 
+            changeScore(SECOND_WEIGHT, this.board);
+
             if (SECOND_WEIGHT[move[0]][move[1]] == score) {
                 if ((int)(Math.random() * 2 + 1) == 2) {
                     score = SECOND_WEIGHT[move[0]][move[1]];
+                    y = move[1];
+                    x = move[0];
                 }
             }
 
@@ -128,11 +124,12 @@ public class AiPlayerReversi extends ManualPlayerReversi {
     }
 
     /**
-     * Calculates which move is the best based on weight of the cells, also looks at the result when setting a move
-     * @return calculated move for AI
+     * Does a move according to points given for each cell,
+     * but also adds the points of the cells it will get after doing a move
+     * @return int[] with x and y position
      */
     public int[] doMovePointsBoard() {
-        int score = -1;
+        int score = -100;
         int bestX = 0;
         int bestY = 0;
 
@@ -161,12 +158,15 @@ public class AiPlayerReversi extends ManualPlayerReversi {
     }
 
     /**
-     * Calculates total weight for all cells in the board
-     * @param board - reference to Board
-     * @return total weight
+     * Calculates the total points of the board for the specific player
+     * @param board The board where the calculation needs to be done
+     * @param player The player which points needs to be calculated
+     * @return The total amount of points
      */
     private int calculateBoard(Board board, int player) {
         int total = 0;
+
+        changeScore(SECOND_WEIGHT2, board);
 
         for (int x = 0; x < boardSize; x++) {
             for (int y = 0; y < boardSize; y++) {
@@ -180,9 +180,9 @@ public class AiPlayerReversi extends ManualPlayerReversi {
     }
 
     /**
-     * Gives back a copy of the current board
-     * @param oldBoard - reference to current Board
-     * @return copy of current Board
+     * Copies a board, and returns the new board
+     * @param oldBoard The board to be copied
+     * @return The new copied board
      */
     private Board copyBoard(Board oldBoard) {
         Board newBoard = new Board(boardSize);
@@ -193,8 +193,8 @@ public class AiPlayerReversi extends ManualPlayerReversi {
     }
 
     /**
-     * Gets a random move out of all the valid moves currently possible
-     * @return calculated move for AI
+     * Does an easy Reversi move, this is a random move within all the possible moves
+     * @return int[] with x and y position
      */
     private int[] doEasyMove() {
         ArrayList<int[]> moves = getPossibleMoves(1, this.board, boardSize);
@@ -206,9 +206,32 @@ public class AiPlayerReversi extends ManualPlayerReversi {
 
     }
 
-
+    private void changeScore(int[][] squares, Board board) {
+        if (board.getCellState(0,0) == 1) {
+            squares[1][1] = 20;
+            squares[0][1] = 10;
+            squares[1][0] = 10;
+        } else if (board.getCellState(0,7) == 1) {
+            squares[1][6] = 20;
+            squares[0][7] = 10;
+            squares[1][7] = 10;
+        } else if (board.getCellState(7,0) == 1) {
+            squares[6][1] = 20;
+            squares[6][0] = 10;
+            squares[7][1] = 10;
+        } else if (board.getCellState(7,7) == 1) {
+            squares[6][6] = 20;
+            squares[7][6] = 10;
+            squares[6][7] = 10;
+        }
+    }
     //-------------------------------------------------Minimax which is not used anymore
 
+    /**
+     * Will call the minimax Reversi function
+     * @return int[] with x and y position
+     */
+    @Deprecated
     private int[] doMinimaxMove() {
         BestMove bestMove = miniMaxReversi(1, this.board, 1);
 
@@ -217,12 +240,13 @@ public class AiPlayerReversi extends ManualPlayerReversi {
 
 
     /**
-     *
+     * Computes the BestMove, according to minimax
      * @param player int 1 or 2
      * @param board current board
      * @param depth how often the function is called recursive
-     * @return the best move
+     * @return BestMove (check BestMove innerclass)
      */
+    @Deprecated
     private BestMove miniMaxReversi(int player, Board board, int depth) {
         if (depth <= 0) {
             int val = calculateBoard(board, player);
@@ -246,28 +270,15 @@ public class AiPlayerReversi extends ManualPlayerReversi {
 
         BestMove currentBestMove = null;
 
-//        if(depth == 9) {
-//            for(int[] move: moves) {
-//                System.out.println(move[0] + " moves " + move[1]);
-//            }
-//        }
-
-        for(int[] move: moves) {
+        for (int[] move: moves) {
             Board copyBoard = copyBoard(board);
 
             flipBoard(move[0], move[1], player, copyBoard);
             copyBoard.setPosition(player, move[0], move[1]);
 
-//
-//            Board.Cell[][] tempCell = copyArray(cell);
-//
-//            setMove(move[0], move[1], player, tempCell);
-//            tempCell[move[0]][move[1]].setState(player);
-
             int val = miniMaxReversi(opponent, copyBoard, --depth).score;
 
             if (currentBestMove == null || (player == GLOBAL_PLAYER && val > currentBestMove.score) || (player == GLOBAL_OPPONENT && val < currentBestMove.score )) {
-                //System.out.println("new best");
                 currentBestMove = new BestMove(val, move[0], move[1]);
             }
 
@@ -276,17 +287,21 @@ public class AiPlayerReversi extends ManualPlayerReversi {
             currentBestMove = new BestMove(0,0,0);
         }
         return currentBestMove;
-
     }
 
-
-    int checkWinner(Board board) {
+    /**
+     * Checks if there is a winner on this board.
+     * @param board the current board
+     * @return 0 if there is a draw, 1 if player won, 2 if opponent won
+     */
+    @Deprecated
+    private int checkWinner(Board board) {
         int playerCounter = 0;
         int opponentCounter = 0;
 
-        for(int x = 0; x < 8; x++) {
-            for(int y =0; y < 8; y++) {
-                if(board.getCellState(x,y) == GLOBAL_PLAYER) {
+        for (int x = 0; x < 8; x++) {
+            for (int y =0; y < 8; y++) {
+                if (board.getCellState(x,y) == GLOBAL_PLAYER) {
                     playerCounter++;
                 } else if (board.getCellState(x,y) == GLOBAL_OPPONENT) {
                     opponentCounter++;
@@ -295,7 +310,7 @@ public class AiPlayerReversi extends ManualPlayerReversi {
 
         }
 
-        if(opponentCounter > playerCounter) {
+        if (opponentCounter > playerCounter) {
             return GLOBAL_OPPONENT;
         } else if(playerCounter > opponentCounter) {
             return GLOBAL_PLAYER;
@@ -303,7 +318,9 @@ public class AiPlayerReversi extends ManualPlayerReversi {
         return 0;
     }
 
-
+    /**
+     * Holds the current BestMove.
+     */
     class BestMove {
         int score, x, y;
 

@@ -7,6 +7,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 public class Writer implements Runnable {
+
     private BufferedWriter writer;
     private BlockingQueue<String> writeBuffer;
 
@@ -27,6 +28,7 @@ public class Writer implements Runnable {
     /**
      * Thread method - takes messages out of the write buffer and sends them to the server
      */
+
     @Override
     public void run() {
         while(true){

@@ -4,16 +4,13 @@ import com.company.connection.Connection;
 import com.company.controller.Controller;
 import com.company.view.BoardView;
 import com.company.view.ChoiceScreen;
+import com.company.view.LauncherView;
 import com.company.view.StartView;
 import javafx.application.Application;
-import javafx.scene.layout.*;
-import javafx.stage.Stage;
 
-import java.awt.*;
+public class Main {
 
-public class Main extends Application {
-
-    private Controller headController;
+    private static Controller headController;
     private static String playerName;
     private static int playerMode = 0;
 
@@ -26,24 +23,7 @@ public class Main extends Application {
      * This functions will start the application
      */
     public static void main(String[] args) {
-        launch(args);
-    }
-
-    /**
-     * start in Main
-     * @param primaryStage
-     * @throws Exception
-     * This function is the start of the JavaFX application. This is the function that wel be invoked when starting.
-     */
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        startView = new StartView(primaryStage);
-
-        startView.getStartBtn().setOnAction((event) -> startGame("Tic-tac-toe", "manual"));
-        startView.getStartReversiBtn().setOnAction((event) -> startGame("Reversi", "manual"));
-
-        startView.getLoginBtn().setOnAction((event) -> login(startView.getUsernameFieldText()));
-        startView.getCommandButton().setOnAction((event) -> {sendCommand(startView.getCommandFieldText()); startView.setCommandFieldText("");});
+        Application.launch(LauncherView.class, args);
     }
 
     /**
@@ -51,7 +31,7 @@ public class Main extends Application {
      * @param command
      * This function will send the command to the server via the writer
      */
-    private void sendCommand(String command) {
+    private static void sendCommand(String command) {
         Connection.getInstance().sendCommand(command);
     }
 
@@ -60,16 +40,22 @@ public class Main extends Application {
      * @param username
      * This function will send the login command to the server.
      */
-    private void login(String username) {
-        if (loggedIn){
-            startView.setStatusText("Already logged in! " + username);
-        } else {
-            playerName = username.replaceAll("[^a-zA-Z0-9 ]", "");
-            playerName = playerName.trim();
-            sendCommand("login " + playerName);
-            loggedIn = true;
-            startView.setStatusText("Welcome " + playerName);
-        }
+    //need to be checked by wesley and jella
+//    public static void login(String username) {
+//        if (loggedIn){
+//            startView.setStatusText("Already logged in! " + username);
+//        } else {
+//            playerName = username.replaceAll("[^a-zA-Z0-9 ]", "");
+//            playerName = playerName.trim();
+//            sendCommand("login " + playerName);
+//            loggedIn = true;
+//            startView.setStatusText("Welcome " + playerName);
+//        }
+//    }
+
+    public static void login(String username) {
+        playerName = username;
+        sendCommand("login " + username);
     }
 
     /**
@@ -79,7 +65,7 @@ public class Main extends Application {
      * This function will create a controller and that controller will make an concrete gamecontroller.
      * Also this function will start the queueReader thread.
      */
-    private void startGame(String gameName, String gameMode) {
+    public static void startGame(String gameName, String gameMode) {
 
         headController = new Controller(new ChoiceScreen(gameName), new BoardView());
         headController.makeGameController(gameName);

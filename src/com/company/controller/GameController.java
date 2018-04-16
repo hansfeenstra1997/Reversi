@@ -86,5 +86,8 @@ public abstract class GameController {
         return firstPlayerID;
     }
 
+    public int getSecondPlayerID(){
+        return secondPlayerID;
+    }
 
 }

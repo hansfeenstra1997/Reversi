@@ -43,6 +43,7 @@ public class ManualPlayerReversi implements Player {
         }
     }
 
+
     /**
      * If position on board is empty, check move. If checkValidMove does not return [-1,-1], return true, else false
      * @param x - x position
@@ -96,7 +97,6 @@ public class ManualPlayerReversi implements Player {
             if(checkDirection(x, y, direction, 0, false, player, board)) {
                 move[0] = x;
                 move[1] = y;
-                return move;
             }
         }
         return move;
@@ -216,6 +216,7 @@ public class ManualPlayerReversi implements Player {
         return checkDirection(x, y, direction, flag, flip, player, board);
     }
 
+
     /**
      * Converts row and position to a single position.
      * Example: row 3, position 1 will convert to (3*8)+1 = 28 -> this can be sent to the server
@@ -260,6 +261,7 @@ public class ManualPlayerReversi implements Player {
             flip(x, y, direction, player, board);
         }
     }
+
 
     /**
      * Check direction and tell checkDirection to flip if that direction is valid

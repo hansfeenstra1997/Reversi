@@ -1,0 +1,96 @@
+.root{
+    -fx-background-color: #666666;
+    -fx-border-color: black;
+}
+
+.paneStyle-Light {
+    -fx-background-color: #e6e6e6;
+    -fx-border-style: solid solid none solid;
+    -fx-border-width: 1;
+    -fx-border-color: #808080;
+}
+
+.paneStyle-notDark {
+    -fx-background-color: #707070;
+     -fx-border-style: solid solid none solid;
+     -fx-border-width: 1;
+    -fx-border-color: #808080;
+}
+
+.paneStyle-Dark {
+    -fx-background-color: #303030;
+    -fx-border-style: solid solid none solid;
+    -fx-border-width: 1;
+    -fx-border-color: #404040;
+}
+
+.sideBar-Light {
+    -fx-background-color: #858585;
+}
+
+
+.sideBar-Dark {
+    -fx-background-color: #606060;
+}
+
+.sideBarLabel-Dark {
+    -fx-text-fill: #ffffff;
+}
+
+.ClassHeader {
+    -fx-font: 20 'Bookshelf Symbol 7';
+    -fx-text-fill: red;
+}
+
+.LabelHeader {
+    -fx-font: 20 'Bookshelf Symbol 7';
+}
+
+.labelText-White {
+    -fx-font: 12 'Bookshelf Symbol 7';
+    -fx-text-fill: white;
+}
+
+.labelText-Dark {
+    -fx-font: 12 'Bookshelf Symbol 7';
+    -fx-text-fill: #2d2d2d;
+}
+
+labelHeader-White {
+    -fx-font: 23 'Bookshelf Symbol 7';
+    -fx-font-size: 20px;
+    -fx-text-fill: white;
+}
+
+labelHeader-Dark {
+    -fx-font: 23 'Bookshelf Symbol 7';
+    -fx-font-size: 20px;
+    -fx-text-fill: #2d2d2d;
+}
+
+.LabelPanes {
+    -fx-font: 14 'Bookshelf Symbol 7';
+    -fx-text-fill: red;
+}
+
+.LabelClass {
+    -fx-font: 18 'Bookshelf Symbol 7';
+    -fx-text-alignment: center;
+}
+
+
+.ButtonPanelAnimal {
+    -fx-background-color: #888888;
+    -fx-font: 14 'Bookshelf Symbol 7';
+}
+
+.Panes {
+        -fx-border-style: solid solid none solid;
+        -fx-border-width: 1;
+        -fx-border-color: white;
+  }
+.PanesLast {
+        -fx-border-style: none none none solid;
+        -fx-border-width: 1;
+        -fx-border-color: white;}
+}

@@ -42,4 +42,5 @@ public class ManualPlayerTicTacToe implements Player {
 
     @Override
     public void flipBoard(int x, int y, int player) {}
+
 }
