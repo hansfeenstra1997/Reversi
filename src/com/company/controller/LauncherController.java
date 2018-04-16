@@ -17,6 +17,7 @@ public class LauncherController {
 
     //SETTINGS:
     private static String game = ""; // BKE or Reversi?
+    private static String playerName;
     private static String opponent = ""; // AI or Player?
     private static String specificPlayerName = ""; // If the Specific Player box is checked, this variable specifies his name.
     private static String mode = ""; // What AI difficulty?
@@ -100,9 +101,14 @@ public class LauncherController {
         } else {
             LauncherView.setError("Starting the game!");
             LauncherView.disableAllButtons();
-            System.out.println("Mode is" + mode);
             Main.startGame(game, mode);
-            Main.login(LauncherView.getNameField());
+            if (mode != "manual") {
+                playerName = "[AI] " + getPlayerName();
+                Main.login(playerName);
+
+            } else {
+                Main.login(LauncherView.getNameField());
+            }
             System.out.println("== GAME SETTINGS == " +
                     "\nUsername:                    " + LauncherView.getNameField() +
                     "\nGame:                        " + game +
@@ -179,8 +185,12 @@ public class LauncherController {
     }
 
     public static int getPort() {
-        return Integer.parseInt(LauncherView.getPort());}
-
+        if (LauncherView.getLocalHost() == true) {
+            return 7789;
+        } else {
+            return Integer.parseInt(LauncherView.getPort());
+        }
+    }
     public static boolean getNightModeValue() {
         if (LauncherView.nightModeChecked() == true) {
             return true;

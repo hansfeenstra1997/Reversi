@@ -45,7 +45,7 @@ public class LauncherView extends Application {
 
     private Label labelLauncherHeader = new Label();
     private Label gameLabel = new Label("Select a game to play");
-    private Label ipLabel = new Label ("Specify the IP you would like to connect to");
+    private Label ipLabel = new Label ("Specify the IP to connect to");
     private Label portLabel = new Label(":");
     private Label modeLabel = new Label("Manual play or AI Play?");
     private Label nameLabel = new Label("Specifiy a username");
@@ -67,7 +67,7 @@ public class LauncherView extends Application {
     public static Button ticTacToeButton = new Button("Play BKE");      // !NIET OP PUBLIC HOUDEN!
     private static Button start = new Button("Start a game");
     private static Button reset = new Button("Reset options");
-    private static Button testConnection = new Button("Test connection");
+    private static Button testConnection = new Button("Test");
 
     static Button vsAiButton = new Button("AI Mode");
     static Button vsPlayer = new Button("Manual Mode");
@@ -300,26 +300,26 @@ public class LauncherView extends Application {
         // IP SETTINGS
         ipLabel.setTextFill(Color.rgb(255, 255, 255));
         ipLabel.setLayoutY(10);
-        ipLabel.setLayoutX(launcherWidth - 250);
+        ipLabel.setLayoutX(launcherWidth - 230);
 
         ipInput.setLayoutY(30);
-        ipInput.setLayoutX(launcherWidth - 250);
+        ipInput.setLayoutX(launcherWidth - 230);
         ipInput.setPrefWidth(100);
 
         portLabel.setTextFill(Color.rgb(255, 255, 255));
         portLabel.setLayoutY(35);
-        portLabel.setLayoutX(launcherWidth - 145);
+        portLabel.setLayoutX(launcherWidth - 125);
 
         portInput.setLayoutY(30);
-        portInput.setLayoutX(launcherWidth - 135);
+        portInput.setLayoutX(launcherWidth - 115);
         portInput.setPrefWidth(50);
 
         testConnection.setLayoutY(55);
-        testConnection.setLayoutX(launcherWidth - 120);
+        testConnection.setLayoutX(launcherWidth - 100);
         testConnection.setOnAction((event) -> { LauncherController.connectionTest(); });
         localHostBox.setTextFill(Color.rgb(255, 255, 255));
         localHostBox.setLayoutY(60);
-        localHostBox.setLayoutX(launcherWidth - 250);
+        localHostBox.setLayoutX(launcherWidth - 230);
         localHostBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -333,7 +333,7 @@ public class LauncherView extends Application {
             }
         });
         connectionTestResult.setLayoutY(80);
-        connectionTestResult.setLayoutX(launcherWidth - 250);
+        connectionTestResult.setLayoutX(launcherWidth - 230);
         connectionTestResult.setTextFill(Color.rgb(255, 255, 255));
 
         // LANGUAGE SETTING

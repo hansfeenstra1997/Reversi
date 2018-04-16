@@ -194,7 +194,6 @@ public class Controller implements Runnable{
                     timerRunning = true;
                     if (interval > 0 && activeGame) {
                         Platform.runLater(() -> boardView.getTimerText().setText(Integer.toString(interval)));
-                        Platform.runLater(() -> updateMatchTime());
                         interval--;
                     } else {
                         stopTimer();
@@ -296,8 +295,6 @@ public class Controller implements Runnable{
 
 
     // ------------ PARSING ---------------- //
-
-
     private class Parser {
         private void parsePlayers(ArrayList<String> values) {
             Platform.runLater(()->{
@@ -307,6 +304,7 @@ public class Controller implements Runnable{
                     if (!value.equals(Main.getPlayerName())){
                         System.out.println(value);
                         Button button = new Button("Challenge: " + value);
+                        button.setPrefWidth(400);
                         button.setOnAction((event)->{
                             //int position = grid.getChildren().indexOf(event.getSource());
                             conn.sendCommand("challenge \"" + value + "\" \"" + gameController.getGameName() + "\"");
