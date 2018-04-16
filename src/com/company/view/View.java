@@ -11,17 +11,10 @@ public abstract class View {
     Stage stage;
     BorderPane borderPane;
 
-    HBox top;
     VBox center;
-    VBox right;
-    BorderPane bottom;
 
     public Stage getStage(){
         return stage;
-    }
-
-    public BorderPane getBorderPane() {
-        return borderPane;
     }
 
     public HBox getTop() {
@@ -30,14 +23,6 @@ public abstract class View {
 
     public VBox getCenter(){
         return (VBox) borderPane.getCenter();
-    }
-
-    public VBox getRight(){
-        return (VBox) borderPane.getRight();
-    }
-
-    public BorderPane getBottom() {
-        return (BorderPane) borderPane.getBottom();
     }
 
 

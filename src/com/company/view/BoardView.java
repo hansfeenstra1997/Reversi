@@ -12,16 +12,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.util.Comparator;
-
 public class BoardView extends View {
-    //private Stage stage;
     Text turnText;
     Label lastMove;
 
     Label timerText;
-
-    //VBox center;
 
     public BoardView(Stage gameStage) {
         stage = gameStage;
@@ -44,24 +39,12 @@ public class BoardView extends View {
         forfeitBox.getChildren().add(forfeitBtn);
         forfeitBox.setPadding(new Insets(0, 0, 0, 40));
 
-        Label player = new Label("Player: ");
-        Label playerName = new Label();
-
-        Label opponent = new Label("Opponent: ");
-        Label opponentName = new Label();
-
-        playerInfo.getChildren().addAll(player, playerName, opponent, opponentName);
-
-        Label white = new Label("White: ");
-        Label whitePlayer = new Label();
-
-        Label black = new Label("Black: ");
-        Label blackPlayer = new Label();
+        playerInfo.getChildren().addAll(new Label("Player: "), new Label(), new Label("Opponent: "), new Label());
 
         timerText = new Label();
         timerText.setFont(Font.font(40));
 
-        playColor.getChildren().addAll(black, blackPlayer, white, whitePlayer);
+        playColor.getChildren().addAll(new Label("Black: "), new Label(), new Label("White: "), new Label());
 
         topInfo.getChildren().addAll(playerInfo, playColor);
         top.getChildren().addAll(topInfo, forfeitBox);
