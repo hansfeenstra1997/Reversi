@@ -56,7 +56,7 @@ public class AiPlayerReversi extends ManualPlayerReversi {
                 Connection.getInstance().sendCommand("move " + pos);
                 break;
             case "hard":
-                xy = doMoveDifferent2();
+                xy = doMovePointsBoard();
                 pos = xy[1] * 8 + xy[0];
                 Connection.getInstance().sendCommand("move " + pos);
                 break;
@@ -206,6 +206,11 @@ public class AiPlayerReversi extends ManualPlayerReversi {
 
     }
 
+    /**
+     * Changes the score of the square array
+     * @param squares The points per cell array
+     * @param board The current board
+     */
     private void changeScore(int[][] squares, Board board) {
         if (board.getCellState(0,0) == 1) {
             squares[1][1] = 20;
@@ -223,9 +228,25 @@ public class AiPlayerReversi extends ManualPlayerReversi {
             squares[6][6] = 20;
             squares[7][6] = 10;
             squares[6][7] = 10;
+        } else if (board.getCellState(0,0) == 2) {
+            squares[1][1] = 10;
+            squares[0][1] = 5;
+            squares[1][0] = 5;
+        } else if (board.getCellState(0,7) == 2) {
+            squares[1][6] = 10;
+            squares[0][7] = 5;
+            squares[1][7] = 5;
+        } else if (board.getCellState(7,0) == 2) {
+            squares[6][1] = 10;
+            squares[6][0] = 5;
+            squares[7][1] = 5;
+        } else if (board.getCellState(7,7) == 2) {
+            squares[6][6] = 10;
+            squares[7][6] = 5;
+            squares[6][7] = 5;
         }
     }
-    //-------------------------------------------------Minimax which is not used anymore
+    //-------------------------------------------------Minimax, which is not used anymore
 
     /**
      * Will call the minimax Reversi function
@@ -233,7 +254,7 @@ public class AiPlayerReversi extends ManualPlayerReversi {
      */
     @Deprecated
     private int[] doMinimaxMove() {
-        BestMove bestMove = miniMaxReversi(1, this.board, 1);
+        BestMove bestMove = miniMaxReversi(1, this.board, 9 );
 
         return new int[] {bestMove.x, bestMove.y};
     }
@@ -261,10 +282,8 @@ public class AiPlayerReversi extends ManualPlayerReversi {
         int winner = checkWinner(board);
 
         if (winner == GLOBAL_PLAYER && moves.isEmpty() && opponentMoves.isEmpty()) {
-            //System.out.println("winner is me");
             return new BestMove(Integer.MAX_VALUE - 1, 0, 0);
         } else if (winner == GLOBAL_OPPONENT && moves.isEmpty() && opponentMoves.isEmpty()) {
-            //System.out.println("Winner is opp " + ", depth: " + depth);
             return new BestMove(Integer.MIN_VALUE + 1, 0, 0);
         }
 
