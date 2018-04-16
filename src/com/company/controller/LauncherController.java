@@ -1,9 +1,17 @@
 package com.company.controller;
 
+import com.company.connection.Reader;
+import com.company.connection.Writer;
 import com.company.view.ErrorWindow;
 import com.company.Main;
 import com.company.model.LauncherModel;
 import com.company.view.LauncherView;
+import com.sun.org.apache.bcel.internal.classfile.Unknown;
+
+import java.io.IOException;
+import java.net.ConnectException;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class LauncherController {
 
@@ -13,6 +21,7 @@ public class LauncherController {
     private static String specificPlayerName = ""; // If the Specific Player box is checked, this variable specifies his name.
     private static String mode = ""; // What AI difficulty?
     private static String aiDiff; // 0 = Reversi, 1 = BKE
+    int maxNameCharacters = 3;
     private static boolean modeIsSet = false; // Prevents the GUI from adding the same pane twice.
     private static boolean specificPlayer = false; // Has a specific player been selected?
     private static boolean optionsExpanded = false; // Prevents the GUI from adding the same pane twice.
@@ -31,7 +40,6 @@ public class LauncherController {
         if (optionsExpanded == false) {
             LauncherModel.optionsClicked();
             optionsExpanded = true;
-            System.out.println("Options button clicked");
         }
     }
 
@@ -65,7 +73,6 @@ public class LauncherController {
         } else if (givenMode == "Randomized") {
             mode = "ai-easy";
         }
-        System.out.println(mode);
 
     }
 
@@ -91,6 +98,8 @@ public class LauncherController {
                     "Spaces are not allowed in names.",
                     "Please remove the spaces and try again.");
         } else {
+            LauncherView.setError("Starting the game!");
+            LauncherView.disableAllButtons();
             System.out.println("Mode is" + mode);
             Main.startGame(game, mode);
             Main.login(LauncherView.getNameField());
@@ -124,7 +133,6 @@ public class LauncherController {
     public static void vsAiButton() {
         if (opponentSelected == false) {
             opponent = "ai";
-            System.out.println("Opponent set to " + opponent);
             LauncherModel.aiButtonEnable();
         }
         opponentSelected = true;
@@ -137,8 +145,41 @@ public class LauncherController {
     public static String getPlayerName() { return LauncherView.getNameField();}
     public static String getMode() {return mode;}
     public static int getResponseTime() {return LauncherView.getReactionTime();}
-    public static String getIP() {return LauncherView.getIP();}
-    public static int getPort() {return Integer.parseInt(LauncherView.getPort());}
+    public static String getIP() {
+        if (LauncherView.getLocalHost() == true) {
+            return "localhost";
+        } else {
+            return LauncherView.getIP();
+        }
+    }
+    private static boolean succes;
+    public static void connectionTest() {
+        try {
+            LauncherView.setConnectionMessage("Attempting to connect...");
+            Socket clientSocket = new Socket(LauncherController.getIP(), LauncherController.getPort());
+            succes = true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            LauncherController.connectionError(true);
+            succes = false;
+        }
+        if (succes == true) {
+            LauncherController.connectionError(false);
+        }
+    }
+
+    public static void connectionError(boolean error) {
+        if (error == true) {
+            System.out.println("Printing error message");
+            LauncherView.setConnectionMessage("Connection failed.");
+        } else {
+            System.out.println("Printing succesfull message");
+            LauncherView.setConnectionMessage("Connection passed!");
+        }
+    }
+
+    public static int getPort() {
+        return Integer.parseInt(LauncherView.getPort());}
 
     public static boolean getNightModeValue() {
         if (LauncherView.nightModeChecked() == true) {
@@ -147,8 +188,13 @@ public class LauncherController {
             return false;
         }
     }
+
+//    public static boolean checkConnection() {
+//
+//    }
+
     public static String getSpecificPlayerName() {  return specificPlayerName;}
 
     // SETTERS
-    public static void setSpecificName(String name) {specificPlayerName = name; System.out.println(getSpecificPlayerName()); }
+    public static void setSpecificName(String name) {specificPlayerName = name; }
 }

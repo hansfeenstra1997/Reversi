@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 
 public class LauncherView extends Application {
     static int launcherWidth = 450;
-    static int launcherHeight = 350;
+    static int launcherHeight = 360;
 
 
     static Pane rootPane = new Pane();
@@ -51,20 +51,24 @@ public class LauncherView extends Application {
     private Label nameLabel = new Label("Specifiy a username");
     private Label reactionTimeLabel = new Label("A.I Reaction Time (in seconds)");
     private Label languageLabel = new Label("Change language");
+    private static Label connectionTestResult = new Label("    ");
     private static Label errorMessage = new Label("");
 
     private static TextField nameInput = new TextField();
     private static TextField reactionInput = new TextField("5");
-    private static TextField ipInput = new TextField("localhost");
+    private static TextField ipInput = new TextField("145.33.225.170");
     private static TextField portInput = new TextField("7789");
 
     private static CheckBox nightMode = new CheckBox("Nightmode");
     private static CheckBox soundOption = new CheckBox("Enable sound");
     private static CheckBox placeholderOption = new CheckBox("Placeholder");
+    private static CheckBox localHostBox = new CheckBox("Play as Localhost");
     public static Button reversiButton = new Button("Play Reversi");  // !NIET OP PUBLIC HOUDEN!
     public static Button ticTacToeButton = new Button("Play BKE");      // !NIET OP PUBLIC HOUDEN!
     private static Button start = new Button("Start a game");
-    private Button reset = new Button("Reset options");
+    private static Button reset = new Button("Reset options");
+    private static Button testConnection = new Button("Test connection");
+
     static Button vsAiButton = new Button("AI Mode");
     static Button vsPlayer = new Button("Manual Mode");
     private Button switchEnglish = new Button("English");
@@ -87,7 +91,7 @@ public class LauncherView extends Application {
                     "Randomized",
                     "Smart Ai"
             );
-    static final ComboBox comboBox = new ComboBox(options);
+    static final ComboBox aiDifficulty = new ComboBox(options);
 
     ////////////// - END INITIALISATION - //////////////
 
@@ -207,16 +211,16 @@ public class LauncherView extends Application {
             LauncherController.vsAiButton();
         });
 
-        comboBox.setLayoutX(vsPlayerButtonX + 100);
-        comboBox.setPromptText("AI Mode");
-        comboBox.setTooltip(new Tooltip(
+        aiDifficulty.setLayoutX(vsPlayerButtonX + 100);
+        aiDifficulty.setPromptText("AI Mode");
+        aiDifficulty.setTooltip(new Tooltip(
                 "How do you want the AI to act?" +
                         "\n RANDOMIZED: AI will place randomly around the field." +
                         "\n SMART AI: AI is more intelligent using a more advanced algorithm"
         ));
-        comboBox.setLayoutY(60);
-        comboBox.setDisable(true);
-        comboBox.valueProperty().addListener(new ChangeListener<String>() {
+        aiDifficulty.setLayoutY(60);
+        aiDifficulty.setDisable(true);
+        aiDifficulty.valueProperty().addListener(new ChangeListener<String>() {
             @Override public void changed(ObservableValue ov, String t, String t1) {
                 LauncherController.aiSelection(t1);
             }
@@ -236,7 +240,7 @@ public class LauncherView extends Application {
         playerIcon.setLayoutX(0);
         playerIcon.setLayoutY(10);
 
-        modePane.getChildren().addAll(vsAiButton, vsPlayer, modeLabel, playerIcon, aiIcon, comboBox);
+        modePane.getChildren().addAll(vsAiButton, vsPlayer, modeLabel, playerIcon, aiIcon, aiDifficulty);
 
     }
 
@@ -254,7 +258,7 @@ public class LauncherView extends Application {
         nameInput.setLayoutY(15);
 
         nameInput.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (nameInput.getText().length() >= 5) {
+            if (nameInput.getText().length() >= 3) {
                 start.setDisable(false);
             }
         });
@@ -275,7 +279,7 @@ public class LauncherView extends Application {
         reset.setLayoutY(10);
         reset.setOnAction((event) -> { LauncherController.resetButtonPressed(); });
 
-        errorMessage.setLayoutY(40);
+        errorMessage.setLayoutY(35);
         errorMessage.layoutXProperty().bind(startPane.widthProperty().subtract(errorMessage.widthProperty()).divide(2));
 
         startPane.getChildren().addAll(start, reset, errorMessage);
@@ -299,16 +303,39 @@ public class LauncherView extends Application {
         ipLabel.setLayoutX(launcherWidth - 250);
 
         ipInput.setLayoutY(30);
-        ipInput.setLayoutX(launcherWidth - 225);
+        ipInput.setLayoutX(launcherWidth - 250);
         ipInput.setPrefWidth(100);
 
         portLabel.setTextFill(Color.rgb(255, 255, 255));
         portLabel.setLayoutY(35);
-        portLabel.setLayoutX(launcherWidth - 120);
+        portLabel.setLayoutX(launcherWidth - 145);
 
         portInput.setLayoutY(30);
-        portInput.setLayoutX(launcherWidth - 110);
+        portInput.setLayoutX(launcherWidth - 135);
         portInput.setPrefWidth(50);
+
+        testConnection.setLayoutY(55);
+        testConnection.setLayoutX(launcherWidth - 130);
+        testConnection.setOnAction((event) -> { LauncherController.connectionTest(); });
+        localHostBox.setTextFill(Color.rgb(255, 255, 255));
+        localHostBox.setLayoutY(60);
+        localHostBox.setLayoutX(launcherWidth - 250);
+        localHostBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if (localHostBox.isSelected() == true) {
+                    portInput.setDisable(true);
+                    ipInput.setDisable(true);
+                } else {
+                    portInput.setDisable(false);
+                    ipInput.setDisable(false);
+                }
+            }
+        });
+        connectionTestResult.setLayoutY(80);
+        connectionTestResult.setLayoutX(launcherWidth - 250);
+        connectionTestResult.setTextFill(Color.rgb(255, 255, 255));
+
         // LANGUAGE SETTING
         languageLabel.setLayoutY(90);
         languageLabel.setTextFill(Color.rgb(255, 255, 255));
@@ -347,7 +374,7 @@ public class LauncherView extends Application {
 
         menuPane.getChildren().addAll(reactionTimeLabel, reactionInput, languageLabel, switchEnglish,
                 switchDutch, nightMode, soundOption, placeholderOption, ipLabel, ipInput, portInput,
-                portLabel);
+                localHostBox, portLabel, testConnection, connectionTestResult);
     }
 
     public static void removePanes() {
@@ -357,6 +384,17 @@ public class LauncherView extends Application {
         rootPane.getChildren().remove(menuPane);
     }
 
+
+    public static void disableAllButtons() {
+        reversiButton.setDisable(true);
+        ticTacToeButton.setDisable(true);
+        vsAiButton.setDisable(true);
+        vsPlayer.setDisable(true);
+        aiDifficulty.setDisable(true);
+        start.setDisable(true);
+        reset.setDisable(true);
+        nameInput.setDisable(true);
+    }
     public static void addMode() {}
     public static void addName() {}
 
@@ -372,14 +410,14 @@ public class LauncherView extends Application {
             vsAiButton.setDisable(true);
         }
         if (mode == 1) {
-            comboBox.setDisable(false);
+            aiDifficulty.setDisable(false);
             vsPlayer.setDisable(true);
         }
     }
 
     public static void clearModeTweak() {
         vsAiButton.setDisable(true);
-        comboBox.setDisable(true);
+        aiDifficulty.setDisable(true);
         vsPlayer.setDisable(true);
         ticTacToeButton.setDisable(false);
         reversiButton.setDisable(false);
@@ -389,7 +427,7 @@ public class LauncherView extends Application {
 
     public static void disableAll() {
         vsAiButton.setDisable(true);
-        comboBox.setDisable(true);
+        aiDifficulty.setDisable(true);
         vsPlayer.setDisable(true);
         ticTacToeButton.setDisable(true);
         reversiButton.setDisable(true);
@@ -412,6 +450,10 @@ public class LauncherView extends Application {
     }
     public static String getIP() {return ipInput.getText();}
     public static String getPort() { return portInput.getText();}
+    public static boolean getLocalHost() {return localHostBox.isSelected();}
+    public static void setConnectionMessage(String message) {
+        connectionTestResult.setText(message);
+    }
 
     public static void setError(String error) {
         errorMessage.setText(error);

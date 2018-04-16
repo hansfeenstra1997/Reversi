@@ -1,9 +1,10 @@
 package com.company.connection;
 
 import com.company.controller.LauncherController;
-
+import sun.misc.Launcher;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.Socket;
 
 public class Connection {
@@ -13,17 +14,10 @@ public class Connection {
 
     private static Connection connection = null;
 
-    /**
-     * Constructor Connection
-     */
-
     private Connection() {
         makeConnection();
     }
-    /**
-     * Singleton getInstance() to get instance of the Connection
-     * @return Connection instance
-     */
+
     public static Connection getInstance() {
         if(connection==null) {
             connection = new Connection();
@@ -31,10 +25,6 @@ public class Connection {
         return connection;
     }
 
-    /**
-     * Make connection with server
-     * Create a Reader and a Writer
-     */
     private void makeConnection() {
         try {
             Socket clientSocket = new Socket(LauncherController.getIP(), LauncherController.getPort());
@@ -48,25 +38,14 @@ public class Connection {
 
             Thread writerThread = new Thread(writer);
             writerThread.start();
-        }
-        catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-    /**
-     * Send connection the writer
-     * @param command - command to send to writer
-     */
     public void sendCommand(String command) {
         writer.addMessage(command);
     }
 
-
-    /**
-     * Get instance of the Reader
-     * @return Reader instance
-     */
     public Reader getReader() {
         return reader;
     }
