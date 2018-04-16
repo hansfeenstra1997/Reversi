@@ -9,12 +9,13 @@ import javafx.application.Application;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+import java.awt.*;
+
 public class Main extends Application {
 
     private Controller headController;
     private static String playerName;
     private static int playerMode = 0;
-    private VBox players;
 
     /**
      * main in Main
@@ -69,28 +70,15 @@ public class Main extends Application {
      * Also this function will start the queueReader thread.
      */
     private void startGame(String gameName, String gameMode) {
-        Stage gameStage = new Stage();
-        players = new VBox();
 
-        headController = new Controller(players, new BoardView(gameStage));
+        headController = new Controller(new ChoiceScreen(gameName), new BoardView());
         headController.makeGameController(gameName);
         headController.makePlayer(gameMode);
 
-        makeChoiceScreen(gameStage, gameName);
+        headController.setupFX();
 
         Thread thread = new Thread(headController);
         thread.start();
-    }
-
-    /**
-     * makeChoiceScreen in Main
-     * @param gameStage
-     * @param gameName
-     * This function will make the lobby screen. And setup the gamescreen already.
-     */
-    private void makeChoiceScreen(Stage gameStage, String gameName){
-        new ChoiceScreen(gameStage, players, gameName);
-        headController.setupFX();
     }
 
     /**

@@ -11,12 +11,17 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class ChoiceScreen extends View {
-    public ChoiceScreen(Stage gameStage, VBox players, String gameName) {
+
+    private VBox pl;
+
+    public ChoiceScreen(String gameName) {
         stage = new Stage();
 
         borderPane = new BorderPane();
 
         borderPane.setMinSize(400, 400);
+
+        pl = new VBox();
 
         VBox top = new VBox();
         HBox topBox = new HBox();
@@ -32,7 +37,7 @@ public class ChoiceScreen extends View {
         Label label = new Label("Playernames:");
         Connection.getInstance().sendCommand("get playerlist");
 
-        playerList.getChildren().addAll(label, players);
+        playerList.getChildren().addAll(label, pl);
 
         HBox refresh = new HBox();
         refresh.setMinWidth(200);
@@ -61,5 +66,9 @@ public class ChoiceScreen extends View {
         Scene scene = new Scene(borderPane);
         stage.setScene(scene);
         stage.show();
+    }
+
+    public VBox getPlayerlist(){
+        return pl;
     }
 }

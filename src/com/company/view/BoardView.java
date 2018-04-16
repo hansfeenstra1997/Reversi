@@ -18,8 +18,8 @@ public class BoardView extends View {
 
     Label timerText;
 
-    public BoardView(Stage gameStage) {
-        stage = gameStage;
+    public BoardView() {
+        stage = new Stage();
         borderPane = new BorderPane();
 
         center = new VBox();
@@ -64,7 +64,7 @@ public class BoardView extends View {
         borderPane.setBottom(statusBox);
 
         Scene scene = new Scene(borderPane);
-        gameStage.setScene(scene);
+        stage.setScene(scene);
     }
 
     public Label getLastMove(){

@@ -4,8 +4,8 @@ import com.company.*;
 import com.company.connection.Connection;
 import com.company.model.Board;
 import com.company.view.BoardView;
+import com.company.view.ChoiceScreen;
 import com.company.view.LoadIcon;
-import com.company.view.View;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -14,8 +14,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -37,14 +35,9 @@ public class Controller implements Runnable{
 
     //View
     BoardView boardView;
-
+    ChoiceScreen choiceScreen;
 
     private GridPane grid;
-
-    //private Label timerText;
-
-    private VBox players;
-
 
     private Timer timer;
     private boolean timerRunning = false;
@@ -54,17 +47,16 @@ public class Controller implements Runnable{
 
     /**
      * Constructor of Controller
-     * @param playerList
-     * @param view
+     * @param cView
+     * @param bView
      * Initializes the variables of the controller.
      */
-    public Controller(VBox playerList, BoardView view) {
+    public Controller(ChoiceScreen cView, BoardView bView) {
         conn = Connection.getInstance();
         readerQueue = conn.getReader().getQueue();
 
-        boardView = view;
-
-        players = playerList;
+        choiceScreen = cView;
+        boardView = bView;
     }
 
     /**
@@ -294,7 +286,7 @@ public class Controller implements Runnable{
     private class Parser {
         private void parsePlayers(ArrayList<String> values) {
             Platform.runLater(()->{
-                players.getChildren().clear();
+                choiceScreen.getPlayerlist().getChildren().clear();
 //
                 for(String value:values){
                     if (!value.equals(Main.getPlayerName())){
@@ -305,7 +297,7 @@ public class Controller implements Runnable{
                             conn.sendCommand("challenge \"" + value + "\" \"" + gameController.getGameName() + "\"");
                             //challenge accept 0
                         });
-                        players.getChildren().add(button);
+                        choiceScreen.getPlayerlist().getChildren().add(button);
                     }
                 }
             });
