@@ -13,15 +13,23 @@ public class AiPlayerTicTacToe extends ManualPlayerTicTacToe {
     private final int GLOBAL_OPPONENT = 2;
     private Board.Cell[][] cell;
 
+    /**
+     * Constructor Ai player Tic-tac-toe
+     * @param board - reference to Board
+     * @param gameMode - game mode (easy or hard)
+     */
     public AiPlayerTicTacToe(Board board, String gameMode) {
         super(board);
         this.gameMode = gameMode;
         this.cell = board.getBoard();
     }
 
+    /**
+     * Calculate and set a move based on game mode
+     * @param position - position of move
+     */
     @Override
     public void doMove(int position) {
-        System.out.println("check");
         switch(gameMode) {
             case "hard":
                 BestMove best = miniMaxTicTacToe(GLOBAL_PLAYER);
@@ -38,7 +46,11 @@ public class AiPlayerTicTacToe extends ManualPlayerTicTacToe {
         }
     }
 
-    public int[] doEasyMove() {
+    /**
+     * Get a list of all possible moves and pick a random one
+     * @return move for AI
+     */
+    private int[] doEasyMove() {
         ArrayList<int[]> availableMoves = new ArrayList<>();
 
         for(int x = 0; x < 3; x++) {
@@ -54,6 +66,11 @@ public class AiPlayerTicTacToe extends ManualPlayerTicTacToe {
         return availableMoves.get(get);
     }
 
+    /**
+     * Calculates a move using the Minimax algorithm
+     * @param player - player to calculate for (1=self, 2=opponent)
+     * @return the Best Move available/calculated (using BestMove inner class)
+     */
     private BestMove miniMaxTicTacToe(int player) {
         int winner = checkWinner(cell);
         if(winner == GLOBAL_PLAYER) {
@@ -98,6 +115,10 @@ public class AiPlayerTicTacToe extends ManualPlayerTicTacToe {
         return currentBestMove;
     }
 
+    /**
+     * Checks if board is full
+     * @return true if board is, else return false.
+     */
     private boolean boardFull() {
         for(int x = 0; x < 3; x++) {
             for(int y = 0; y < 3; y++) {
@@ -109,7 +130,12 @@ public class AiPlayerTicTacToe extends ManualPlayerTicTacToe {
         return true;
     }
 
-    int checkWinner(Board.Cell[][] cell) {
+    /**
+     * Checks if there's a winner
+     * @param cell - Board
+     * @return 0 if there's no winner, otherwise the player ID that wins (1=self, 2=opponent)
+     */
+    private int checkWinner(Board.Cell[][] cell) {
         int[][][] winPatterns = {{ {0,0},{0,1},{0,2} }, { {0,0},{1,1},{2,2} }, { {0,0},{1,0},{2,0} }, { {2,0},{2,1},{2,2} }, { {0,2},{1,2},{2,2} }, { {1,0},{1,1},{1,2} }, { {2,0},{1,1},{0,2} }, { {0,1},{1,1},{2,1} }};
 
         for(int i = 0; i < 8; i++) {
@@ -123,6 +149,9 @@ public class AiPlayerTicTacToe extends ManualPlayerTicTacToe {
         return 0;
     }
 
+    /**
+     * Inner class used to store the best move, including the score tied to the move
+     */
     class BestMove {
         int score, x, y;
 

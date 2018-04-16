@@ -8,26 +8,38 @@ import java.util.ArrayList;
 public class ManualPlayerTicTacToe implements Player {
 
     protected Board board;
-    protected int boardSize;
+    int boardSize;
 
+    /**
+     * Constructor Manual Player Tic-tac-toe
+     * @param board - reference to Board
+     */
     public ManualPlayerTicTacToe(Board board) {
         this.board = board;
         this.boardSize = board.getSize();
     }
 
+    /**
+     * Set manual move
+     * @param position - position of move
+     */
     @Override
     public void doMove(int position) {
-        System.out.println("test do move manual");
         Connection.getInstance().sendCommand("move " + position);
     }
 
+    /**
+     * Returns all possible moves
+     * @param player - player to check for (1=self, 2=opponent)
+     * @param board - reference to Board
+     * @param boardSize - board size
+     * @return ArrayList of all possible moves
+     */
     @Override
     public ArrayList<int[]> getPossibleMoves(int player, Board board, int boardSize) {
-        return new ArrayList<int[]>();
+        return new ArrayList<>();
     }
 
     @Override
-    public void flipBoard(int x, int y, int player) {
-        ;
-    }
+    public void flipBoard(int x, int y, int player) {}
 }
