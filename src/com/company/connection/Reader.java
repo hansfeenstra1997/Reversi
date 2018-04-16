@@ -14,9 +14,9 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class Reader implements Runnable {
-    private Socket socket;
     private BufferedReader inputStream;
     private ArrayList<Map.Entry<String, ArrayList<String>>> queue;
+    private Gson gson;
 
     private static final String[][] responses = {
             {"SVR GAMELIST", "GAMES"},
@@ -31,17 +31,26 @@ public class Reader implements Runnable {
             {"SVR GAME CHALLENGE CANCELLED", "CANCELLED"}
     };
 
-    public Reader(Socket socket) {
-        this.socket = socket;
+    /**
+     * Constructor of Reader
+     * @param socket - Socket
+     */
+    Reader(Socket socket) {
         this.queue = new ArrayList<>();
         try {
             inputStream = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         }
         catch(IOException e) {
+            System.out.println("Failed to create Reader!");
             e.printStackTrace();
         }
+        gson = new Gson();
     }
 
+    /**
+     * Thread method
+     * Constantly reads socket for new lines and adds new lines to the reader queue
+     */
     @Override
     public void run() {
         String line;
@@ -58,9 +67,12 @@ public class Reader implements Runnable {
         }
     }
 
+    /**
+     * Parses a response received from socket
+     * @param response - raw response from socket
+     * @return a Map.Entry of a response with key and values
+     */
     private Map.Entry<String, ArrayList<String>> parseResponse(String response) {
-        //System.out.println("--"+response);
-        // If "OK" -> return "OK"
         if(response.equals("OK")) {
             return new AbstractMap.SimpleEntry<>("OK", new ArrayList<>());
         }
@@ -92,6 +104,10 @@ public class Reader implements Runnable {
         return null;
     }
 
+    /**
+     * Get instance of the reader queue
+     * @return instance of reader queue.
+     */
     public ArrayList<Map.Entry<String, ArrayList<String>>> getQueue() {
         return queue;
     }

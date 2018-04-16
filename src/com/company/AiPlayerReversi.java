@@ -98,6 +98,10 @@ public class AiPlayerReversi extends ManualPlayerReversi {
         return new int[]{x, y};
     }
 
+    /**
+     *
+     * @return
+     */
     public int[] doMoveDifferent2() {
         int score = -1;
         int x = 0;

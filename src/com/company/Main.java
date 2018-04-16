@@ -18,6 +18,8 @@ public class Main extends Application {
     private static String playerName;
     private static int playerMode = 0;
     private VBox players;
+    private boolean loggedIn;
+    private StartView startView;
     
     public static void main(String[] args) {
         launch(args);
@@ -25,10 +27,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        StartView startView = new StartView(primaryStage);
+        startView = new StartView(primaryStage);
 
-        startView.getStartBtn().setOnAction((event) -> startGame("Tic-tac-toe", "ai-easy"));
-        startView.getStartReversiBtn().setOnAction((event) -> startGame("Reversi", "ai-hard"));
+        startView.getStartBtn().setOnAction((event) -> startGame("Tic-tac-toe", "manual"));
+        startView.getStartReversiBtn().setOnAction((event) -> startGame("Reversi", "manual"));
 
         startView.getLoginBtn().setOnAction((event) -> login(startView.getUsernameFieldText()));
         startView.getCommandButton().setOnAction((event) -> {sendCommand(startView.getCommandFieldText()); startView.setCommandFieldText("");});
@@ -39,8 +41,15 @@ public class Main extends Application {
     }
 
     private void login(String username) {
-        playerName = username;
-        sendCommand("login " + username);
+        if (loggedIn){
+            startView.setStatusText("Already logged in! " + username);
+        } else {
+            playerName = username.replaceAll("[^a-zA-Z0-9 ]", "");
+            playerName = playerName.trim();
+            sendCommand("login " + playerName);
+            loggedIn = true;
+            startView.setStatusText("Welcome " + playerName);
+        }
     }
 
     private void startGame(String gameName, String gameMode) {
