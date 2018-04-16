@@ -315,7 +315,7 @@ public class LauncherView extends Application {
         portInput.setPrefWidth(50);
 
         testConnection.setLayoutY(55);
-        testConnection.setLayoutX(launcherWidth - 130);
+        testConnection.setLayoutX(launcherWidth - 120);
         testConnection.setOnAction((event) -> { LauncherController.connectionTest(); });
         localHostBox.setTextFill(Color.rgb(255, 255, 255));
         localHostBox.setLayoutY(60);

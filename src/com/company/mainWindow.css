@@ -1,7 +1,7 @@
 .root{
     -fx-background-color: #666666;
     -fx-border-color: black;
-    -fx-font: 12 'Bookshelf Symbol 7';
+    -fx-font: 13 'Bookshelf Symbol 7';
 }
 
 .paneStyle-Light {
