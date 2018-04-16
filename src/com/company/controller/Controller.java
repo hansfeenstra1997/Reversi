@@ -58,6 +58,12 @@ public class Controller implements Runnable{
 
 
     //reafcatoring needed
+    /**
+     * Constructor of Controller
+     * @param playerList
+     * @param gameStage
+     * Initializes the variables of the controller.
+     */
     public Controller(VBox playerList, Stage gameStage) {
         conn = Connection.getInstance();
         readerQueue = conn.getReader().getQueue();
@@ -66,15 +72,29 @@ public class Controller implements Runnable{
         players = playerList;
     }
 
+    /**
+     * makePlayer in Controller
+     * @param gameMode
+     * This function calls the makePlayer function in the concrete gameController
+     */
     public void makePlayer(String gameMode){
         gameController.makePlayer(gameMode);
     }
 
+    /**
+     * makeGameController in Controller
+     * @param gameName
+     * This function creates a gameFactory which will create a concrete gameController
+     */
     public void makeGameController(String gameName){
         GameFactory gameFactory = new GameFactory();
         gameController = gameFactory.makeGame(gameName);
     }
 
+    /**
+     * setupFX in Controller
+     * This function fills all the JavaFX variables for updateing the board status on the view
+     */
     public void setupFX(){
         pane = (BorderPane) stage.getScene().getRoot();
         main = (VBox) pane.getCenter();
@@ -104,6 +124,11 @@ public class Controller implements Runnable{
         Platform.runLater(() -> main.getChildren().add(loadIconView));
     }
 
+    /**
+     * readQueue in Controller
+     * This function reads the queue from the reader, this function will execute the queueParser
+     * This function will be called every 500 milliseconds.
+     */
     private void readQueue() {
         Map.Entry<String, ArrayList<String>> command = readerQueue.get(0);
         System.out.println(command);
@@ -111,6 +136,11 @@ public class Controller implements Runnable{
         queueParser(command);
     }
 
+    /**
+     * queueParser in Controller
+     * @param command
+     * This function parses the command from the server. Calls the right function in private Parser class.
+     */
     private void queueParser(Map.Entry<String, ArrayList<String>> command){
         if(command != null){
             String key = command.getKey();
@@ -146,6 +176,10 @@ public class Controller implements Runnable{
         }
     }
 
+    /**
+     * stopTimer in Controller
+     * This function stops the timer that will show in screen.
+     */
     private void stopTimer() {
         if(timerRunning) {
             timer.cancel();
@@ -155,6 +189,10 @@ public class Controller implements Runnable{
         Platform.runLater(() -> timerText.setText("-"));
     }
 
+    /**
+     * startTimer in Controller
+     * This function start the timer that will show in screen.
+     */
     private void startTimer() {
         stopTimer();
         if(activeGame) {
@@ -177,6 +215,10 @@ public class Controller implements Runnable{
         }
     }
 
+    /**
+     * disableBoard in Controller
+     * This function disables the buttons when the it's the opoonent's turn
+     */
     private void disableBoard() {
         Platform.runLater(() -> {
             for(Node node: grid.getChildren()) {
@@ -185,6 +227,10 @@ public class Controller implements Runnable{
         });
     }
 
+    /**
+     * updateBoard in Controller
+     * This function updates the view after every "MOVE" from the server
+     */
     void updateBoard(){
 
         grid = new GridPane();
@@ -235,6 +281,10 @@ public class Controller implements Runnable{
         });
     }
 
+    /**
+     * run in Controller
+     * This function executes every 500 milliseconds the readQueue function
+     */
     @Override
     public void run() {
         while(true){
