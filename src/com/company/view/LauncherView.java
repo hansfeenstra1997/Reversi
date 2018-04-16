@@ -56,7 +56,7 @@ public class LauncherView extends Application {
     private static TextField nameInput = new TextField();
     private static TextField reactionInput = new TextField("5");
     private static TextField ipInput = new TextField("145.33.225.170");
-    private static TextField portInput = new TextField("6789");
+    private static TextField portInput = new TextField("7789");
 
     private static CheckBox nightMode = new CheckBox("Nightmode");
     private static CheckBox soundOption = new CheckBox("Enable sound");
@@ -410,6 +410,8 @@ public class LauncherView extends Application {
     public static int getReactionTime() {
         return Integer.parseInt(reactionInput.getText());
     }
+    public static String getIP() {return ipInput.getText();}
+    public static String getPort() { return portInput.getText();}
 
     public static void setError(String error) {
         errorMessage.setText(error);

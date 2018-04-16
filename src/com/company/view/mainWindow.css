@@ -57,14 +57,14 @@
 }
 
 labelHeader-White {
-    -fx-font: 'Bookshelf Symbol 7';
-    -fx-font-size: 40px;
+    -fx-font: 23 'Bookshelf Symbol 7';
+    -fx-font-size: 20px;
     -fx-text-fill: white;
 }
 
 labelHeader-Dark {
-    -fx-font: 40 'Bookshelf Symbol 7';
-    -fx-font-size: 40px;
+    -fx-font: 23 'Bookshelf Symbol 7';
+    -fx-font-size: 20px;
     -fx-text-fill: #2d2d2d;
 }
 

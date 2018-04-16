@@ -28,7 +28,7 @@ public class Connector implements Runnable{
     @Override
     public void run() {
         try{
-            System.out.println("Listening!");
+
             Socket clientSocket = new Socket("localhost", 6789);
             outputStream = new DataOutputStream(clientSocket.getOutputStream());
             inputStream = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));

@@ -81,7 +81,6 @@ public class BoardView extends View {
 
         Label matchTimeLabel = new Label("Match Time:");
         matchTimeLabel.getStyleClass().add(headerLabelColor);
-        matchTimeLabel.setFont(new Font("Arial", 30));
 
         Label timeLeft = new Label("Time Left:");
         timeLeft.getStyleClass().add(headerLabelColor);
