@@ -47,7 +47,7 @@ public class Main extends Application {
         Stage gameStage = new Stage();
         players = new VBox();
 
-        headController = new Controller(players, gameStage);
+        headController = new Controller(players, new BoardView(gameStage));
         headController.makeGameController(gameName);
         headController.makePlayer(gameMode);
 
@@ -59,11 +59,10 @@ public class Main extends Application {
 
     private void makeChoiceScreen(Stage gameStage, String gameName){
         new ChoiceScreen(gameStage, players, gameName);
-        makeScene(gameStage);
+        makeScene();
     }
 
-    private void makeScene(Stage gameStage){
-        new BoardView(gameStage);
+    private void makeScene(){
         headController.setupFX();
     }
 

@@ -12,11 +12,11 @@ import javafx.stage.Stage;
 
 public class ChoiceScreen extends View {
     public ChoiceScreen(Stage gameStage, VBox players, String gameName) {
-        Stage choiceStage = new Stage();
+        stage = new Stage();
 
-        BorderPane gameBorderPane = new BorderPane();
+        borderPane = new BorderPane();
 
-        gameBorderPane.setMinSize(400, 400);
+        borderPane.setMinSize(400, 400);
 
         VBox top = new VBox();
         HBox topBox = new HBox();
@@ -51,15 +51,15 @@ public class ChoiceScreen extends View {
 
         content.getChildren().addAll(playerList, refresh, subscribe);
 
-        gameBorderPane.setTop(top);
-        gameBorderPane.setCenter(content);
+        borderPane.setTop(top);
+        borderPane.setCenter(content);
 
         Text turn = new Text();
         turn.setId("turnText");
-        gameBorderPane.setBottom(turn);
+        borderPane.setBottom(turn);
 
-        Scene scene = new Scene(gameBorderPane);
-        choiceStage.setScene(scene);
-        choiceStage.show();
+        Scene scene = new Scene(borderPane);
+        stage.setScene(scene);
+        stage.show();
     }
 }

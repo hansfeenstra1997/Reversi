@@ -15,14 +15,21 @@ import javafx.stage.Stage;
 import java.util.Comparator;
 
 public class BoardView extends View {
-    private Stage stage;
+    //private Stage stage;
+    Text turnText;
+    Label lastMove;
+
+    Label timerText;
+
+    //VBox center;
 
     public BoardView(Stage gameStage) {
-        this.stage = gameStage;
-        BorderPane gameBorderPane = new BorderPane();
-        VBox gameVBox = new VBox();
+        stage = gameStage;
+        borderPane = new BorderPane();
 
-        gameBorderPane.setMinSize(500, 500);
+        center = new VBox();
+
+        borderPane.setMinSize(500, 500);
 
         HBox top = new HBox();
         VBox topInfo = new VBox();
@@ -51,7 +58,7 @@ public class BoardView extends View {
         Label black = new Label("Black: ");
         Label blackPlayer = new Label();
 
-        Label timerText = new Label();
+        timerText = new Label();
         timerText.setFont(Font.font(40));
 
         playColor.getChildren().addAll(black, blackPlayer, white, whitePlayer);
@@ -60,20 +67,32 @@ public class BoardView extends View {
         top.getChildren().addAll(topInfo, forfeitBox);
         right.getChildren().add(timerText);
 
-        gameBorderPane.setRight(right);
-        gameBorderPane.setTop(top);
-        gameBorderPane.setCenter(gameVBox);
+        borderPane.setRight(right);
+        borderPane.setTop(top);
+        borderPane.setCenter(center);
 
-        Text turn = new Text("");
-        turn.setId("statusText");
-        statusBox.setLeft(turn);
+        turnText = new Text("");
+        turnText.setId("statusText");
+        statusBox.setLeft(turnText);
 
-        Label lastMove = new Label();
+        lastMove = new Label();
         statusBox.setCenter(lastMove);
 
-        gameBorderPane.setBottom(statusBox);
+        borderPane.setBottom(statusBox);
 
-        Scene scene = new Scene(gameBorderPane);
+        Scene scene = new Scene(borderPane);
         gameStage.setScene(scene);
+    }
+
+    public Label getLastMove(){
+        return lastMove;
+    }
+
+    public Text getTurnText(){
+        return turnText;
+    }
+
+    public Label getTimerText(){
+        return timerText;
     }
 }
