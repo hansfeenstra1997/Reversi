@@ -38,15 +38,18 @@ public class BoardView extends View {
         String fontColor ;
         String backgroundColor;
         String sideBarColor;
+        String headerLabelColor;
 
         if (Controller.getNightModeBackground() == true) {
             fontColor = "labelText-White";
             backgroundColor = "paneStyle-Dark";
             sideBarColor = "sideBar-Dark";
+            headerLabelColor = "labelHeader-White";
         }  else {
             fontColor = "labelText-Dark";
             backgroundColor = "paneStyle-Light";
             sideBarColor = "sideBar-Light";
+            headerLabelColor = "labelHeader-Dark";
         }
 
         gameBorderPane.setMinSize(500, 500);
@@ -66,6 +69,8 @@ public class BoardView extends View {
 
         CheckBox nightModeBox = new CheckBox("Enable NightMode");
         CheckBox soundEffectBox = new CheckBox("Enable Sound");
+        nightModeBox.getStyleClass().add(fontColor);
+        soundEffectBox.getStyleClass().add(fontColor);
 
         Button forfeitBtn = new Button("Forfeit");
         Timer timer = new Timer();
@@ -75,10 +80,13 @@ public class BoardView extends View {
         Label player = new Label("Player: ");
 
         Label matchTimeLabel = new Label("Match Time:");
-        matchTimeLabel.setFont(Font.font(20));
+        matchTimeLabel.getStyleClass().add(headerLabelColor);
+        matchTimeLabel.setFont(new Font("Arial", 30));
 
         Label timeLeft = new Label("Time Left:");
-        timeLeft.setFont(Font.font(20));
+        timeLeft.getStyleClass().add(headerLabelColor);
+
+        matchTimeDisplay.getStyleClass().add(fontColor);
 
         player.getStyleClass().add(fontColor);
         Label playerName = new Label();
@@ -89,7 +97,7 @@ public class BoardView extends View {
         Label opponentName = new Label();
         opponentName.getStyleClass().add(fontColor);
 
-        playerInfo.setAlignment(Pos.CENTER);
+        playerInfo.setAlignment(Pos.TOP_CENTER);
         playerInfo.getChildren().addAll(player, playerName, opponent, opponentName);
 
         Label white = new Label("White: ");

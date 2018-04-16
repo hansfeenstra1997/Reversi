@@ -45,6 +45,8 @@ public class LauncherView extends Application {
 
     private Label labelLauncherHeader = new Label();
     private Label gameLabel = new Label("Select a game to play");
+    private Label ipLabel = new Label ("Specify the IP you would like to connect to");
+    private Label portLabel = new Label(":");
     private Label modeLabel = new Label("Manual play or AI Play?");
     private Label nameLabel = new Label("Specifiy a username");
     private Label reactionTimeLabel = new Label("A.I Reaction Time (in seconds)");
@@ -53,6 +55,9 @@ public class LauncherView extends Application {
 
     private static TextField nameInput = new TextField();
     private static TextField reactionInput = new TextField("5");
+    private static TextField ipInput = new TextField("145.33.225.170");
+    private static TextField portInput = new TextField("6789");
+
     private static CheckBox nightMode = new CheckBox("Nightmode");
     private static CheckBox soundOption = new CheckBox("Enable sound");
     private static CheckBox placeholderOption = new CheckBox("Placeholder");
@@ -288,6 +293,22 @@ public class LauncherView extends Application {
         reactionInput.setLayoutY(30);
         reactionInput.setLayoutX(10);
 
+        // IP SETTINGS
+        ipLabel.setTextFill(Color.rgb(255, 255, 255));
+        ipLabel.setLayoutY(10);
+        ipLabel.setLayoutX(launcherWidth - 250);
+
+        ipInput.setLayoutY(30);
+        ipInput.setLayoutX(launcherWidth - 225);
+        ipInput.setPrefWidth(100);
+
+        portLabel.setTextFill(Color.rgb(255, 255, 255));
+        portLabel.setLayoutY(35);
+        portLabel.setLayoutX(launcherWidth - 120);
+
+        portInput.setLayoutY(30);
+        portInput.setLayoutX(launcherWidth - 110);
+        portInput.setPrefWidth(50);
         // LANGUAGE SETTING
         languageLabel.setLayoutY(90);
         languageLabel.setTextFill(Color.rgb(255, 255, 255));
@@ -324,7 +345,9 @@ public class LauncherView extends Application {
         placeholderOption.setLayoutX(10);
         placeholderOption.setTextFill(Color.rgb(255, 255, 255));
 
-        menuPane.getChildren().addAll(reactionTimeLabel, reactionInput, languageLabel, switchEnglish, switchDutch, nightMode, soundOption, placeholderOption);
+        menuPane.getChildren().addAll(reactionTimeLabel, reactionInput, languageLabel, switchEnglish,
+                switchDutch, nightMode, soundOption, placeholderOption, ipLabel, ipInput, portInput,
+                portLabel);
     }
 
     public static void removePanes() {
