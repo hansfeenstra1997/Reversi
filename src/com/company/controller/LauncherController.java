@@ -159,6 +159,22 @@ public class LauncherController {
         }
     }
     private static boolean succes;
+    public static int getPort() {
+        if (LauncherView.getLocalHost() == true) {
+            return 7789;
+        } else {
+            return Integer.parseInt(LauncherView.getPort());
+        }
+    }
+    public static boolean getNightModeValue() {
+        if (LauncherView.nightModeChecked() == true) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // METHODS
     public static void connectionTest() {
         try {
             LauncherView.setConnectionMessage("Attempting to connect...");
@@ -183,25 +199,6 @@ public class LauncherController {
             LauncherView.setConnectionMessage("Connection passed!");
         }
     }
-
-    public static int getPort() {
-        if (LauncherView.getLocalHost() == true) {
-            return 7789;
-        } else {
-            return Integer.parseInt(LauncherView.getPort());
-        }
-    }
-    public static boolean getNightModeValue() {
-        if (LauncherView.nightModeChecked() == true) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-//    public static boolean checkConnection() {
-//
-//    }
 
     public static String getSpecificPlayerName() {  return specificPlayerName;}
 

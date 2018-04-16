@@ -2,10 +2,12 @@ package com.company.view;
 
 import com.company.connection.Connection;
 import com.company.controller.Controller;
+import com.company.controller.LauncherController;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -19,6 +21,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+
 import java.util.Timer;
 
 public class BoardView extends View {
@@ -161,12 +165,19 @@ public class BoardView extends View {
         Scene scene = new Scene(borderPane);
         stage.setScene(scene);
 
-    }
+        stage.setOnHiding(new EventHandler<WindowEvent>() {
 
-    public static void updateTimer() {
-        System.out.println("Update...");
-        matchTimeVar++;
-        matchTimeDisplay.setText(Integer.toString(matchTimeVar) + " seconds");
+            @Override
+            public void handle(WindowEvent event) {
+                Platform.runLater(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        LauncherController.resetButtonPressed();
+                    }
+                });
+            }
+        });
     }
 
     public Label getLastMove(){

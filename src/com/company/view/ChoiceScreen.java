@@ -2,6 +2,9 @@ package com.company.view;
 
 import com.company.connection.Connection;
 import com.company.controller.Controller;
+import com.company.controller.LauncherController;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -10,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class ChoiceScreen extends View {
 
@@ -88,6 +92,19 @@ public class ChoiceScreen extends View {
         Scene scene = new Scene(borderPane);
         stage.setScene(scene);
         stage.show();
+        stage.setOnHiding(new EventHandler<WindowEvent>() {
+
+            @Override
+            public void handle(WindowEvent event) {
+                Platform.runLater(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        LauncherController.resetButtonPressed();
+                    }
+                });
+            }
+        });
     }
 
     public VBox getPlayerlist(){

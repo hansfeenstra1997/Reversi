@@ -422,6 +422,7 @@ public class LauncherView extends Application {
         ticTacToeButton.setDisable(false);
         reversiButton.setDisable(false);
         nameInput.setDisable(false);
+        nameInput.setText("");
         start.setDisable(false);
     }
 
@@ -436,6 +437,7 @@ public class LauncherView extends Application {
     }
 
     public static String getNameField() {
+
         return nameInput.getText();
     }
     public static boolean nightModeChecked() {

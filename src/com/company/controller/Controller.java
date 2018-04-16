@@ -203,10 +203,6 @@ public class Controller implements Runnable{
         }
     }
 
-    public void updateMatchTime() {
-       BoardView.updateTimer();
-    }
-
     /**
      * disableBoard in Controller
      * This function disables the buttons when the it's the opoonent's turn
