@@ -12,14 +12,14 @@ public abstract class GameController {
     Board board;
 
     //Players need to be refactored
-    protected String firstPlayer;
-    protected String secondPlayer;
-    protected int firstPlayerID;
-    protected int secondPlayerID;
+    private String firstPlayer;
+    private String secondPlayer;
+    int firstPlayerID;
+    int secondPlayerID;
 
     //Player section
     protected Player player;
-    protected String gameMode;
+    String gameMode;
 
     /**
      * Constructor of GameController
@@ -52,7 +52,7 @@ public abstract class GameController {
      * @param spID
      * This function sets the players and their ID for keeping track about which players is which playing color.
      */
-    public void setPlayers(String fp, String sp, int fpID, int spID){
+    void setPlayers(String fp, String sp, int fpID, int spID){
         firstPlayer = fp;
         secondPlayer = sp;
         firstPlayerID = fpID;
@@ -64,7 +64,7 @@ public abstract class GameController {
      * @return
      * This function returns the private firstPlayer field.
      */
-    public String getFirstPlayer() {
+    String getFirstPlayer() {
         return firstPlayer;
     }
 
@@ -73,7 +73,7 @@ public abstract class GameController {
      * @return
      * This function returns the private secondPlayer field.
      */
-    public String getSecondPlayer() {
+    String getSecondPlayer() {
         return secondPlayer;
     }
 
@@ -82,7 +82,7 @@ public abstract class GameController {
      * @return
      * This function returns the private firstPlayerID field.
      */
-    public int getFirstPlayerID() {
+    int getFirstPlayerID() {
         return firstPlayerID;
     }
 

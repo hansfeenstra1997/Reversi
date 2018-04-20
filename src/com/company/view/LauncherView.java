@@ -17,25 +17,25 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class LauncherView extends Application {
-    static int launcherWidth = 450;
-    static int launcherHeight = 400;
+    private static int launcherWidth = 450;
+    private static int launcherHeight = 400;
 
 
-    static Pane rootPane = new Pane();
+    private static Pane rootPane = new Pane();
 
-    Scene scene = new Scene(rootPane, launcherWidth, launcherHeight);
+    private Scene scene = new Scene(rootPane, launcherWidth, launcherHeight);
 
-    Pane headerPane = new Pane();
+    private Pane headerPane = new Pane();
         int headerPanePosY = 0;
-        static int headerPaneHeight = 50;
-    static Pane gamePane = new Pane();
+        private static int headerPaneHeight = 50;
+    private static Pane gamePane = new Pane();
         int gamePaneHeight = 100;
-        int gamePaneYPos = headerPaneHeight;
-    static Pane modePane = new Pane();
-        int modePaneHeight = 100;
-        int modePaneYPos = gamePaneYPos + modePaneHeight;
-    static Pane namePane = new Pane();
-        int namePaneHeight = 50;
+        private int gamePaneYPos = headerPaneHeight;
+    private static Pane modePane = new Pane();
+        private int modePaneHeight = 100;
+        private int modePaneYPos = gamePaneYPos + modePaneHeight;
+    private static Pane namePane = new Pane();
+        private int namePaneHeight = 50;
         int namePaneYPos = modePaneYPos + namePaneHeight;
     static Pane startPane = new Pane();
         int startPaneHeight = 50;
@@ -56,7 +56,7 @@ public class LauncherView extends Application {
 
     private static TextField nameInput = new TextField();
     private static TextField reactionInput = new TextField("5");
-    private static TextField ipInput = new TextField("145.33.225.170");
+    private static TextField ipInput = new TextField("localhost");
     private static TextField portInput = new TextField("7789");
 
     private static CheckBox nightMode = new CheckBox("Nightmode");
@@ -69,8 +69,8 @@ public class LauncherView extends Application {
     private static Button reset = new Button("Reset options");
     private static Button testConnection = new Button("Test");
 
-    static Button vsAiButton = new Button("AI Mode");
-    static Button vsPlayer = new Button("Manual Mode");
+    private static Button vsAiButton = new Button("AI Mode");
+    private static Button vsPlayer = new Button("Manual Mode");
     private Button switchEnglish = new Button("English");
     private Button switchDutch = new Button("Dutch");
 
@@ -83,10 +83,10 @@ public class LauncherView extends Application {
     private Image gamePicture = new Image("gameIcon.png");
     private Image gamePicturePressed = new Image("gameIcon-pressed.png");
 
-    public static String stylePane = "paneStyle-Light";
-    public static String styleLabel = "labelPanes";
+    private static String stylePane = "paneStyle-Light";
+    private static String styleLabel = "labelPanes";
 
-    static ObservableList<String> options =
+    private static ObservableList<String> options =
             FXCollections.observableArrayList(
                     "Randomized",
                     "Smart Ai"
@@ -95,7 +95,7 @@ public class LauncherView extends Application {
 
     ////////////// - END INITIALISATION - //////////////
 
-    public void createHeaderPane() {
+    private void createHeaderPane() {
         headerPane.setStyle("-fx-background-color:#274982");
         headerPane.setPrefSize(launcherWidth, headerPaneHeight);
 
@@ -133,7 +133,7 @@ public class LauncherView extends Application {
         headerPane.getChildren().addAll(labelLauncherHeader, settingIcon, gameIcon);
     }
 
-    public void createGamePane() {
+    private void createGamePane() {
         int reversiButtonX = 140;
         gamePane.setLayoutY(gamePaneYPos);
         gamePane.getStyleClass().add(stylePane);
@@ -177,7 +177,7 @@ public class LauncherView extends Application {
 
     }
 
-    public void createModePane() {
+    private void createModePane() {
         int vsPlayerButtonX = 140;
         modePane.getStyleClass().add(stylePane);
         modePane.setLayoutY(gamePaneYPos + 100);
@@ -244,7 +244,7 @@ public class LauncherView extends Application {
 
     }
 
-    public void createNamePane() {
+    private void createNamePane() {
         int nameLabelX = 50;
         namePane.getStyleClass().add(stylePane);
         namePane.setLayoutY(modePaneYPos + 100);
@@ -266,7 +266,7 @@ public class LauncherView extends Application {
         namePane.getChildren().addAll(nameInput, nameLabel);
     }
 
-    public void createStartPane() {
+    private void createStartPane() {
         startPane.setLayoutY(startPaneYPos);
         startPane.setPrefSize(launcherWidth, 50);
 
@@ -286,7 +286,7 @@ public class LauncherView extends Application {
         startPane.getChildren().addAll(start, reset, errorMessage);
     }
 
-    public void createMenuPane() {
+    private void createMenuPane() {
         menuPane.setPrefSize(launcherWidth, launcherHeight - headerPaneHeight);
         menuPane.setLayoutY(headerPaneHeight);
         menuPane.getStyleClass().add(stylePane);
@@ -324,7 +324,7 @@ public class LauncherView extends Application {
         localHostBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if (localHostBox.isSelected() == true) {
+                if (localHostBox.isSelected()) {
                     portInput.setDisable(true);
                     ipInput.setDisable(true);
                 } else {
@@ -353,7 +353,7 @@ public class LauncherView extends Application {
         nightMode.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if (nightMode.isSelected() == true) {
+                if (nightMode.isSelected()) {
                     LauncherController.setNight();
                 } else {
                     System.out.println("Executing");
@@ -462,10 +462,10 @@ public class LauncherView extends Application {
         errorMessage.setText(error);
     }
     public static void setNightmode(boolean activated) {
-        if (activated == true) {
+        if (activated) {
             stylePane = "paneStyle-Dark";
         }
-        if (activated == false) {
+        if (!activated) {
             stylePane = "paneStyle-notDark";
             gamePane.getStyleClass().clear();
             System.out.println(gamePane.getStyleClass());

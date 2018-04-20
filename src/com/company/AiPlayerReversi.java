@@ -11,7 +11,7 @@ public class AiPlayerReversi extends ManualPlayerReversi {
     private final int GLOBAL_PLAYER = 1;
     private final int GLOBAL_OPPONENT = 2;
 
-    private final int[][] SECOND_WEIGHT = {
+    private final int[][] WEIGHT_BOARD = {
             {200,  2,  20,  5,  5, 20,  2,200},
             {  2,  0,   3,  3,  3,  3,  0,  2},
             {20,   3,  15,  6,  6, 15,  3, 20},
@@ -21,15 +21,15 @@ public class AiPlayerReversi extends ManualPlayerReversi {
             {  2,  0,   3,  3,  3,  3,  0,  2},
             {200,  2,  20,  5,  5, 20,  2,200}};
 
-    private int[][] SECOND_WEIGHT2 = {
-            {200,  2,  20,  5,  5, 20,  2,200},
-            {  2,  -20,   3,  3,  3,  3,  -20,  2},
-            {20,   3,  15,  6,  6, 15,  3, 20},
-            {5,    3,   6,  6,  6,  6,  3,  5},
-            {5,    3,   6,  6,  6,  6,  3,  5},
-            {20,   3,  15,  6,  6, 15,  3, 20},
-            {  2,  -20,   3,  3,  3,  3,  -20,  2},
-            {200,  2,  20,  5,  5, 20,  2,200}};
+    private int[][] WEIGHT_BOARD_CHANGING = {
+            {200,   2,  20,  5,  5, 20,   2,200},
+            {  2, -20,   3,  3,  3,  3, -20,  2},
+            {20,    3,  15,  6,  6, 15,   3, 20},
+            {5,     3,   6,  6,  6,  6,   3,  5},
+            {5,     3,   6,  6,  6,  6,   3,  5},
+            {20,    3,  15,  6,  6, 15,   3, 20},
+            {  2, -20,   3,  3,  3,  3, -20,  2},
+            {200,   2,  20,  5,  5, 20,   2,200}};
 
     /**
      * Constructor of AiPlayerReversi
@@ -56,7 +56,7 @@ public class AiPlayerReversi extends ManualPlayerReversi {
                 Connection.getInstance().sendCommand("move " + pos);
                 break;
             case "hard":
-                xy = doMovePointsBoard();
+                xy = doMovePointsWithRandom();
                 pos = xy[1] * 8 + xy[0];
                 Connection.getInstance().sendCommand("move " + pos);
                 break;
@@ -70,17 +70,17 @@ public class AiPlayerReversi extends ManualPlayerReversi {
      * Will select the cell with the highest points
      * @return int[] with x and y position
      */
-    private int[] doMoveDifferent() {
+    private int[] doMovePoints() {
         int score = -1;
         int x = 0;
         int y = 0;
 
         ArrayList<int[]> moves = getPossibleMoves(1, board, boardSize);
         for (int[] move : moves) {
-            System.out.println(move[0] + ", " + move[1] + " - weight " + SECOND_WEIGHT[move[0]][move[1]]);
+            System.out.println(move[0] + ", " + move[1] + " - weight " + WEIGHT_BOARD[move[0]][move[1]]);
 
-            if (SECOND_WEIGHT[move[0]][move[1]] > score) {
-                score = SECOND_WEIGHT[move[0]][move[1]];
+            if (WEIGHT_BOARD[move[0]][move[1]] > score) {
+                score = WEIGHT_BOARD[move[0]][move[1]];
                 y = move[1];
                 x = move[0];
             }
@@ -94,27 +94,24 @@ public class AiPlayerReversi extends ManualPlayerReversi {
      * it will be random which will be selected.
      * @return int[] with x and y position
      */
-    public int[] doMoveDifferent2() {
+    private int[] doMovePointsWithRandom() {
         int score = -1;
         int x = 0;
         int y = 0;
 
         ArrayList<int[]> moves = getPossibleMoves(1, board, boardSize);
         for (int[] move : moves) {
-            System.out.println(move[0] + ", " + move[1] + " - weight " + SECOND_WEIGHT[move[0]][move[1]]);
 
-            changeScore(SECOND_WEIGHT, this.board);
-
-            if (SECOND_WEIGHT[move[0]][move[1]] == score) {
+            if (WEIGHT_BOARD[move[0]][move[1]] == score) {
                 if ((int)(Math.random() * 2 + 1) == 2) {
-                    score = SECOND_WEIGHT[move[0]][move[1]];
+                    score = WEIGHT_BOARD[move[0]][move[1]];
                     y = move[1];
                     x = move[0];
                 }
             }
 
-            if (SECOND_WEIGHT[move[0]][move[1]] > score) {
-                score = SECOND_WEIGHT[move[0]][move[1]];
+            if (WEIGHT_BOARD[move[0]][move[1]] > score) {
+                score = WEIGHT_BOARD[move[0]][move[1]];
                 y = move[1];
                 x = move[0];
             }
@@ -128,7 +125,7 @@ public class AiPlayerReversi extends ManualPlayerReversi {
      * but also adds the points of the cells it will get after doing a move
      * @return int[] with x and y position
      */
-    public int[] doMovePointsBoard() {
+    private int[] doMovePointsBoard() {
         int score = -100;
         int bestX = 0;
         int bestY = 0;
@@ -166,12 +163,12 @@ public class AiPlayerReversi extends ManualPlayerReversi {
     private int calculateBoard(Board board, int player) {
         int total = 0;
 
-        changeScore(SECOND_WEIGHT2, board);
+        changeScore(WEIGHT_BOARD_CHANGING, board);
 
         for (int x = 0; x < boardSize; x++) {
             for (int y = 0; y < boardSize; y++) {
                 if (board.getCellState(x,y) == player) {
-                    total += SECOND_WEIGHT2[x][y];
+                    total += WEIGHT_BOARD_CHANGING[x][y];
                 }
             }
         }
@@ -213,18 +210,22 @@ public class AiPlayerReversi extends ManualPlayerReversi {
      */
     private void changeScore(int[][] squares, Board board) {
         if (board.getCellState(0,0) == 1) {
+            System.out.println(squares[0][0]);
             squares[1][1] = 20;
             squares[0][1] = 10;
             squares[1][0] = 10;
         } else if (board.getCellState(0,7) == 1) {
+            System.out.println(squares[0][7]);
             squares[1][6] = 20;
             squares[0][7] = 10;
             squares[1][7] = 10;
         } else if (board.getCellState(7,0) == 1) {
+            System.out.println(squares[7][0]);
             squares[6][1] = 20;
             squares[6][0] = 10;
             squares[7][1] = 10;
         } else if (board.getCellState(7,7) == 1) {
+            System.out.println(squares[7][7]);
             squares[6][6] = 20;
             squares[7][6] = 10;
             squares[6][7] = 10;

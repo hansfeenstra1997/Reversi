@@ -10,7 +10,7 @@ public class ReversiController extends GameController{
     private static final ArrayList<String> directions = new ArrayList<>();
 
 
-    public ReversiController() {
+    ReversiController() {
         super();
 
         makeBoard(boardsize);

@@ -15,7 +15,7 @@ public class TicTacToeController extends GameController{
     @Override
     void initBoard() {}
 
-    public TicTacToeController() {
+    TicTacToeController() {
         makeBoard(boardsize);
     }
 

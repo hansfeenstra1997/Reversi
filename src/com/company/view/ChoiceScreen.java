@@ -24,7 +24,7 @@ public class ChoiceScreen extends View {
         String fontColor;
         String backgroundColor;
         String sideBarColor;
-        if (Controller.getNightModeBackground() == true) {
+        if (Controller.getNightModeBackground()) {
             fontColor = "labelText-White";
             backgroundColor = "paneStyle-Dark";
             sideBarColor = "sideBar-Dark";

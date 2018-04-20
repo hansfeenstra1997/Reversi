@@ -15,11 +15,11 @@ public class LauncherModel {
         expandToMode();
     }
     //
-    public static void expandToName(int mode) {
+    private static void expandToName(int mode) {
         LauncherView.addModeTweak(mode);
     }
 
-    public static void expandToMode() {
+    private static void expandToMode() {
         LauncherView.addMode();
     }
 

@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Objects;
 
 public class LauncherController {
 
@@ -38,21 +39,21 @@ public class LauncherController {
     }
 
     public static void optionsButton() {
-        if (optionsExpanded == false) {
+        if (!optionsExpanded) {
             LauncherModel.optionsClicked();
             optionsExpanded = true;
         }
     }
 
     public static void gameButton() {
-        if (optionsExpanded == true) {
+        if (optionsExpanded) {
             LauncherModel.gameClicked();
             optionsExpanded = false;
         }
     }
 
     public static void reversiButton() {
-        if (gameModeSelected == false) {
+        if (!gameModeSelected) {
             LauncherModel.reversiEnable();
             gameModeSelected = true;
             game = "Reversi";
@@ -60,7 +61,7 @@ public class LauncherController {
     }
 
     public static void bkeButton() {
-        if (gameModeSelected == false) {
+        if (!gameModeSelected) {
             LauncherModel.bkeEnable();
             gameModeSelected = true;
             game = "Tic-tac-toe";
@@ -69,9 +70,9 @@ public class LauncherController {
 
     public static void aiSelection(String givenMode) {
         modeIsSet = true;
-        if (givenMode == "Smart Ai") {
+        if (Objects.equals(givenMode, "Smart Ai")) {
             mode = "ai-hard";
-        } else if (givenMode == "Randomized") {
+        } else if (Objects.equals(givenMode, "Randomized")) {
             mode = "ai-easy";
         }
 
@@ -87,7 +88,7 @@ public class LauncherController {
     }
 
     public static void startGamePressed() {
-        if (opponent == "ai" && mode == "") {
+        if (Objects.equals(opponent, "ai") && Objects.equals(mode, "")) {
             ErrorWindow error = new ErrorWindow("Warning",
                     "You want to add an AI, but no mode has been selected!",
                     "Please click on the dropdown box and select a mode.");
@@ -110,7 +111,7 @@ public class LauncherController {
                 LauncherController.connectionError(true);
                 succes = false;
             }
-            if (succes == true) {
+            if (succes) {
                 LauncherController.connectionError(false);
                 LauncherView.setError("Starting the game!");
                 LauncherView.disableAllButtons();
@@ -126,7 +127,7 @@ public class LauncherController {
                         "\nUsername:                    " + LauncherView.getNameField() +
                         "\nGame:                        " + game +
                         "\nOpponent:                    " + opponent);
-                if (opponent == "ai") {
+                if (Objects.equals(opponent, "ai")) {
                     System.out.println(
                             "AI Mode:                    " + mode);
                 }
@@ -142,7 +143,7 @@ public class LauncherController {
         }
 
     public static void vsPlayerButton() {
-        if (opponentSelected == false) {
+        if (!opponentSelected) {
             opponent = "player";
             LauncherModel.playerButtonEnable();
             mode = "manual";
@@ -151,7 +152,7 @@ public class LauncherController {
     }
 
     public static void vsAiButton() {
-        if (opponentSelected == false) {
+        if (!opponentSelected) {
             opponent = "ai";
             LauncherModel.aiButtonEnable();
         }
@@ -162,11 +163,11 @@ public class LauncherController {
     // GETTERS
     public static String getGame() { return game; }
     public static String getOpponent() {return opponent;}
-    public static String getPlayerName() { return LauncherView.getNameField();}
+    private static String getPlayerName() { return LauncherView.getNameField();}
     public static String getMode() {return mode;}
     public static int getResponseTime() {return LauncherView.getReactionTime();}
     public static String getIP() {
-        if (LauncherView.getLocalHost() == true) {
+        if (LauncherView.getLocalHost()) {
             return "localhost";
         } else {
             return LauncherView.getIP();
@@ -174,18 +175,14 @@ public class LauncherController {
     }
     private static boolean succes;
     public static int getPort() {
-        if (LauncherView.getLocalHost() == true) {
+        if (LauncherView.getLocalHost()) {
             return 7789;
         } else {
             return Integer.parseInt(LauncherView.getPort());
         }
     }
-    public static boolean getNightModeValue() {
-        if (LauncherView.nightModeChecked() == true) {
-            return true;
-        } else {
-            return false;
-        }
+    static boolean getNightModeValue() {
+        return LauncherView.nightModeChecked();
     }
 
     // METHODS
@@ -202,13 +199,13 @@ public class LauncherController {
             LauncherController.connectionError(true);
             succes = false;
         }
-        if (succes == true) {
+        if (succes) {
             LauncherController.connectionError(false);
         }
     }
 
-    public static void connectionError(boolean error) {
-        if (error == true) {
+    private static void connectionError(boolean error) {
+        if (error) {
             System.out.println("Printing error message");
             LauncherView.setConnectionMessage("Connection failed.");
         } else {

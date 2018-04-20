@@ -30,10 +30,10 @@ public class BoardView extends View {
     private static int matchTimeVar;
     private static Label matchTimeDisplay = new Label();
 
-    Text turnText;
-    Label lastMove;
+    private Text turnText;
+    private Label lastMove;
 
-    Label timerText;
+    private Label timerText;
 
     public BoardView() {
 
@@ -50,7 +50,7 @@ public class BoardView extends View {
         String sideBarColor;
         String headerLabelColor;
 
-        if (Controller.getNightModeBackground() == true) {
+        if (Controller.getNightModeBackground()) {
             fontColor = "labelText-White";
             backgroundColor = "paneStyle-Dark";
             sideBarColor = "sideBar-Dark";
